@@ -24,26 +24,6 @@ void processInput(GLFWwindow* window);
 const unsigned int SCR_WIDTH = 1024;
 const unsigned int SCR_HEIGHT = 640;
 
-const char* vertexShaderSource = "#version 330 core\n"
-"layout (location = 0) in vec4 position;\n"
-"layout (location = 1) in vec2 texCoord;\n"
-"out vec2 v_TexCoord;\n"
-"uniform mat4 u_MVP;\n"
-"void main()\n"
-"{\n"
-"   gl_Position = u_MVP * position;\n"
-"	v_TexCoord = texCoord;\n"
-"}\0";
-const char* fragmentShaderSource = "#version 330 core\n"
-"out vec4 color;\n"
-"in vec2 v_TexCoord;\n"
-"uniform sampler2D u_Texture;\n"
-"void main()\n"
-"{\n"
-"   vec4 texColor = texture(u_Texture, v_TexCoord);\n"
-"	color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
-"}\n\0";
-
 int main()
 {
 	glfwInit();
@@ -83,14 +63,42 @@ int main()
 
 	float vertices[] =
 	{
-		-0.1f, -0.1f, -0.9f, // 0
-		-0.1f, -0.1f, -1.0f, // 1
-		 0.1f, -0.1f, -1.0f, // 2
-		 0.1f, -0.1f, -0.9f, // 3
-		-0.1f,  0.1f, -0.9f, // 4
-		-0.1f,  0.1f, -1.0f, // 5
-		 0.1f,  0.1f, -1.0f, // 6
-		 0.1f,  0.1f, -0.9f  // 7
+		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
+		-0.1f, -0.1f, -1.0f, 0.0f, 1.0f, // 1
+		 0.1f, -0.1f, -1.0f, 1.0f, 1.0f, // 2
+		 0.1f, -0.1f, -1.0f, 1.0f, 1.0f, // 2
+		 0.1f, -0.1f, -0.9f, 1.0f, 0.0f, // 3
+		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
+		-0.1f, -0.1f, -1.0f, 0.0f, 0.0f, // 1
+		-0.1f,  0.1f, -1.0f, 0.0f, 1.0f, // 5
+		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
+		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
+		 0.1f, -0.1f, -1.0f, 1.0f, 0.0f, // 2
+		-0.1f, -0.1f, -1.0f, 0.0f, 0.0f, // 1
+		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
+		-0.1f,  0.1f, -0.9f, 0.0f, 1.0f, // 4
+		-0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 5
+		-0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 5
+		-0.1f, -0.1f, -1.0f, 1.0f, 0.0f, // 1
+		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
+		 0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 3
+		 0.1f,  0.1f, -0.9f, 0.0f, 1.0f, // 7
+		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
+		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
+		 0.1f, -0.1f, -1.0f, 1.0f, 0.0f, // 2
+		 0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 3
+		-0.1f,  0.1f, -0.9f, 0.0f, 0.0f, // 4
+		-0.1f,  0.1f, -1.0f, 0.0f, 1.0f, // 5
+		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
+		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
+		 0.1f,  0.1f, -0.9f, 1.0f, 0.0f, // 7
+		-0.1f,  0.1f, -0.9f, 0.0f, 0.0f, // 4
+		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
+		-0.1f,  0.1f, -0.9f, 0.0f, 1.0f, // 4
+		 0.1f,  0.1f, -0.9f, 1.0f, 1.0f, // 7
+		 0.1f,  0.1f, -0.9f, 1.0f, 1.0f, // 7
+		 0.1f, -0.1f, -0.9f, 1.0f, 0.0f, // 3
+		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
 	};
 
 	unsigned int indices[] = {
@@ -113,6 +121,7 @@ int main()
 
 	VertexBufferLayout layout;
 	layout.Push<float>(3);
+	layout.Push<float>(2);
 	va.AddBuffer(vb, layout);
 
 	IndexBuffer ib(sizeof(indices), indices);
@@ -123,7 +132,8 @@ int main()
 	glm::vec3 translationA(-0.45f, -0.2, 0);
 	glm::vec3 translationB(0, 0, 0);
 
-	float viewRotation = 0;
+	float viewRotationY = 0;
+	float viewRotationX = 0;
 
 	Texture marioTex("res/textures/Mario.png");	
 	Texture tortoiseTex("res/textures/tortoise.jpg");
@@ -131,7 +141,8 @@ int main()
 	marioTex.Bind(1);
 	tortoiseTex.Bind(0);
 
-	Shader shader(vertexShaderSource, fragmentShaderSource);
+	Shader shader("res/shaders/Basic.shader");
+	shader.Bind();
 
 	shader.Unbind();
 	va.Unbind();
@@ -146,7 +157,8 @@ int main()
 		renderer.Clear();
 
 		view = glm::mat4(1.0f);
-		view = glm::rotate(view, glm::radians(viewRotation), glm::vec3(0.0f, 1.0f, 0.0f));
+		view = glm::rotate(view, glm::radians(viewRotationY), glm::vec3(0.0f, 1.0f, 0.0f));
+		view = glm::rotate(view, glm::radians(viewRotationX), glm::vec3(1.0f, 0.0f, 0.0f));
 
 		{
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
@@ -155,7 +167,7 @@ int main()
 			shader.Bind();
 			shader.SetUniform1i("u_Texture", 0);
 			shader.SetUniformMatrix4fv("u_MVP", mvp);
-			renderer.Draw(va, ib, shader);
+			renderer.DrawTriangles(va, shader, 36);
 		}
 
 		{
@@ -164,7 +176,7 @@ int main()
 			shader.Bind();
 			shader.SetUniform1i("u_Texture", 1);
 			shader.SetUniformMatrix4fv("u_MVP", mvp);
-			renderer.Draw(va, ib, shader);
+			renderer.DrawTriangles(va, shader, 36);
 		}
 
 		ImGui_ImplOpenGL3_NewFrame();
@@ -173,7 +185,8 @@ int main()
 
 		{
 			ImGui::Begin("Positions");
-			ImGui::SliderFloat("Camera Rotation", &viewRotation, -180.0f, 180.0f);
+			ImGui::SliderFloat("Camera Rotation Y", &viewRotationY, -180.0f, 180.0f);
+			ImGui::SliderFloat("Camera Rotation X", &viewRotationX, -180.0f, 180.0f);
 			ImGui::SliderFloat3("Translation A", &translationA.x, -1.0f, 1.0f);
 			ImGui::SliderFloat3("Translation B", &translationB.x, -1.0f, 1.0f);
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);

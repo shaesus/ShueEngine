@@ -3,14 +3,16 @@
 #include "glad/glad.h"
 
 #include <iostream>
+#include <sstream>
+#include <fstream>
 
 #include "Renderer.h"
 
-Shader::Shader(const char* vertexShaderSource, const char* fragmentShaderSource)
+Shader::Shader(const std::string& filepath)
 	: m_ID(0)
 {
-	m_ID = CreateShader(vertexShaderSource, fragmentShaderSource);
-	GLCall(glUseProgram(m_ID));
+	ShaderProgramSource	source = ParseShader(filepath);
+	m_ID = CreateShader(source.VertexSource, source.FragmentSource);
 }
 
 Shader::~Shader()
@@ -28,7 +30,37 @@ void Shader::Unbind() const
 	GLCall(glUseProgram(0));
 }
 
-unsigned int Shader::CreateShader(const char* vertexShaderSource, const char* fragmentShaderSource)
+ShaderProgramSource Shader::ParseShader(const std::string& filepath)
+{
+	std::ifstream stream(filepath);
+
+	enum ShaderType
+	{
+		NONE = -1, VERTEX = 0, FRAGMENT = 1
+	};
+
+	std::string line;
+	std::stringstream ss[2];
+	ShaderType type = ShaderType::NONE;
+	while (getline(stream, line))
+	{
+		if (line.find("#shader") != std::string::npos)
+		{
+			if (line.find("vertex") != std::string::npos)
+				type = ShaderType::VERTEX;
+			else if (line.find("fragment") != std::string::npos)
+				type = ShaderType::FRAGMENT;
+		}
+		else
+		{
+			ss[(int)type] << line << '\n';
+		}
+	}
+
+	return { ss[0].str(), ss[1].str() };
+}
+
+unsigned int Shader::CreateShader(const std::string& vertexShaderSource, const std::string& fragmentShaderSource)
 {
 	GLCall(unsigned int shaderProgram = glCreateProgram());
 	unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
@@ -43,10 +75,11 @@ unsigned int Shader::CreateShader(const char* vertexShaderSource, const char* fr
 	return shaderProgram;
 }
 
-unsigned int Shader::CompileShader(unsigned int type, const char* shaderSource)
+unsigned int Shader::CompileShader(unsigned int type, const std::string& shaderSource)
 {
 	GLCall(unsigned int shader = glCreateShader(type));
-	GLCall(glShaderSource(shader, 1, &shaderSource, nullptr));
+	const char* src = shaderSource.c_str();
+	GLCall(glShaderSource(shader, 1, &src, nullptr));
 	GLCall(glCompileShader(shader));
 
 	int result;
