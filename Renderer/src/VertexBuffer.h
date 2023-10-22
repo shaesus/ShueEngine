@@ -1,14 +1,18 @@
 #pragma once
 
-class VertexBuffer
-{
-public:
-	VertexBuffer(unsigned int size, const void* data);
-	~VertexBuffer();
+namespace Shue {
 
-	void Bind() const;
-	void Unbind() const;
+	class VertexBuffer
+	{
+	public:
+		VertexBuffer(unsigned int size, const void* data);
+		~VertexBuffer();
 
-private:
-	unsigned int m_ID;
-};
+		void Bind() const;
+		void Unbind() const;
+
+	private:
+		unsigned int m_ID;
+	};
+
+}

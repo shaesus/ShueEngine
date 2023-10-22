@@ -58,7 +58,7 @@ int main()
 		return -1;
 	}
 
-	Renderer renderer;
+	Shue::Renderer renderer;
 	renderer.SetBlending(true);
 
 	float vertices[] =
@@ -116,15 +116,15 @@ int main()
 		7, 3, 0
 	};
 
-	VertexArray va;
-	VertexBuffer vb(sizeof(vertices), vertices);
+	Shue::VertexArray va;
+	Shue::VertexBuffer vb(sizeof(vertices), vertices);
 
-	VertexBufferLayout layout;
+	Shue::VertexBufferLayout layout;
 	layout.Push<float>(3);
 	layout.Push<float>(2);
 	va.AddBuffer(vb, layout);
 
-	IndexBuffer ib(sizeof(indices), indices);
+	Shue::IndexBuffer ib(sizeof(indices), indices);
 
 	glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	glm::mat4 view = glm::mat4(1.0f);
@@ -135,13 +135,13 @@ int main()
 	float viewRotationY = 0;
 	float viewRotationX = 0;
 
-	Texture marioTex("res/textures/Mario.png");	
-	Texture tortoiseTex("res/textures/tortoise.jpg");
+	Shue::Texture marioTex("res/textures/Mario.png");	
+	Shue::Texture tortoiseTex("res/textures/tortoise.jpg");
 
 	marioTex.Bind(1);
 	tortoiseTex.Bind(0);
 
-	Shader shader("res/shaders/Basic.shader");
+	Shue::Shader shader("res/shaders/Basic.shader");
 	shader.Bind();
 
 	shader.Unbind();

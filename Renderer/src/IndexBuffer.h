@@ -2,18 +2,22 @@
 
 #include "glad/glad.h"
 
-class IndexBuffer
-{
-public:
-	IndexBuffer(unsigned int size, const void* data);
-	~IndexBuffer();
+namespace Shue {
 
-	void Bind() const;
-	void Unbind() const;
+	class IndexBuffer
+	{
+	public:
+		IndexBuffer(unsigned int size, const void* data);
+		~IndexBuffer();
 
-	inline unsigned int GetSize() const { return m_Size; }
+		void Bind() const;
+		void Unbind() const;
 
-private:
-	unsigned int m_ID;
-	unsigned int m_Size;
-};
+		inline unsigned int GetSize() const { return m_Size; }
+
+	private:
+		unsigned int m_ID;
+		unsigned int m_Size;
+	};
+
+}
