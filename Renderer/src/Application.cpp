@@ -28,9 +28,15 @@ const unsigned int SCR_HEIGHT = 640;
 
 int main()
 {
-	Shue::Renderer renderer;
-	renderer.InitGLFW();
-	renderer.GLFWSetOpenGLVersionAndProfile(4, 6, GLFW_OPENGL_CORE_PROFILE);
+	if (!glfwInit())
+	{
+		std::cout << "Failed to initialize GLFW" << std::endl;
+		return -1;
+	}
+
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Renderer", NULL, NULL);
 	if (window == NULL)
@@ -53,7 +59,13 @@ int main()
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	renderer.InitGLAD();
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
+		return -1;
+	}
+
+	Shue::Renderer renderer;
 	renderer.SetBlending(true);
 
 	//float vertices[] =

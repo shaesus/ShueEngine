@@ -17,10 +17,6 @@ namespace Shue {
     class Renderer
     {
     public:
-        int InitGLFW();
-        int InitGLAD();
-        int InitFreeType();
-        void GLFWSetOpenGLVersionAndProfile(int major = 4, int minor = 6, int profile = GLFW_OPENGL_CORE_PROFILE);
         void Clear() const;
         void ClearColor(float r, float g, float b, float a) const;
         void DrawIb(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;

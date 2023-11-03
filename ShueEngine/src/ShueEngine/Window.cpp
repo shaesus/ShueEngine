@@ -22,6 +22,16 @@ namespace Shue {
 		m_Data.Height = props.Height;
 		m_Data.Title = props.Title;
 
+		if (!glfwInit())
+		{
+			std::cout << "Failed to initialize GLFW" << std::endl;
+			return;
+		}
+
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 		m_Window = glfwCreateWindow(m_Data.Width, m_Data.Height, m_Data.Title.c_str(), NULL, NULL);
 		if (m_Window == NULL)
 		{
@@ -31,6 +41,12 @@ namespace Shue {
 		}
 		glfwMakeContextCurrent(m_Window);
 		SetVsync(true);
+
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		{
+			std::cout << "Failed to initialize GLAD" << std::endl;
+			return;
+		}
 	}
 
 	void Window::OnUpdate()

@@ -4,43 +4,6 @@
 
 namespace Shue {
 
-	void Renderer::Shutdown()
-	{
-		glfwTerminate();
-	}
-
-	int Renderer::InitGLFW()
-	{
-		if (!glfwInit())
-		{
-			std::cout << "Failed to initialize GLFW" << std::endl;
-			return -1;
-		}
-		return 1;
-	}
-
-	int Renderer::InitGLAD()
-	{
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			std::cout << "Failed to initialize GLAD" << std::endl;
-			return -1;
-		}
-		return 1;
-	}
-
-	int Renderer::InitFreeType()
-	{
-		return 1;
-	}
-
-	void Renderer::GLFWSetOpenGLVersionAndProfile(int major, int minor, int profile)
-	{
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, major);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, minor);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, profile);
-	}
-
 	void Renderer::Clear() const
 	{
 		GLCall(glClear(GL_COLOR_BUFFER_BIT));
