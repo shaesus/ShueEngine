@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "Window.h"
-#include "Renderer/Renderer.h"
+#include "Renderer.h"
 
 namespace Shue {
 
@@ -12,10 +12,10 @@ namespace Shue {
 	{
 	public:
 		Application();
-		~Application();
+		virtual ~Application();
 
-		void Run();
-	private:
+		virtual void Run();
+	protected:
 		bool m_Running = true;
 		std::unique_ptr<Window> m_Window;
 		Renderer m_Renderer;

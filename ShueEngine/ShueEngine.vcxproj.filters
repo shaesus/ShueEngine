@@ -30,28 +30,28 @@
     <ClInclude Include="src\ShueEngine\Window.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShueEngine\Renderer\Assertion.h">
+    <ClInclude Include="src\Renderer\Assertion.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShueEngine\Renderer\IndexBuffer.h">
+    <ClInclude Include="src\Renderer\IndexBuffer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShueEngine\Renderer\Renderer.h">
+    <ClInclude Include="src\Renderer\Renderer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShueEngine\Renderer\Shader.h">
+    <ClInclude Include="src\Renderer\Shader.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShueEngine\Renderer\Texture.h">
+    <ClInclude Include="src\Renderer\Texture.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShueEngine\Renderer\VertexArray.h">
+    <ClInclude Include="src\Renderer\VertexArray.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShueEngine\Renderer\VertexBuffer.h">
+    <ClInclude Include="src\Renderer\VertexBuffer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="src\ShueEngine\Renderer\VertexBufferLayout.h">
+    <ClInclude Include="src\Renderer\VertexBufferLayout.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\vendor\imGUI\imconfig.h">
@@ -938,25 +938,25 @@
     <ClCompile Include="src\ShueEngine\Window.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShueEngine\Renderer\Assertion.cpp">
+    <ClCompile Include="src\Renderer\Assertion.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShueEngine\Renderer\IndexBuffer.cpp">
+    <ClCompile Include="src\Renderer\IndexBuffer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShueEngine\Renderer\Renderer.cpp">
+    <ClCompile Include="src\Renderer\Renderer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShueEngine\Renderer\Shader.cpp">
+    <ClCompile Include="src\Renderer\Shader.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShueEngine\Renderer\Texture.cpp">
+    <ClCompile Include="src\Renderer\Texture.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShueEngine\Renderer\VertexArray.cpp">
+    <ClCompile Include="src\Renderer\VertexArray.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ShueEngine\Renderer\VertexBuffer.cpp">
+    <ClCompile Include="src\Renderer\VertexBuffer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="src\vendor\glad\glad.c">

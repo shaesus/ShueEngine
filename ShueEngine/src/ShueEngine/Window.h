@@ -30,6 +30,9 @@ namespace Shue {
 		void Shutdown();
 
 		inline bool IsVSync() const { return m_Data.VSync; }
+		inline int GetWidth() const { return m_Data.Width; }
+		inline int GetHeight() const { return m_Data.Height; }
+		inline GLFWwindow* GetGLFWWindow() const { return m_Window; }
 
 		static Window* Create(const WindowProps& props = WindowProps());
 

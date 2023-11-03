@@ -19,6 +19,8 @@ namespace Shue {
     class SHUE_API Renderer
     {
     public:
+        void Shutdown();
+
         int InitGLFW();
         int InitGLAD();
         int InitFreeType();

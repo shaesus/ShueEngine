@@ -4,6 +4,11 @@
 
 namespace Shue {
 
+	void Renderer::Shutdown()
+	{
+		glfwTerminate();
+	}
+
 	int Renderer::InitGLFW()
 	{
 		if (!glfwInit())
