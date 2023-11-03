@@ -18,6 +18,8 @@
 
 #include "Renderer.h"
 
+#include <map>
+
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
 
@@ -26,11 +28,10 @@ const unsigned int SCR_HEIGHT = 640;
 
 int main()
 {
-	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
+	Shue::Renderer renderer;
+	renderer.InitGLFW();
+	renderer.GLFWSetOpenGLVersionAndProfile(4, 6, GLFW_OPENGL_CORE_PROFILE);
+	
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Renderer", NULL, NULL);
 	if (window == NULL)
 	{
@@ -52,53 +53,59 @@ int main()
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
-		std::cout << "Failed to initialize GLAD" << std::endl;
-		return -1;
-	}
-
-	Shue::Renderer renderer;
+	renderer.InitGLAD();
 	renderer.SetBlending(true);
+
+	//float vertices[] =
+	//{
+	//	-0.1f, -0.1f, -0.1f, 0.0f, 0.0f, // 0
+	//	-0.1f, -0.1f,  0.1f, 0.0f, 1.0f, // 1
+	//	 0.1f, -0.1f,  0.1f, 1.0f, 1.0f, // 2
+	//	 0.1f, -0.1f,  0.1f, 1.0f, 1.0f, // 2
+	//	 0.1f, -0.1f, -0.1f, 1.0f, 0.0f, // 3
+	//	-0.1f, -0.1f, -0.1f, 0.0f, 0.0f, // 0
+	//	-0.1f, -0.1f,  0.1f, 0.0f, 0.0f, // 1
+	//	-0.1f,  0.1f,  0.1f, 0.0f, 1.0f, // 5
+	//	 0.1f,  0.1f,  0.1f, 1.0f, 1.0f, // 6
+	//	 0.1f,  0.1f,  0.1f, 1.0f, 1.0f, // 6
+	//	 0.1f, -0.1f,  0.1f, 1.0f, 0.0f, // 2
+	//	-0.1f, -0.1f,  0.1f, 0.0f, 0.0f, // 1
+	//	-0.1f, -0.1f, -0.1f, 0.0f, 0.0f, // 0
+	//	-0.1f,  0.1f, -0.1f, 0.0f, 1.0f, // 4
+	//	-0.1f,  0.1f,  0.1f, 1.0f, 1.0f, // 5
+	//	-0.1f,  0.1f,  0.1f, 1.0f, 1.0f, // 5
+	//	-0.1f, -0.1f,  0.1f, 1.0f, 0.0f, // 1
+	//	-0.1f, -0.1f, -0.1f, 0.0f, 0.0f, // 0
+	//	 0.1f, -0.1f, -0.1f, 0.0f, 0.0f, // 3
+	//	 0.1f,  0.1f, -0.1f, 0.0f, 1.0f, // 7
+	//	 0.1f,  0.1f,  0.1f, 1.0f, 1.0f, // 6
+	//	 0.1f,  0.1f,  0.1f, 1.0f, 1.0f, // 6
+	//	 0.1f, -0.1f,  0.1f, 1.0f, 0.0f, // 2
+	//	 0.1f, -0.1f, -0.1f, 0.0f, 0.0f, // 3
+	//	-0.1f,  0.1f, -0.1f, 0.0f, 0.0f, // 4
+	//	-0.1f,  0.1f,  0.1f, 0.0f, 1.0f, // 5
+	//	 0.1f,  0.1f,  0.1f, 1.0f, 1.0f, // 6
+	//	 0.1f,  0.1f,  0.1f, 1.0f, 1.0f, // 6
+	//	 0.1f,  0.1f, -0.1f, 1.0f, 0.0f, // 7
+	//	-0.1f,  0.1f, -0.1f, 0.0f, 0.0f, // 4
+	//	-0.1f, -0.1f, -0.1f, 0.0f, 0.0f, // 0
+	//	-0.1f,  0.1f, -0.1f, 0.0f, 1.0f, // 4
+	//	 0.1f,  0.1f, -0.1f, 1.0f, 1.0f, // 7
+	//	 0.1f,  0.1f, -0.1f, 1.0f, 1.0f, // 7
+	//	 0.1f, -0.1f, -0.1f, 1.0f, 0.0f, // 3
+	//	-0.1f, -0.1f, -0.1f, 0.0f, 0.0f, // 0
+	//};
 
 	float vertices[] =
 	{
-		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
-		-0.1f, -0.1f, -1.0f, 0.0f, 1.0f, // 1
-		 0.1f, -0.1f, -1.0f, 1.0f, 1.0f, // 2
-		 0.1f, -0.1f, -1.0f, 1.0f, 1.0f, // 2
-		 0.1f, -0.1f, -0.9f, 1.0f, 0.0f, // 3
-		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
-		-0.1f, -0.1f, -1.0f, 0.0f, 0.0f, // 1
-		-0.1f,  0.1f, -1.0f, 0.0f, 1.0f, // 5
-		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
-		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
-		 0.1f, -0.1f, -1.0f, 1.0f, 0.0f, // 2
-		-0.1f, -0.1f, -1.0f, 0.0f, 0.0f, // 1
-		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
-		-0.1f,  0.1f, -0.9f, 0.0f, 1.0f, // 4
-		-0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 5
-		-0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 5
-		-0.1f, -0.1f, -1.0f, 1.0f, 0.0f, // 1
-		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
-		 0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 3
-		 0.1f,  0.1f, -0.9f, 0.0f, 1.0f, // 7
-		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
-		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
-		 0.1f, -0.1f, -1.0f, 1.0f, 0.0f, // 2
-		 0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 3
-		-0.1f,  0.1f, -0.9f, 0.0f, 0.0f, // 4
-		-0.1f,  0.1f, -1.0f, 0.0f, 1.0f, // 5
-		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
-		 0.1f,  0.1f, -1.0f, 1.0f, 1.0f, // 6
-		 0.1f,  0.1f, -0.9f, 1.0f, 0.0f, // 7
-		-0.1f,  0.1f, -0.9f, 0.0f, 0.0f, // 4
-		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
-		-0.1f,  0.1f, -0.9f, 0.0f, 1.0f, // 4
-		 0.1f,  0.1f, -0.9f, 1.0f, 1.0f, // 7
-		 0.1f,  0.1f, -0.9f, 1.0f, 1.0f, // 7
-		 0.1f, -0.1f, -0.9f, 1.0f, 0.0f, // 3
-		-0.1f, -0.1f, -0.9f, 0.0f, 0.0f, // 0
+		-0.1f, -0.1f, -0.1f, // 0
+		-0.1f, -0.1f,  0.1f, // 1
+		 0.1f, -0.1f,  0.1f, // 2
+		 0.1f, -0.1f, -0.1f, // 3
+		-0.1f,  0.1f, -0.1f, // 4
+		-0.1f,  0.1f,  0.1f, // 5
+		 0.1f,  0.1f,  0.1f, // 6
+		 0.1f,  0.1f, -0.1f  // 7
 	};
 
 	unsigned int indices[] = {
@@ -121,7 +128,6 @@ int main()
 
 	Shue::VertexBufferLayout layout;
 	layout.Push<float>(3);
-	layout.Push<float>(2);
 	va.AddBuffer(vb, layout);
 
 	Shue::IndexBuffer ib(sizeof(indices), indices);
@@ -129,8 +135,8 @@ int main()
 	glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	glm::mat4 view = glm::mat4(1.0f);
 
-	glm::vec3 translationA(-0.45f, -0.2, 0);
-	glm::vec3 translationB(0, 0, 0);
+	glm::vec3 translationA(-0.45f, -0.2f, -1.0f);
+	glm::vec3 translationB(0.0f, 0.0f, -1.0f);
 
 	float viewRotationY = 0;
 	float viewRotationX = 0;
@@ -163,20 +169,25 @@ int main()
 		{
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
 			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
+			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::mat4 mvp = proj * view * model;
 			shader.Bind();
 			shader.SetUniform1i("u_Texture", 0);
 			shader.SetUniformMatrix4fv("u_MVP", mvp);
-			renderer.DrawTriangles(va, shader, 36);
+			renderer.DrawIb(va, ib, shader);
+			//renderer.DrawTriangles(va, shader, sizeof(vertices) / sizeof(float) / 5);
 		}
 
 		{
 			glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
+			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
 			glm::mat4 mvp = proj * view * model;
 			shader.Bind();
 			shader.SetUniform1i("u_Texture", 1);
 			shader.SetUniformMatrix4fv("u_MVP", mvp);
-			renderer.DrawTriangles(va, shader, 36);
+			renderer.DrawIb(va, ib, shader);
+			//renderer.DrawTriangles(va, shader, sizeof(vertices) / sizeof(float) / 5);
 		}
 
 		ImGui_ImplOpenGL3_NewFrame();
