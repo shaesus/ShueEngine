@@ -6,12 +6,12 @@
 
 namespace Shue {
 
-	VertexBuffer::VertexBuffer(unsigned int size, const void* data)
+	VertexBuffer::VertexBuffer(unsigned int size, const void* data, unsigned int drawType)
 		: m_ID(0)
 	{
 		GLCall(glGenBuffers(1, &m_ID));
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, m_ID));
-		GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
+		GLCall(glBufferData(GL_ARRAY_BUFFER, size, data, drawType));
 	}
 
 	VertexBuffer::~VertexBuffer()

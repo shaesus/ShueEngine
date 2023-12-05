@@ -41,12 +41,6 @@ namespace Shue {
 		}
 		glfwMakeContextCurrent(m_Window);
 		SetVsync(true);
-
-		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-		{
-			std::cout << "Failed to initialize GLAD" << std::endl;
-			return;
-		}
 	}
 
 	void Window::OnUpdate()

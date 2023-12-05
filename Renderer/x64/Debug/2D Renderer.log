@@ -1,3 +1,0 @@
-﻿  Main.cpp
-MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
-C:\Dev\C++ Projects\2D Renderer\x64\Debug\2D Renderer.exe : fatal error LNK1120: 1 unresolved externals
