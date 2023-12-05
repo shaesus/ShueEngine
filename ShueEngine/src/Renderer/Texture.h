@@ -10,7 +10,6 @@ namespace Shue {
 	class SHUE_API Texture
 	{
 	public:
-		Texture();
 		Texture(const char* filePath);
 		Texture(FT_Face face);
 		virtual ~Texture();
@@ -18,7 +17,10 @@ namespace Shue {
 		void Bind(unsigned int slot = 0) const;
 		void Unbind() const;
 
-	protected:
+	private:
+		Texture();
+
+	private:
 		unsigned int m_ID;
 		int m_Width, m_Height, m_BPP;
 		unsigned char* m_LocalBuffer;

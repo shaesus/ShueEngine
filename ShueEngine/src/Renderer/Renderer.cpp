@@ -60,7 +60,7 @@ namespace Shue {
 				{ xpos + w, ypos + h,   1.0f, 0.0f }
 			};
 			// render glyph texture over quad
-			ch.Texture.Bind();
+			GLCall(glBindTexture(GL_TEXTURE_2D, ch.TextureID));
 			// update content of VBO memory
 			vb.Bind();
 			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);

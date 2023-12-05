@@ -89,74 +89,93 @@ namespace Shue {
 		Shader shader("res/shaders/Basic.shader");
 		shader.Bind();
 
-		//FT_Library ft;
-		//if (FT_Init_FreeType(&ft))
-		//{
-		//	std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-		//	return;
-		//}
+		FT_Library ft;
+		if (FT_Init_FreeType(&ft))
+		{
+			std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+			return;
+		}
 
-		//FT_Face face;
-		//if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face))
-		//{
-		//	std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-		//	return;
-		//}
+		FT_Face face;
+		if (FT_New_Face(ft, "res/fonts/arial.ttf", 0, &face))
+		{
+			std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+			return;
+		}
 
-		//FT_Set_Pixel_Sizes(face, 0, 48);
+		FT_Set_Pixel_Sizes(face, 0, 48);
 
-		//if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
-		//{
-		//	std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-		//	return;
-		//}
+		if (FT_Load_Char(face, 'X', FT_LOAD_RENDER))
+		{
+			std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+			return;
+		}
 
-		//glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // disable byte-alignment restriction
+		GLCall(glPixelStorei(GL_UNPACK_ALIGNMENT, 1)); // disable byte-alignment restriction
 
-		//for (unsigned char c = 0; c < 128; c++)
-		//{
-		//	// load character glyph 
-		//	if (FT_Load_Char(face, c, FT_LOAD_RENDER))
-		//	{
-		//		std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-		//		continue;
-		//	}
-		//	// generate texture
-		//	Texture texture(face);
-		//	// now store character for later use
-		//	Renderer::Character character = {
-		//		texture,
-		//		glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
-		//		glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-		//		face->glyph->advance.x
-		//	};
-		//	m_Renderer.InsertCharacter(c, character);
-		//}
+		for (unsigned char c = 0; c < 128; c++)
+		{
+			// load character glyph 
+			if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+			{
+				std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+				continue;
+			}
+			// generate texture
+			unsigned int texture;
+			glGenTextures(1, &texture);
+			glBindTexture(GL_TEXTURE_2D, texture);
+			glTexImage2D(
+				GL_TEXTURE_2D,
+				0,
+				GL_RED,
+				face->glyph->bitmap.width,
+				face->glyph->bitmap.rows,
+				0,
+				GL_RED,
+				GL_UNSIGNED_BYTE,
+				face->glyph->bitmap.buffer
+			);
+			// set texture options
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-		//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+			// now store character for later use
+			Renderer::Character character = {
+				texture,
+				glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+				glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+				face->glyph->advance.x
+			};
+			m_Renderer.InsertCharacter(c, character);
+		}
 
-		//FT_Done_Face(face);
-		//FT_Done_FreeType(ft);
+		GLCall(glPixelStorei(GL_UNPACK_ALIGNMENT, 1));
 
-		//glm::mat4 projText = glm::ortho(0.0f, (float)m_Window->GetWidth(), 0.0f, (float)m_Window->GetHeight());
+		FT_Done_Face(face);
+		FT_Done_FreeType(ft);
 
-		//VertexArray vaText;
-		//VertexBuffer vbText(sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
+		glm::mat4 projText = glm::ortho(0.0f, (float)m_Window->GetWidth(), 0.0f, (float)m_Window->GetHeight());
 
-		//VertexBufferLayout layoutText;
-		//layoutText.Push<float>(4);
-		//vaText.AddBuffer(vbText, layoutText);
+		VertexArray vaText;
+		VertexBuffer vbText(sizeof(float) * 6 * 4, NULL, GL_DYNAMIC_DRAW);
 
-		//Shader shaderText("res/shaders/Text.shader");
-		//shaderText.Bind();
+		VertexBufferLayout layoutText;
+		layoutText.Push<float>(4);
+		vaText.AddBuffer(vbText, layoutText);
+
+		Shader shaderText("res/shaders/Text.shader");
+		shaderText.Bind();
 
 		shader.Unbind();
 		va.Unbind();
 		vb.Unbind();
 		ib.Unbind();
-		/*shaderText.Unbind();
+		shaderText.Unbind();
 		vaText.Unbind();
-		vbText.Unbind();*/
+		vbText.Unbind();
 
 		while (m_Running)
 		{
@@ -191,7 +210,7 @@ namespace Shue {
 				m_Renderer.DrawIb(va, ib, shader);
 			}
 
-			/*m_Renderer.RenderText(vaText, vbText, shaderText, "Hello, World!", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));*/
+			m_Renderer.RenderText(vaText, vbText, shaderText, "Hello, World!", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
 
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
