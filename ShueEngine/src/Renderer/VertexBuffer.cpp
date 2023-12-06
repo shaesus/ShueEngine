@@ -29,4 +29,11 @@ namespace Shue {
 		GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
+	void VertexBuffer::BufferSubData(unsigned int size, const void* data) const
+	{
+		Bind();
+		GLCall(glBufferSubData(GL_ARRAY_BUFFER, 0, size, data));
+		Unbind();
+	}
+
 }

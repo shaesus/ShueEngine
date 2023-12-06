@@ -12,6 +12,7 @@ namespace Shue {
 
 		void Bind() const;
 		void Unbind() const;
+		void BufferSubData(unsigned int size, const void* data) const;
 
 	private:
 		unsigned int m_ID;

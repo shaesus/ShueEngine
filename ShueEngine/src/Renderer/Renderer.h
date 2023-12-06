@@ -23,19 +23,20 @@ namespace Shue {
 	{
 	public:
 		struct Character {
-			unsigned int TextureID;  // ID handle of the glyph texture
+			Texture* Texture;  // ID handle of the glyph texture
 			glm::ivec2   Size;       // Size of glyph
 			glm::ivec2   Bearing;    // Offset from baseline to left/top of glyph
 			unsigned int Advance;    // Offset to advance to next glyph
 		};
 
+	public:
 		void Clear() const;
 		void ClearColor(float r, float g, float b, float a) const;
 		void DrawIb(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void DrawTriangles(const VertexArray& va, const Shader& shader, unsigned int count);
+		void InitFont(FT_Library ft, const std::string& fontPath);
 		void RenderText(const VertexArray& va, const VertexBuffer& vb, Shader& shader,
 			const std::string& text, float x, float y, float scale, const glm::vec3& color);
-		void InsertCharacter(char c, Character character);
 		void SetBlending(bool blending, unsigned int sfactor = GL_SRC_ALPHA, unsigned int dfactor = GL_ONE_MINUS_SRC_ALPHA);
 
 	private:

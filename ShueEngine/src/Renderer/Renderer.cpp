@@ -29,16 +29,50 @@ namespace Shue {
 		GLCall(glDrawArrays(GL_TRIANGLES, 0, count));
 	}
 
+	void Renderer::InitFont(FT_Library ft, const std::string& fontPath)
+	{
+		FT_Face face;
+		if (FT_New_Face(ft, fontPath.c_str(), 0, &face))
+		{
+			std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+			return;
+		}
+
+		FT_Set_Pixel_Sizes(face, 0, 48);
+
+		GLCall(glPixelStorei(GL_UNPACK_ALIGNMENT, 1)); // disable byte-alignment restriction
+
+		for (unsigned char c = 0; c < 128; c++)
+		{
+			// load character glyph 
+			if (FT_Load_Char(face, c, FT_LOAD_RENDER))
+			{
+				std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+				continue;
+			}
+			// generate texture
+			Texture* texture = new Texture(face);
+
+			// now store character for later use
+			Renderer::Character character = {
+				texture,
+				glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
+				glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
+				face->glyph->advance.x
+			};
+			m_Characters.insert(std::pair<char, Renderer::Character>(c, character));
+		}
+
+		FT_Done_Face(face);
+	}
+
 	void Renderer::RenderText(const VertexArray& va, const VertexBuffer& vb, Shader& shader, 
 		const std::string& text, float x, float y, float scale, const glm::vec3& color)
 	{
-		// activate corresponding render state	
 		shader.Bind();
 		shader.SetUniform3f("u_TextColor", color.x, color.y, color.z);
-		glActiveTexture(GL_TEXTURE0);
 		va.Bind();
 
-		// iterate through all characters
 		std::string::const_iterator c;
 		for (c = text.begin(); c != text.end(); c++)
 		{
@@ -60,23 +94,14 @@ namespace Shue {
 				{ xpos + w, ypos + h,   1.0f, 0.0f }
 			};
 			// render glyph texture over quad
-			GLCall(glBindTexture(GL_TEXTURE_2D, ch.TextureID));
+			ch.Texture->Bind();
 			// update content of VBO memory
-			vb.Bind();
-			glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-			glBindBuffer(GL_ARRAY_BUFFER, 0);
+			vb.BufferSubData(sizeof(vertices), vertices);
 			// render quad
-			glDrawArrays(GL_TRIANGLES, 0, 6);
+			DrawTriangles(va, shader, 6);
 			// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
 			x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
 		}
-		glBindVertexArray(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
-	void Renderer::InsertCharacter(char c, Character character)
-	{
-		m_Characters.insert(std::pair<char, Renderer::Character>(c, character));
 	}
 
 	void Renderer::SetBlending(bool blending, unsigned int sfactor, unsigned int dfactor)
