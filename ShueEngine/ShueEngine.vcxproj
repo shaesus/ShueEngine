@@ -113,6 +113,7 @@
       <PreprocessorDefinitions>SH_PLATFORM_WINDOWS;SH_BUILD_DLL;SH_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>src\Renderer;src\ShueEngine;src\vendor;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,6 +131,7 @@
       <PreprocessorDefinitions>SH_PLATFORM_WINDOWS;SH_BUILD_DLL;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>src\Renderer;src\ShueEngine;src\vendor;$(SolutionDir)Dependencies\FreeType\include;$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -141,6 +143,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Renderer\CharTexture.h" />
+    <ClInclude Include="src\Renderer\ImageTexture.h" />
     <ClInclude Include="src\ShueEngine\Application.h" />
     <ClInclude Include="src\ShueEngine.h" />
     <ClInclude Include="src\ShueEngine\Core.h" />
@@ -448,6 +452,8 @@
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Renderer\CharTexture.cpp" />
+    <ClCompile Include="src\Renderer\ImageTexture.cpp" />
     <ClCompile Include="src\ShueEngine\Application.cpp" />
     <ClCompile Include="src\Renderer\Assertion.cpp" />
     <ClCompile Include="src\Renderer\IndexBuffer.cpp" />

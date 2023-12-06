@@ -96,7 +96,8 @@ namespace Shue {
 			return;
 		}
 
-		m_Renderer.InitFont(ft, "res/fonts/arial.ttf");
+		m_Renderer.AddFont(ft, "res/fonts/arial.ttf", "arial");
+		m_Renderer.AddFont(ft, "res/fonts/comic.ttf", "comic");
 
 		FT_Done_FreeType(ft);
 
@@ -155,8 +156,8 @@ namespace Shue {
 
 			shaderText.Bind();
 			shaderText.SetUniformMatrix4fv("u_Projection", projText);
-			m_Renderer.RenderText(vaText, vbText, shaderText, "Hello, World!", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f));
-			m_Renderer.RenderText(vaText, vbText, shaderText, "Sample Text", 25.0f, 585.0f, 0.75f, glm::vec3(0.5, 0.2f, 0.8f));
+			m_Renderer.RenderText(vaText, vbText, shaderText, "Hello, World!", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), "arial");
+			m_Renderer.RenderText(vaText, vbText, shaderText, "Sample Text", 25.0f, 585.0f, 0.75f, glm::vec3(0.5, 0.2f, 0.8f), "comic");
 
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
