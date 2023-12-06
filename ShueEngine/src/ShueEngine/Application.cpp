@@ -12,9 +12,12 @@
 
 namespace Shue {
 
+#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+
 	Application::Application()
 	{
 		m_Window = std::unique_ptr<Window>(Window::Create());
+		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 	}
 
 	Application::~Application()
@@ -185,6 +188,68 @@ namespace Shue {
 		ImGui::DestroyContext();
 
 		glfwTerminate();
+	}
+
+	void Application::OnEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMove));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseButtonPress));
+		dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnMouseButtonRelease));
+		dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScroll));
+		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPress));
+		dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnKeyRelease));
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		GLCall(glViewport(0, 0, e.GetWidth(), e.GetHeight()));
+		std::cout << e << std::endl;
+		return true;
+	}
+
+	bool Application::OnWindowClose(WindowCloseEvent& e)
+	{
+		m_Running = false;
+		std::cout << e << std::endl;
+		return true;
+	}
+
+	bool Application::OnMouseMove(MouseMovedEvent& e)
+	{
+		return true;
+	}
+
+	bool Application::OnMouseButtonPress(MouseButtonPressedEvent& e)
+	{
+		std::cout << e << std::endl;
+		return true;
+	}
+
+	bool Application::OnMouseButtonRelease(MouseButtonReleasedEvent& e)
+	{
+		std::cout << e << std::endl;
+		return true;
+	}
+
+	bool Application::OnMouseScroll(MouseScrolledEvent& e)
+	{
+		std::cout << e << '\n';
+		return true;
+	}
+
+	bool Application::OnKeyPress(KeyPressedEvent& e)
+	{
+		std::cout << e << std::endl;
+		return true;
+	}
+
+	bool Application::OnKeyRelease(KeyReleasedEvent& e)
+	{
+		std::cout << e << std::endl;
+		return true;
 	}
 
 }

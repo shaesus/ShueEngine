@@ -7,6 +7,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <functional>
+
+#include "Events/Event.h"
+
 namespace Shue {
 
 	struct WindowProps
@@ -21,6 +25,8 @@ namespace Shue {
 	class SHUE_API Window
 	{
 	public:
+		using EventCallbackFn = std::function<void(Event&)>;
+
 		Window(const WindowProps& props);
 		~Window();
 
@@ -29,6 +35,7 @@ namespace Shue {
 		void SetVsync(bool vsync);
 		void Shutdown();
 
+		void SetEventCallback(const EventCallbackFn& callback) { m_Data.EventCallback = callback; }
 		inline bool IsVSync() const { return m_Data.VSync; }
 		inline int GetWidth() const { return m_Data.Width; }
 		inline int GetHeight() const { return m_Data.Height; }
@@ -44,6 +51,8 @@ namespace Shue {
 			int Width, Height;
 			std::string Title;
 			bool VSync;
+
+			EventCallbackFn EventCallback;
 		};
 
 		WindowData m_Data;
