@@ -45,4 +45,20 @@ namespace Shue {
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
+	class SHUE_API AppUpdateEvent : public Event
+	{
+	public:
+		AppUpdateEvent() {}
+
+		std::string ToString() const override
+		{
+			std::stringstream ss;
+			ss << "AppUpdateEvent";
+			return ss.str();
+		}
+
+		EVENT_CLASS_TYPE(AppUpdate)
+		EVENT_CLASS_CATEGORY(EventCategoryApplication)
+	};
+
 }

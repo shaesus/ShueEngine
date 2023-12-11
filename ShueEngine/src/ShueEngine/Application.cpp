@@ -1,5 +1,7 @@
 #include "Application.h"
 
+#include "Camera.h"
+
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -9,12 +11,14 @@
 
 #include <iostream>
 #include <map>
+#include <format>
 
 namespace Shue {
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
 	Application::Application()
+		: m_CurrentFrame(0), m_LastFrame(0)
 	{
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
@@ -23,6 +27,13 @@ namespace Shue {
 	Application::~Application()
 	{
 	}
+
+	float lastX = 0;
+	float lastY = 0;
+
+	bool firstMouse = true;
+
+	Camera* camera = new Camera();
 
 	void Application::Run()
 	{
@@ -81,13 +92,10 @@ namespace Shue {
 		IndexBuffer ib(sizeof(indices), indices);
 		glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)m_Window->GetWidth() / (float)m_Window->GetHeight()
 			, 0.1f, 100.0f);
-		glm::mat4 view = glm::mat4(1.0f);
+		glm::mat4 view;
 
 		glm::vec3 translationA(-0.45f, -0.2f, -1.0f);
 		glm::vec3 translationB(0.0f, 0.0f, -1.0f);
-
-		float viewRotationY = 0;
-		float viewRotationX = 0;
 
 		Shader shader("res/shaders/Basic.shader");
 		shader.Bind();
@@ -124,6 +132,8 @@ namespace Shue {
 		vaText.Unbind();
 		vbText.Unbind();
 
+		int framesCount = 0;
+
 		while (m_Running)
 		{
 			m_Running = !glfwWindowShouldClose(m_Window->GetGLFWWindow());
@@ -131,9 +141,7 @@ namespace Shue {
 			m_Renderer.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			m_Renderer.Clear();
 
-			view = glm::mat4(1.0f);
-			view = glm::rotate(view, glm::radians(viewRotationY), glm::vec3(0.0f, 1.0f, 0.0f));
-			view = glm::rotate(view, glm::radians(viewRotationX), glm::vec3(1.0f, 0.0f, 0.0f));
+			view = glm::lookAt(camera->Position, camera->Position + camera->Front, camera->Up);
 
 			{
 				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
@@ -159,8 +167,8 @@ namespace Shue {
 
 			shaderText.Bind();
 			shaderText.SetUniformMatrix4fv("u_Projection", projText);
-			m_Renderer.RenderText(vaText, vbText, shaderText, "Hello, World!", 25.0f, 25.0f, 1.0f, glm::vec3(0.5, 0.8f, 0.2f), "arial");
-			m_Renderer.RenderText(vaText, vbText, shaderText, "Sample Text", 25.0f, 585.0f, 0.75f, glm::vec3(0.5, 0.2f, 0.8f), "comic");
+			m_Renderer.RenderText(vaText, vbText, shaderText, 
+				std::format("{}{}", "Frames since start: ", framesCount), 25.0f, 585.0f, 0.5f, glm::vec3(0.5, 0.2f, 0.8f), "arial");
 
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
@@ -168,8 +176,6 @@ namespace Shue {
 
 			{
 				ImGui::Begin("Positions");
-				ImGui::SliderFloat("Camera Rotation Y", &viewRotationY, -180.0f, 180.0f);
-				ImGui::SliderFloat("Camera Rotation X", &viewRotationX, -180.0f, 180.0f);
 				ImGui::SliderFloat3("Translation A", &translationA.x, -1.0f, 1.0f);
 				ImGui::SliderFloat3("Translation B", &translationB.x, -1.0f, 1.0f);
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
@@ -180,7 +186,10 @@ namespace Shue {
 
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-			m_Window->OnUpdate();
+			AppUpdateEvent appUpdateEvent;
+			OnEvent(appUpdateEvent);
+
+			framesCount++;
 		}
 
 		ImGui_ImplOpenGL3_Shutdown();
@@ -195,6 +204,7 @@ namespace Shue {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<AppUpdateEvent>(BIND_EVENT_FN(OnAppUpdate));
 		dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMove));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseButtonPress));
 		dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnMouseButtonRelease));
@@ -217,20 +227,51 @@ namespace Shue {
 		return true;
 	}
 
+	bool Application::OnAppUpdate(AppUpdateEvent& e)
+	{
+		m_LastFrame = m_CurrentFrame;
+		m_CurrentFrame = glfwGetTime();
+
+		camera->OnUpdate(DeltaTime());
+		m_Window->OnUpdate();
+
+		return true;
+	}
+
 	bool Application::OnMouseMove(MouseMovedEvent& e)
 	{
+		if (firstMouse)
+		{
+			lastX = e.GetX();
+			lastY = e.GetY();
+			firstMouse = false;
+		}
+
+		float xoffset = e.GetX() - lastX;
+		float yoffset = lastY - e.GetY();
+		lastX = e.GetX();
+		lastY = e.GetY();
+		
+		camera->ProcessMouseMovement(xoffset, yoffset, true);
+
 		return true;
 	}
 
 	bool Application::OnMouseButtonPress(MouseButtonPressedEvent& e)
 	{
 		std::cout << e << std::endl;
+
+		camera->ProcessPressedMouseButton(e.GetMouseButton());
+
 		return true;
 	}
 
 	bool Application::OnMouseButtonRelease(MouseButtonReleasedEvent& e)
 	{
 		std::cout << e << std::endl;
+
+		camera->ProcessReleasedMouseButton(e.GetMouseButton());
+
 		return true;
 	}
 
@@ -243,12 +284,18 @@ namespace Shue {
 	bool Application::OnKeyPress(KeyPressedEvent& e)
 	{
 		std::cout << e << std::endl;
+
+		camera->ProcessPressedKey(e.GetKeyCode());
+
 		return true;
 	}
 
 	bool Application::OnKeyRelease(KeyReleasedEvent& e)
 	{
 		std::cout << e << std::endl;
+
+		camera->ProcessReleasedKey(e.GetKeyCode());
+
 		return true;
 	}
 

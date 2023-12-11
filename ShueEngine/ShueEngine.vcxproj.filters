@@ -22,6 +22,7 @@
     <ClCompile Include="src\vendor\stb_image\stb_image.cpp" />
     <ClCompile Include="src\Renderer\CharTexture.cpp" />
     <ClCompile Include="src\Renderer\ImageTexture.cpp" />
+    <ClCompile Include="src\Renderer\Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShueEngine\Application.h" />
@@ -335,6 +336,7 @@
     <ClInclude Include="src\ShueEngine\Events\Event.h" />
     <ClInclude Include="src\ShueEngine\Events\KeyEvent.h" />
     <ClInclude Include="src\ShueEngine\Events\MouseEvent.h" />
+    <ClInclude Include="src\Renderer\Camera.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl" />

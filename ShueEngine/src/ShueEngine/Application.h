@@ -23,9 +23,12 @@ namespace Shue {
 
 		void OnEvent(Event& e);
 
+		inline float DeltaTime() { return m_CurrentFrame - m_LastFrame; }
+
 	protected:
 		bool OnWindowResize(WindowResizeEvent& e);
 		bool OnWindowClose(WindowCloseEvent& e);
+		bool OnAppUpdate(AppUpdateEvent& e);
 		bool OnMouseMove(MouseMovedEvent& e);
 		bool OnMouseButtonPress(MouseButtonPressedEvent& e);
 		bool OnMouseButtonRelease(MouseButtonReleasedEvent& e);
@@ -37,6 +40,8 @@ namespace Shue {
 		bool m_Running = true;
 		std::unique_ptr<Window> m_Window;
 		Renderer m_Renderer;
+
+		float m_CurrentFrame, m_LastFrame;
 	};
 
 	// To be defined in CLIENT

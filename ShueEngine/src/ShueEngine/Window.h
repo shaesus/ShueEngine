@@ -2,12 +2,12 @@
 
 #include "Core.h"
 
-#include <string>
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <string>
 #include <functional>
+#include <stdexcept>
 
 #include "Events/Event.h"
 

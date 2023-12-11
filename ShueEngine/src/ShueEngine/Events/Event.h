@@ -3,6 +3,7 @@
 #include "Core.h"
 
 #include <string>
+#include <functional>
 
 namespace Shue {
 
@@ -10,6 +11,7 @@ namespace Shue {
 	{
 		None = 0,
 		WindowClose, WindowResize,
+		AppUpdate,
 		KeyPressed, KeyReleased,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};

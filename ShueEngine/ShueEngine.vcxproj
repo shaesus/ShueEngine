@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\Renderer\CharTexture.h" />
     <ClInclude Include="src\Renderer\ImageTexture.h" />
     <ClInclude Include="src\ShueEngine\Application.h" />
@@ -456,6 +457,7 @@
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\Renderer\CharTexture.cpp" />
     <ClCompile Include="src\Renderer\ImageTexture.cpp" />
     <ClCompile Include="src\ShueEngine\Application.cpp" />
