@@ -18,7 +18,7 @@ namespace Shue {
 
 	void Renderer::Clear() const
 	{
-		GLCall(glClear(GL_COLOR_BUFFER_BIT));
+		GLCall(glClear(m_DepthTest ? GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT : GL_COLOR_BUFFER_BIT));
 	}
 
 	void Renderer::ClearColor(float r, float g, float b, float a) const
@@ -85,8 +85,15 @@ namespace Shue {
 		}
 	}
 
+	void Renderer::SetFrontFace(unsigned int mode)
+	{
+		GLCall(glFrontFace(mode));
+	}
+
 	void Renderer::SetBlending(bool blending, unsigned int sfactor, unsigned int dfactor)
 	{
+		m_Blending = blending;
+
 		if (blending)
 		{
 			GLCall(glEnable(GL_BLEND));
@@ -95,6 +102,37 @@ namespace Shue {
 		else
 		{
 			GLCall(glDisable(GL_BLEND));
+		}
+	}
+
+	void Renderer::SetCulling(bool culling, unsigned int mode)
+	{
+		m_Culling = culling;
+
+		if (culling)
+		{
+			GLCall(glEnable(GL_CULL_FACE));
+			GLCall(glCullFace(mode));
+		}
+		else
+		{
+			GLCall(glDisable(GL_CULL_FACE));
+		}
+	}
+
+	void Renderer::SetDepthTest(bool depthTest, GLboolean depthMask, GLenum func)
+	{
+		m_DepthTest = depthTest;
+
+		if (depthTest)
+		{
+			GLCall(glEnable(GL_DEPTH_TEST));
+			GLCall(glDepthMask(depthMask));
+			GLCall(glDepthFunc(func));
+		}
+		else
+		{
+			GLCall(glDisable(GL_DEPTH_TEST));
 		}
 	}
 

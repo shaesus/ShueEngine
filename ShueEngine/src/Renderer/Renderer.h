@@ -42,13 +42,24 @@ namespace Shue {
 		void AddFont(FT_Library ft, const std::string& fontPath, const std::string& name);
 		void RenderText(const VertexArray& va, const VertexBuffer& vb, Shader& shader,
 			const std::string& text, float x, float y, float scale, const glm::vec3& color, const std::string& fontName);
+		void SetFrontFace(unsigned int mode = GL_CCW);
 		void SetBlending(bool blending, unsigned int sfactor = GL_SRC_ALPHA, unsigned int dfactor = GL_ONE_MINUS_SRC_ALPHA);
+		void SetCulling(bool culling, unsigned int mode = GL_BACK);
+		void SetDepthTest(bool depthTest, GLboolean depthMask = GL_TRUE, GLenum func = GL_LESS);
+
+		inline bool Blending() const { return m_Blending; }
+		inline bool Culling() const { return m_Culling; }
+		inline bool DepthTest() const { return m_DepthTest; }
 
 	private:
 		Font* CreateFont(FT_Library ft, const std::string& fontPath);
 
 	private:
 		std::map<std::string, Font*> m_Fonts;
+
+		bool m_Blending = false;
+		bool m_Culling = false;
+		bool m_DepthTest = false;
 	};
 
 }

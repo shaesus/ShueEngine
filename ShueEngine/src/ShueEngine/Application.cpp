@@ -44,6 +44,7 @@ namespace Shue {
 		}
 
 		m_Renderer.SetBlending(true);
+		m_Renderer.SetDepthTest(true);
 
 		ImGui::CreateContext();
 		ImGuiIO& io = ImGui::GetIO();
@@ -55,50 +56,70 @@ namespace Shue {
 		ImGui_ImplGlfw_InitForOpenGL(m_Window->GetGLFWWindow(), true);
 		ImGui_ImplOpenGL3_Init("#version 330");
 
-		float vertices[] =
-		{
-			-0.1f, -0.1f, -0.1f, // 0
-			-0.1f, -0.1f,  0.1f, // 1
-			 0.1f, -0.1f,  0.1f, // 2
-			 0.1f, -0.1f, -0.1f, // 3
-			-0.1f,  0.1f, -0.1f, // 4
-			-0.1f,  0.1f,  0.1f, // 5
-			 0.1f,  0.1f,  0.1f, // 6
-			 0.1f,  0.1f, -0.1f  // 7
-		};
+		m_Renderer.SetCulling(true, GL_BACK);
+		m_Renderer.SetFrontFace(GL_CCW);
 
-		unsigned int indices[] = {
-			0, 1, 2,
-			2, 3, 0,
-			1, 5, 6,
-			6, 2, 1,
-			0, 4, 5,
-			5, 1, 0,
-			3, 7, 6,
-			6, 2, 3,
-			4, 5, 6,
-			6, 7, 4,
-			0, 4, 7,
-			7, 3, 0
-		};
+		float cubeVertices[] = {
+			// Back face
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // Bottom-left
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // top-right
+			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // bottom-right         
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // top-right
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // bottom-left
+			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // top-left
+			// Front face
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // bottom-left
+			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // bottom-right
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // top-right
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // top-right
+			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // top-left
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // bottom-left
+			// Left face
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, // top-right
+			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, // top-left
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, // bottom-left
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, // bottom-left
+			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, // bottom-right
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, // top-right
+			// Right face
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, // top-left
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, // bottom-right
+			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f, // top-right         
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, // bottom-right
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, // top-left
+			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f, // bottom-left     
+			 // Bottom face
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, // top-right
+			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, // top-left
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, // bottom-left
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, // bottom-left
+			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, // bottom-right
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, // top-right
+			// Top face			  
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, // top-left
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, // bottom-right
+			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, // top-right     
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, // bottom-right
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, // top-left
+			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f // bottom-left        
+		};						  
 
 		VertexArray va;
-		VertexBuffer vb(sizeof(vertices), vertices, GL_STATIC_DRAW);
+		VertexBuffer vb(sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
 
 		VertexBufferLayout layout;
 		layout.Push<float>(3);
+		layout.Push<float>(3);
 		va.AddBuffer(vb, layout);
 
-		IndexBuffer ib(sizeof(indices), indices);
 		glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)m_Window->GetWidth() / (float)m_Window->GetHeight()
 			, 0.1f, 100.0f);
 		glm::mat4 view;
 
-		glm::vec3 translationA(-0.45f, -0.2f, -1.0f);
-		glm::vec3 translationB(0.0f, 0.0f, -1.0f);
-
-		Shader shader("res/shaders/Basic.shader");
-		shader.Bind();
+		glm::vec3 pos(-0.15f, -0.15f, -0.9f);
+		
+		Shader lightingShader("res/shaders/Lighting.shader");
+		lightingShader.Bind();
 
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft))
@@ -124,13 +145,28 @@ namespace Shue {
 		Shader shaderText("res/shaders/Text.shader");
 		shaderText.Bind();
 
-		shader.Unbind();
+		glm::vec3 lightSourcePos(0.2f, 0.0f, -1.0f);
+
+		Shader lightSourceShader("res/shaders/LightSource.shader");
+		lightSourceShader.Bind();
+
+		VertexArray lightSourceVA;
+		lightSourceVA.Bind();
+
+		vb.Bind();
+		VertexBufferLayout lightSourceLayout;
+		lightSourceLayout.Push<float>(3);
+		lightSourceLayout.Push<float>(3);
+		lightSourceVA.AddBuffer(vb, lightSourceLayout);
+
+		lightingShader.Unbind();
 		va.Unbind();
 		vb.Unbind();
-		ib.Unbind();
 		shaderText.Unbind();
 		vaText.Unbind();
 		vbText.Unbind();
+		lightSourceShader.Unbind();
+		lightSourceVA.Unbind();
 
 		int framesCount = 0;
 
@@ -144,31 +180,33 @@ namespace Shue {
 			view = glm::lookAt(camera->Position, camera->Position + camera->Front, camera->Up);
 
 			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationA);
-				model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
-				model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.0f, 0.0f));
-				model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
-				glm::mat4 mvp = proj * view * model;
-				shader.Bind();
-				shader.SetUniform1i("u_Texture", 0);
-				shader.SetUniformMatrix4fv("u_MVP", mvp);
-				m_Renderer.DrawIb(va, ib, shader);
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), pos);
+				model = glm::scale(model, glm::vec3(0.2f));
+				lightingShader.Bind();
+				lightingShader.SetUniformMatrix4fv("u_Model", model);
+				lightingShader.SetUniformMatrix4fv("u_View", view);
+				lightingShader.SetUniformMatrix4fv("u_Proj", proj);
+				lightingShader.SetUniform3f("u_ObjectColor", 1.0f, 0.5f, 0.31f);
+				lightingShader.SetUniform3f("u_LightColor", 1.0f, 1.0f, 1.0f);
+				lightingShader.SetUniform3f("u_LightPos", lightSourcePos.x, lightSourcePos.y, lightSourcePos.z);
+				m_Renderer.DrawTriangles(va, lightingShader, sizeof(cubeVertices));
+				lightingShader.Unbind();
 			}
 
 			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), translationB);
-				model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(0.0f, 1.0f, 0.0f));
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSourcePos);
+				model = glm::scale(model, glm::vec3(0.1f));
 				glm::mat4 mvp = proj * view * model;
-				shader.Bind();
-				shader.SetUniform1i("u_Texture", 1);
-				shader.SetUniformMatrix4fv("u_MVP", mvp);
-				m_Renderer.DrawIb(va, ib, shader);
+				lightSourceShader.Bind();
+				lightSourceShader.SetUniformMatrix4fv("u_MVP", mvp);
+				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(cubeVertices));
+				lightSourceShader.Unbind();
 			}
 
 			shaderText.Bind();
 			shaderText.SetUniformMatrix4fv("u_Projection", projText);
-			m_Renderer.RenderText(vaText, vbText, shaderText, 
-				std::format("{}{}", "Frames since start: ", framesCount), 25.0f, 585.0f, 0.5f, glm::vec3(0.5, 0.2f, 0.8f), "arial");
+
+			m_Renderer.RenderText(vaText, vbText, shaderText, "Frames since start: " + std::to_string(framesCount), 1.0f, 1.0f, 0.7f, glm::vec3(1.0f, 0.5f, 0.3f), "arial");
 
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
@@ -176,8 +214,8 @@ namespace Shue {
 
 			{
 				ImGui::Begin("Positions");
-				ImGui::SliderFloat3("Translation A", &translationA.x, -1.0f, 1.0f);
-				ImGui::SliderFloat3("Translation B", &translationB.x, -1.0f, 1.0f);
+				ImGui::SliderFloat3("Translation A", &pos.x, -1.0f, 1.0f);
+				ImGui::SliderFloat3("Translation B", &lightSourcePos.x, -1.0f, 1.0f);
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 				ImGui::End();
 			}

@@ -19,21 +19,21 @@ namespace Shue {
     void Camera::ProcessPressedKey(unsigned int keyCode)
     {
         if (keyCode == W)
-            m_Movement.z = -1.0f;
+            m_Movement = Front;
         if (keyCode == S)
-            m_Movement.z = 1.0f;
+            m_Movement = -Front;
         if (keyCode == A)
-            m_Movement.x = -1.0f;
+            m_Movement = -Right;
         if (keyCode == D)
-            m_Movement.x = 1.0f;
+            m_Movement = Right;
     }
 
     void Camera::ProcessReleasedKey(unsigned int keyCode)
     {
         if (keyCode == W || keyCode == S)
-            m_Movement.z = 0.0f;
+            m_Movement = glm::vec3(0.0f);
         if (keyCode == A || keyCode == D)
-            m_Movement.x = 0.0f;
+            m_Movement = glm::vec3(0.0f);
     }
 
     void Camera::ProcessPressedMouseButton(unsigned int button)
