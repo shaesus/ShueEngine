@@ -23,6 +23,8 @@
     <ClCompile Include="src\Renderer\CharTexture.cpp" />
     <ClCompile Include="src\Renderer\ImageTexture.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
+    <ClCompile Include="src\ShueEngine\Layer.cpp" />
+    <ClCompile Include="src\ShueEngine\LayerStack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShueEngine\Application.h" />
@@ -337,6 +339,8 @@
     <ClInclude Include="src\ShueEngine\Events\KeyEvent.h" />
     <ClInclude Include="src\ShueEngine\Events\MouseEvent.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
+    <ClInclude Include="src\ShueEngine\Layer.h" />
+    <ClInclude Include="src\ShueEngine\LayerStack.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl" />

@@ -61,66 +61,69 @@ namespace Shue {
 
 		float cubeVertices[] = {
 			// Back face
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // Bottom-left
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // top-right
-			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // bottom-right         
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // top-right
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // bottom-left
-			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, // top-left
-			// Front face
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // bottom-left
-			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // bottom-right
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // top-right
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // top-right
-			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // top-left
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f, // bottom-left
-			// Left face
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, // top-right
-			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f, // top-left
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, // bottom-left
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f, // bottom-left
-			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f, // bottom-right
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f, // top-right
-			// Right face
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, // top-left
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, // bottom-right
-			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f, // top-right         
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f, // bottom-right
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f, // top-left
-			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f, // bottom-left     
-			 // Bottom face
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, // top-right
-			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, // top-left
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, // bottom-left
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, // bottom-left
-			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f, // bottom-right
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f, // top-right
-			// Top face			  
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, // top-left
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, // bottom-right
-			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, // top-right     
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f, // bottom-right
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f, // top-left
-			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f // bottom-left        
-		};						  
-
-		VertexArray va;
-		VertexBuffer vb(sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, // Bottom-left
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f, // top-right
+			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f, // bottom-right         
+			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f, // top-right
+			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, // bottom-left
+			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f, // top-left
+			// Front face							   
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 0.0f, // bottom-right
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f, // top-right
+			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f, // top-right
+			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f, // top-left
+			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, // bottom-left
+			// Left face							   
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // top-right
+			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // top-left
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // bottom-left
+			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // bottom-left
+			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // bottom-right
+			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // top-right
+			// Right face							   
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // top-left
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // bottom-right
+			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // top-right         
+			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // bottom-right
+			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // top-left
+			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // bottom-left     
+			 // Bottom face							   
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f, // top-right
+			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f, // top-left
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, // bottom-left
+			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, // bottom-left
+			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f, // bottom-right
+			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f, // top-right
+			// Top face			  					   
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f, // top-left
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f, // bottom-right
+			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f, // top-right     
+			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f, // bottom-right
+			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f, // top-left
+			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, // bottom-left        
+		};					  						   
+													   
+		VertexArray cubeVA;							   
+		VertexBuffer cubeVB(sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
 
 		VertexBufferLayout layout;
 		layout.Push<float>(3);
 		layout.Push<float>(3);
-		va.AddBuffer(vb, layout);
+		layout.Push<float>(2);
+		cubeVA.AddBuffer(cubeVB, layout);
 
 		glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)m_Window->GetWidth() / (float)m_Window->GetHeight()
 			, 0.1f, 100.0f);
 		glm::mat4 view;
 
-		glm::vec3 pos(-0.15f, -0.15f, -0.9f);
+		glm::vec3 cubePos(-0.15f, -0.2f, -0.9f);
 		
 		Shader lightingShader("res/shaders/Lighting.shader");
 		lightingShader.Bind();
 
+		ImageTexture diamondOreTex("res/textures/diamond_ore.png");
+		
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft))
 		{
@@ -145,30 +148,82 @@ namespace Shue {
 		Shader shaderText("res/shaders/Text.shader");
 		shaderText.Bind();
 
-		glm::vec3 lightSourcePos(0.2f, 0.0f, -1.0f);
+		glm::vec3 lightSourcePos(0.2f, -0.2f, -1.0f);
 
 		Shader lightSourceShader("res/shaders/LightSource.shader");
 		lightSourceShader.Bind();
 
+		ImageTexture redstoneLampTex("res/textures/redstone_lamp.png");
+
+		float lightSourceVertices[] = {
+			// Back face
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // Bottom-left
+			 0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right
+			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom-right         
+			 0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom-left
+			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top-left
+			// Front face
+			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
+			 0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
+			 0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
+			 0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
+			-0.5f,  0.5f,  0.5f, 0.0f, 1.0f, // top-left
+			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
+			// Left face
+			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
+			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top-left
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom-left
+			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom-left
+			-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
+			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
+			// Right face
+			 0.5f,  0.5f,  0.5f, 0.0f, 1.0f, // top-left
+			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom-right
+			 0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right         
+			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom-right
+			 0.5f,  0.5f,  0.5f, 0.0f, 1.0f, // top-left
+			 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left     
+			 // Bottom face
+			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, // top-right
+			 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // top-left
+			 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
+			 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
+			-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
+			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, // top-right
+			// Top face			
+			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top-left
+			 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
+			 0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right     
+			 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
+			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top-left
+			-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, // bottom-left        
+		};
+
 		VertexArray lightSourceVA;
 		lightSourceVA.Bind();
 
-		vb.Bind();
+		VertexBuffer lightSourceVB(sizeof(lightSourceVertices), lightSourceVertices, GL_STATIC_DRAW);
+
 		VertexBufferLayout lightSourceLayout;
 		lightSourceLayout.Push<float>(3);
-		lightSourceLayout.Push<float>(3);
-		lightSourceVA.AddBuffer(vb, lightSourceLayout);
+		lightSourceLayout.Push<float>(2);
+		lightSourceVA.AddBuffer(lightSourceVB, lightSourceLayout);
 
 		lightingShader.Unbind();
-		va.Unbind();
-		vb.Unbind();
+		cubeVA.Unbind();
+		cubeVB.Unbind();
 		shaderText.Unbind();
 		vaText.Unbind();
 		vbText.Unbind();
 		lightSourceShader.Unbind();
 		lightSourceVA.Unbind();
+		lightSourceVB.Unbind();
 
 		int framesCount = 0;
+
+		glm::vec3 objectColor(1.0f, 0.5f, 0.31f);
+		glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 		while (m_Running)
 		{
@@ -179,17 +234,22 @@ namespace Shue {
 
 			view = glm::lookAt(camera->Position, camera->Position + camera->Front, camera->Up);
 
+			lightSourcePos.y = sin(glfwGetTime()) / 3.0f - 0.2f;
+
 			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), pos);
-				model = glm::scale(model, glm::vec3(0.2f));
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), cubePos);
+				model = glm::scale(model, glm::vec3(0.25f));
 				lightingShader.Bind();
 				lightingShader.SetUniformMatrix4fv("u_Model", model);
 				lightingShader.SetUniformMatrix4fv("u_View", view);
 				lightingShader.SetUniformMatrix4fv("u_Proj", proj);
-				lightingShader.SetUniform3f("u_ObjectColor", 1.0f, 0.5f, 0.31f);
-				lightingShader.SetUniform3f("u_LightColor", 1.0f, 1.0f, 1.0f);
-				lightingShader.SetUniform3f("u_LightPos", lightSourcePos.x, lightSourcePos.y, lightSourcePos.z);
-				m_Renderer.DrawTriangles(va, lightingShader, sizeof(cubeVertices));
+				lightingShader.SetUniformVec3("u_ObjectColor", objectColor);
+				lightingShader.SetUniformVec3("u_LightColor", lightColor);
+				lightingShader.SetUniformVec3("u_LightPos", lightSourcePos);
+				lightingShader.SetUniformVec3("u_ViewPos", camera->Position);
+				diamondOreTex.Bind(0);
+				lightingShader.SetUniform1i("u_Texture", 0);
+				m_Renderer.DrawTriangles(cubeVA, lightingShader, sizeof(cubeVertices));
 				lightingShader.Unbind();
 			}
 
@@ -198,8 +258,10 @@ namespace Shue {
 				model = glm::scale(model, glm::vec3(0.1f));
 				glm::mat4 mvp = proj * view * model;
 				lightSourceShader.Bind();
+				redstoneLampTex.Bind(1);
+				lightSourceShader.SetUniform1i("u_Texture", 1);
 				lightSourceShader.SetUniformMatrix4fv("u_MVP", mvp);
-				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(cubeVertices));
+				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(lightSourceVertices));
 				lightSourceShader.Unbind();
 			}
 
@@ -214,7 +276,7 @@ namespace Shue {
 
 			{
 				ImGui::Begin("Positions");
-				ImGui::SliderFloat3("Translation A", &pos.x, -1.0f, 1.0f);
+				ImGui::SliderFloat3("Translation A", &cubePos.x, -1.0f, 1.0f);
 				ImGui::SliderFloat3("Translation B", &lightSourcePos.x, -1.0f, 1.0f);
 				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 				ImGui::End();
@@ -242,13 +304,30 @@ namespace Shue {
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<AppUpdateEvent>(BIND_EVENT_FN(OnAppUpdate));
+		dispatcher.Dispatch<AppUpdateEvent>(BIND_EVENT_FN(OnUpdate));
 		dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMove));
 		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseButtonPress));
 		dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnMouseButtonRelease));
 		dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScroll));
 		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPress));
 		dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnKeyRelease));
+
+		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
+		{
+			(*--it)->OnEvent(e);
+			if (e.Handled)
+				break;
+		}
+	}
+
+	void Application::PushLayer(Layer* layer)
+	{
+		m_LayerStack.PushLayer(layer);
+	}
+
+	void Application::PushOverlay(Layer* overlay)
+	{
+		m_LayerStack.PushOverlay(overlay);
 	}
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
@@ -265,12 +344,16 @@ namespace Shue {
 		return true;
 	}
 
-	bool Application::OnAppUpdate(AppUpdateEvent& e)
+	bool Application::OnUpdate(AppUpdateEvent& e)
 	{
 		m_LastFrame = m_CurrentFrame;
 		m_CurrentFrame = glfwGetTime();
 
 		camera->OnUpdate(DeltaTime());
+
+		for (Layer* layer : m_LayerStack)
+			layer->OnUpdate();
+
 		m_Window->OnUpdate();
 
 		return true;

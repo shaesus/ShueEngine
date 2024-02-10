@@ -26,6 +26,7 @@ namespace Shue {
 
 		void SetUniform3f(const std::string& name, float v0, float v1, float v2);
 		void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
+		void SetUniformVec3(const std::string& name, glm::vec3 vector);
 		void SetUniform1i(const std::string& name, int v);
 		void SetUniformMatrix4fv(const std::string& name, const glm::mat4& matrix);
 	private:

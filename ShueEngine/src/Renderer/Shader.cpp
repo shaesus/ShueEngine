@@ -111,6 +111,11 @@ namespace Shue {
 		GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 	}
 
+	void Shader::SetUniformVec3(const std::string& name, glm::vec3 vector)
+	{
+		SetUniform3f(name, vector.x, vector.y, vector.z);
+	}
+
 	void Shader::SetUniform1i(const std::string& name, int v)
 	{
 		GLCall(glUniform1i(GetUniformLocation(name), v));

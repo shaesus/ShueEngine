@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "Window.h"
+#include "LayerStack.h"
 #include "Renderer.h"
 
 #include "Events/Event.h"
@@ -23,12 +24,15 @@ namespace Shue {
 
 		void OnEvent(Event& e);
 
+		void PushLayer(Layer* layer);
+		void PushOverlay(Layer* overlay);
+
 		inline float DeltaTime() { return m_CurrentFrame - m_LastFrame; }
 
 	protected:
 		bool OnWindowResize(WindowResizeEvent& e);
 		bool OnWindowClose(WindowCloseEvent& e);
-		bool OnAppUpdate(AppUpdateEvent& e);
+		bool OnUpdate(AppUpdateEvent& e);
 		bool OnMouseMove(MouseMovedEvent& e);
 		bool OnMouseButtonPress(MouseButtonPressedEvent& e);
 		bool OnMouseButtonRelease(MouseButtonReleasedEvent& e);
@@ -39,6 +43,7 @@ namespace Shue {
 	protected:
 		bool m_Running = true;
 		std::unique_ptr<Window> m_Window;
+		LayerStack m_LayerStack;
 		Renderer m_Renderer;
 
 		float m_CurrentFrame, m_LastFrame;

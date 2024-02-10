@@ -162,6 +162,8 @@
     <ClInclude Include="src\ShueEngine\Events\Event.h" />
     <ClInclude Include="src\ShueEngine\Events\KeyEvent.h" />
     <ClInclude Include="src\ShueEngine\Events\MouseEvent.h" />
+    <ClInclude Include="src\ShueEngine\Layer.h" />
+    <ClInclude Include="src\ShueEngine\LayerStack.h" />
     <ClInclude Include="src\ShueEngine\Window.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
@@ -468,6 +470,8 @@
     <ClCompile Include="src\Renderer\Texture.cpp" />
     <ClCompile Include="src\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Renderer\VertexBuffer.cpp" />
+    <ClCompile Include="src\ShueEngine\Layer.cpp" />
+    <ClCompile Include="src\ShueEngine\LayerStack.cpp" />
     <ClCompile Include="src\ShueEngine\Window.cpp" />
     <ClCompile Include="src\vendor\glad\glad.c" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
