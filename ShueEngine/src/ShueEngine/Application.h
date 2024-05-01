@@ -27,7 +27,10 @@ namespace Shue {
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
 
+		inline Window& GetWindow() { return *m_Window; }
 		inline float DeltaTime() { return m_CurrentFrame - m_LastFrame; }
+
+		inline static Application& Get() { return *s_Instance; }
 
 	protected:
 		bool OnWindowResize(WindowResizeEvent& e);
@@ -38,6 +41,7 @@ namespace Shue {
 		bool OnMouseButtonRelease(MouseButtonReleasedEvent& e);
 		bool OnMouseScroll(MouseScrolledEvent& e);
 		bool OnKeyPress(KeyPressedEvent& e);
+		bool OnKeyType(KeyTypedEvent& e);
 		bool OnKeyRelease(KeyReleasedEvent& e);
 
 	protected:
@@ -47,6 +51,9 @@ namespace Shue {
 		Renderer m_Renderer;
 
 		float m_CurrentFrame, m_LastFrame;
+
+	protected:
+		static Application* s_Instance;
 	};
 
 	// To be defined in CLIENT

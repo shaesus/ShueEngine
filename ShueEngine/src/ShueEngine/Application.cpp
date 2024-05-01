@@ -1,27 +1,39 @@
 #include "Application.h"
 
+#include "Core.h"
+
+#include "Assertion.h"
 #include "Camera.h"
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
-#include "imGUI/imgui.h"
-#include "imGUI/imgui_impl_glfw.h"
-#include "imGUI/imgui_impl_opengl3.h"
-
 #include <iostream>
 #include <map>
 #include <format>
 
+#include "Material.h"
+#include "LightProperties.h"
+
+#include "Layers/UILayer.h"
+
 namespace Shue {
 
-#define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
+	Application* Application::s_Instance = nullptr;
+	
+	glm::vec3 cubePos(-0.2f, -0.2f, 0.1f);
+	glm::vec3 lightSourcePos(0.2f, -0.2f, 0.0f);
 
 	Application::Application()
 		: m_CurrentFrame(0), m_LastFrame(0)
 	{
+		ASSERT(!s_Instance);
+		s_Instance = this;
+
 		m_Window = std::unique_ptr<Window>(Window::Create());
-		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
+		m_Window->SetEventCallback(SH_BIND_EVENT_FN(Application::OnEvent));
+
+		PushOverlay(new UILayer(&cubePos, &lightSourcePos));
 	}
 
 	Application::~Application()
@@ -33,7 +45,7 @@ namespace Shue {
 
 	bool firstMouse = true;
 
-	Camera* camera = new Camera();
+	Camera* camera = new Camera(glm::vec3(0.0f, 0.0f, 1.0f));
 
 	void Application::Run()
 	{
@@ -45,16 +57,6 @@ namespace Shue {
 
 		m_Renderer.SetBlending(true);
 		m_Renderer.SetDepthTest(true);
-
-		ImGui::CreateContext();
-		ImGuiIO& io = ImGui::GetIO();
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-		io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
-
-		ImGui::StyleColorsDark();
-
-		ImGui_ImplGlfw_InitForOpenGL(m_Window->GetGLFWWindow(), true);
-		ImGui_ImplOpenGL3_Init("#version 330");
 
 		m_Renderer.SetCulling(true, GL_BACK);
 		m_Renderer.SetFrontFace(GL_CCW);
@@ -117,13 +119,22 @@ namespace Shue {
 			, 0.1f, 100.0f);
 		glm::mat4 view;
 
-		glm::vec3 cubePos(-0.15f, -0.2f, -0.9f);
+		//glm::vec3 cubePos(-0.2f, -0.2f, -0.9f);
 		
 		Shader lightingShader("res/shaders/Lighting.shader");
 		lightingShader.Bind();
 
-		ImageTexture diamondOreTex("res/textures/diamond_ore.png");
-		
+		//Material obsidianMat(glm::vec3(0.05375f, 0.05f, 0.06625f), glm::vec3(0.18275f, 0.17f, 0.22525f), glm::vec3(0.332741f, 0.328634f, 0.346435f), 0.3f);
+		//Material emeraldMat(glm::vec3(0.0215f, 0.1745f, 0.0215f), glm::vec3(0.07568f, 0.61424f, 0.07568f), glm::vec3(0.633f, 0.727811f, 0.633f), 0.6f);
+		//Material goldMat(glm::vec3(0.24725f, 0.1995f, 0.0745f), glm::vec3(0.75164f, 0.60648f, 0.22648f), glm::vec3(0.628281f, 0.555802f, 0.366065f), 0.4f);
+		//Material chromeMat(glm::vec3(0.25f, 0.25f, 0.25f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.774597f, 0.774597f, 0.774597f), 0.6f);
+		//Material myMat(glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f);
+
+		//ImageTexture diamondOreTex("res/textures/diamond_ore.png");
+		ImageTexture containerTex("res/textures/container.png");
+		containerTex.Bind(0);
+		lightingShader.SetUniformMaterial("u_Material", Material(0, glm::vec3(0.5f, 0.5f, 0.5f), 32.0f));
+
 		FT_Library ft;
 		if (FT_Init_FreeType(&ft))
 		{
@@ -148,12 +159,14 @@ namespace Shue {
 		Shader shaderText("res/shaders/Text.shader");
 		shaderText.Bind();
 
-		glm::vec3 lightSourcePos(0.2f, -0.2f, -1.0f);
+		//glm::vec3 lightSourcePos(0.2f, -0.2f, -1.0f);
 
 		Shader lightSourceShader("res/shaders/LightSource.shader");
 		lightSourceShader.Bind();
 
 		ImageTexture redstoneLampTex("res/textures/redstone_lamp.png");
+		redstoneLampTex.Bind(1);
+		lightSourceShader.SetUniform1i("u_Texture", 1);
 
 		float lightSourceVertices[] = {
 			// Back face
@@ -222,7 +235,6 @@ namespace Shue {
 
 		int framesCount = 0;
 
-		glm::vec3 objectColor(1.0f, 0.5f, 0.31f);
 		glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 		while (m_Running)
@@ -243,12 +255,10 @@ namespace Shue {
 				lightingShader.SetUniformMatrix4fv("u_Model", model);
 				lightingShader.SetUniformMatrix4fv("u_View", view);
 				lightingShader.SetUniformMatrix4fv("u_Proj", proj);
-				lightingShader.SetUniformVec3("u_ObjectColor", objectColor);
-				lightingShader.SetUniformVec3("u_LightColor", lightColor);
-				lightingShader.SetUniformVec3("u_LightPos", lightSourcePos);
+				lightingShader.SetUniformLightProperties("u_Light", 
+					LightProperties(lightSourcePos, glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f)));
 				lightingShader.SetUniformVec3("u_ViewPos", camera->Position);
-				diamondOreTex.Bind(0);
-				lightingShader.SetUniform1i("u_Texture", 0);
+				containerTex.Bind(0);
 				m_Renderer.DrawTriangles(cubeVA, lightingShader, sizeof(cubeVertices));
 				lightingShader.Unbind();
 			}
@@ -259,7 +269,6 @@ namespace Shue {
 				glm::mat4 mvp = proj * view * model;
 				lightSourceShader.Bind();
 				redstoneLampTex.Bind(1);
-				lightSourceShader.SetUniform1i("u_Texture", 1);
 				lightSourceShader.SetUniformMatrix4fv("u_MVP", mvp);
 				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(lightSourceVertices));
 				lightSourceShader.Unbind();
@@ -268,23 +277,7 @@ namespace Shue {
 			shaderText.Bind();
 			shaderText.SetUniformMatrix4fv("u_Projection", projText);
 
-			m_Renderer.RenderText(vaText, vbText, shaderText, "Frames since start: " + std::to_string(framesCount), 1.0f, 1.0f, 0.7f, glm::vec3(1.0f, 0.5f, 0.3f), "arial");
-
-			ImGui_ImplOpenGL3_NewFrame();
-			ImGui_ImplGlfw_NewFrame();
-			ImGui::NewFrame();
-
-			{
-				ImGui::Begin("Positions");
-				ImGui::SliderFloat3("Translation A", &cubePos.x, -1.0f, 1.0f);
-				ImGui::SliderFloat3("Translation B", &lightSourcePos.x, -1.0f, 1.0f);
-				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-				ImGui::End();
-			}
-
-			ImGui::Render();
-
-			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+			//m_Renderer.RenderText(vaText, vbText, shaderText, "Frames since start: " + std::to_string(framesCount), 1.0f, 1.0f, 0.7f, glm::vec3(1.0f, 0.5f, 0.3f), "arial");
 
 			AppUpdateEvent appUpdateEvent;
 			OnEvent(appUpdateEvent);
@@ -292,25 +285,22 @@ namespace Shue {
 			framesCount++;
 		}
 
-		ImGui_ImplOpenGL3_Shutdown();
-		ImGui_ImplGlfw_Shutdown();
-		ImGui::DestroyContext();
-
 		glfwTerminate();
 	}
 
 	void Application::OnEvent(Event& e)
 	{
 		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
-		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
-		dispatcher.Dispatch<AppUpdateEvent>(BIND_EVENT_FN(OnUpdate));
-		dispatcher.Dispatch<MouseMovedEvent>(BIND_EVENT_FN(OnMouseMove));
-		dispatcher.Dispatch<MouseButtonPressedEvent>(BIND_EVENT_FN(OnMouseButtonPress));
-		dispatcher.Dispatch<MouseButtonReleasedEvent>(BIND_EVENT_FN(OnMouseButtonRelease));
-		dispatcher.Dispatch<MouseScrolledEvent>(BIND_EVENT_FN(OnMouseScroll));
-		dispatcher.Dispatch<KeyPressedEvent>(BIND_EVENT_FN(OnKeyPress));
-		dispatcher.Dispatch<KeyReleasedEvent>(BIND_EVENT_FN(OnKeyRelease));
+		dispatcher.Dispatch<WindowResizeEvent>(SH_BIND_EVENT_FN(Application::OnWindowResize));
+		dispatcher.Dispatch<WindowCloseEvent>(SH_BIND_EVENT_FN(Application::OnWindowClose));
+		dispatcher.Dispatch<AppUpdateEvent>(SH_BIND_EVENT_FN(Application::OnUpdate));
+		dispatcher.Dispatch<MouseMovedEvent>(SH_BIND_EVENT_FN(Application::OnMouseMove));
+		dispatcher.Dispatch<MouseButtonPressedEvent>(SH_BIND_EVENT_FN(Application::OnMouseButtonPress));
+		dispatcher.Dispatch<MouseButtonReleasedEvent>(SH_BIND_EVENT_FN(Application::OnMouseButtonRelease));
+		dispatcher.Dispatch<MouseScrolledEvent>(SH_BIND_EVENT_FN(Application::OnMouseScroll));
+		dispatcher.Dispatch<KeyPressedEvent>(SH_BIND_EVENT_FN(Application::OnKeyPress));
+		dispatcher.Dispatch<KeyTypedEvent>(SH_BIND_EVENT_FN(Application::OnKeyType));
+		dispatcher.Dispatch<KeyReleasedEvent>(SH_BIND_EVENT_FN(Application::OnKeyRelease));
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
 		{
@@ -323,11 +313,13 @@ namespace Shue {
 	void Application::PushLayer(Layer* layer)
 	{
 		m_LayerStack.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	void Application::PushOverlay(Layer* overlay)
 	{
 		m_LayerStack.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	bool Application::OnWindowResize(WindowResizeEvent& e)
@@ -380,7 +372,7 @@ namespace Shue {
 
 	bool Application::OnMouseButtonPress(MouseButtonPressedEvent& e)
 	{
-		std::cout << e << std::endl;
+		std::cout << e << '\n';
 
 		camera->ProcessPressedMouseButton(e.GetMouseButton());
 
@@ -389,7 +381,7 @@ namespace Shue {
 
 	bool Application::OnMouseButtonRelease(MouseButtonReleasedEvent& e)
 	{
-		std::cout << e << std::endl;
+		std::cout << e << '\n';
 
 		camera->ProcessReleasedMouseButton(e.GetMouseButton());
 
@@ -404,16 +396,22 @@ namespace Shue {
 
 	bool Application::OnKeyPress(KeyPressedEvent& e)
 	{
-		std::cout << e << std::endl;
+		std::cout << e << '\n';
 
 		camera->ProcessPressedKey(e.GetKeyCode());
 
 		return true;
 	}
 
+	bool Application::OnKeyType(KeyTypedEvent& e)
+	{
+		std::cout << e << '\n';
+		return true;
+	}
+
 	bool Application::OnKeyRelease(KeyReleasedEvent& e)
 	{
-		std::cout << e << std::endl;
+		std::cout << e << '\n';
 
 		camera->ProcessReleasedKey(e.GetKeyCode());
 

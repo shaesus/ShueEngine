@@ -12,7 +12,7 @@ namespace Shue {
 		None = 0,
 		WindowClose, WindowResize,
 		AppUpdate,
-		KeyPressed, KeyReleased,
+		KeyPressed, KeyReleased, KeyTyped,
 		MouseButtonPressed, MouseButtonReleased, MouseMoved, MouseScrolled
 	};
 

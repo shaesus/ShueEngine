@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\ShueEngine\Application.cpp" />
-    <ClCompile Include="src\Renderer\Assertion.cpp" />
+    <ClCompile Include="src\ShueEngine\Assertion.cpp" />
     <ClCompile Include="src\Renderer\IndexBuffer.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
     <ClCompile Include="src\Renderer\Shader.cpp" />
@@ -25,13 +25,17 @@
     <ClCompile Include="src\Renderer\Camera.cpp" />
     <ClCompile Include="src\ShueEngine\Layer.cpp" />
     <ClCompile Include="src\ShueEngine\LayerStack.cpp" />
+    <ClCompile Include="src\ShueEngine\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Renderer\Material.cpp" />
+    <ClCompile Include="src\Renderer\LightProperties.cpp" />
+    <ClCompile Include="src\ShueEngine\Layers\UILayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShueEngine\Application.h" />
     <ClInclude Include="src\ShueEngine.h" />
     <ClInclude Include="src\ShueEngine\Core.h" />
     <ClInclude Include="src\ShueEngine\EntryPoint.h" />
-    <ClInclude Include="src\Renderer\Assertion.h" />
+    <ClInclude Include="src\ShueEngine\Assertion.h" />
     <ClInclude Include="src\Renderer\IndexBuffer.h" />
     <ClInclude Include="src\Renderer\Renderer.h" />
     <ClInclude Include="src\Renderer\Shader.h" />
@@ -341,6 +345,10 @@
     <ClInclude Include="src\Renderer\Camera.h" />
     <ClInclude Include="src\ShueEngine\Layer.h" />
     <ClInclude Include="src\ShueEngine\LayerStack.h" />
+    <ClInclude Include="src\ShueEngine\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\Renderer\Material.h" />
+    <ClInclude Include="src\Renderer\LightProperties.h" />
+    <ClInclude Include="src\ShueEngine\Layers\UILayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl" />

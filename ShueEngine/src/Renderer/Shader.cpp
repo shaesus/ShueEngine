@@ -121,9 +121,29 @@ namespace Shue {
 		GLCall(glUniform1i(GetUniformLocation(name), v));
 	}
 
+	void Shader::SetUniform1f(const std::string& name, float v)
+	{
+		GLCall(glUniform1f(GetUniformLocation(name), v));
+	}
+
 	void Shader::SetUniformMatrix4fv(const std::string& name, const glm::mat4& matrix)
 	{
 		GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
+	}
+
+	void Shader::SetUniformMaterial(const std::string& name, const Material& material)
+	{
+		SetUniform1i(name + ".diffuse", material.DiffuseMap());
+		SetUniformVec3(name + ".specular", material.Specular());
+		SetUniform1f(name + ".shininess", material.Shininess());
+	}
+
+	void Shader::SetUniformLightProperties(const std::string& name, const LightProperties& light)
+	{
+		SetUniformVec3(name + ".position", light.Position());
+		SetUniformVec3(name + ".ambient", light.Ambient());
+		SetUniformVec3(name + ".diffuse", light.Diffuse());
+		SetUniformVec3(name + ".specular", light.Specular());
 	}
 
 	int Shader::GetUniformLocation(const std::string& name)

@@ -3,8 +3,13 @@
 class Sandbox : public Shue::Application
 {
 public:
-	Sandbox() {}
-	~Sandbox() {}
+	Sandbox() 
+	{
+	}
+
+	~Sandbox() 
+	{
+	}
 };
 
 Shue::Application* Shue::CreateApplication()
