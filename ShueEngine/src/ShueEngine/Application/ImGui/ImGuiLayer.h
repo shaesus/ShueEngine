@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Layer.h"
+#include "Application/Layer.h"
 
-#include "Events/KeyEvent.h"
-#include "Events/MouseEvent.h"
-#include "Events/ApplicationEvent.h"
+#include "Application/Events/KeyEvent.h"
+#include "Application/Events/MouseEvent.h"
+#include "Application/Events/ApplicationEvent.h"
 
-#include "Application.h"
+#include "Application/Application.h"
 
 #include "Core.h"
 

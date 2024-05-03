@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\ShueEngine\Application.cpp" />
+    <ClCompile Include="src\ShueEngine\Application\Application.cpp" />
     <ClCompile Include="src\ShueEngine\Assertion.cpp" />
     <ClCompile Include="src\Renderer\IndexBuffer.cpp" />
     <ClCompile Include="src\Renderer\Renderer.cpp" />
@@ -9,7 +9,7 @@
     <ClCompile Include="src\Renderer\Texture.cpp" />
     <ClCompile Include="src\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Renderer\VertexBuffer.cpp" />
-    <ClCompile Include="src\ShueEngine\Window.cpp" />
+    <ClCompile Include="src\ShueEngine\Application\Window.cpp" />
     <ClCompile Include="src\vendor\glad\glad.c" />
     <ClCompile Include="src\vendor\glm\detail\glm.cpp" />
     <ClCompile Include="src\vendor\imGUI\imgui.cpp" />
@@ -23,15 +23,16 @@
     <ClCompile Include="src\Renderer\CharTexture.cpp" />
     <ClCompile Include="src\Renderer\ImageTexture.cpp" />
     <ClCompile Include="src\Renderer\Camera.cpp" />
-    <ClCompile Include="src\ShueEngine\Layer.cpp" />
-    <ClCompile Include="src\ShueEngine\LayerStack.cpp" />
-    <ClCompile Include="src\ShueEngine\ImGui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\ShueEngine\Application\Layer.cpp" />
+    <ClCompile Include="src\ShueEngine\Application\LayerStack.cpp" />
+    <ClCompile Include="src\ShueEngine\Application\ImGui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Renderer\Material.cpp" />
     <ClCompile Include="src\Renderer\LightProperties.cpp" />
-    <ClCompile Include="src\ShueEngine\Layers\UILayer.cpp" />
+    <ClCompile Include="src\ShueEngine\Application\Layers\UILayer.cpp" />
+    <ClCompile Include="src\Renderer\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ShueEngine\Application.h" />
+    <ClInclude Include="src\ShueEngine\Application\Application.h" />
     <ClInclude Include="src\ShueEngine.h" />
     <ClInclude Include="src\ShueEngine\Core.h" />
     <ClInclude Include="src\ShueEngine\EntryPoint.h" />
@@ -43,7 +44,7 @@
     <ClInclude Include="src\Renderer\VertexArray.h" />
     <ClInclude Include="src\Renderer\VertexBuffer.h" />
     <ClInclude Include="src\Renderer\VertexBufferLayout.h" />
-    <ClInclude Include="src\ShueEngine\Window.h" />
+    <ClInclude Include="src\ShueEngine\Application\Window.h" />
     <ClInclude Include="src\vendor\glm\common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_common.hpp" />
     <ClInclude Include="src\vendor\glm\detail\compute_vector_relational.hpp" />
@@ -338,17 +339,18 @@
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
     <ClInclude Include="src\Renderer\CharTexture.h" />
     <ClInclude Include="src\Renderer\ImageTexture.h" />
-    <ClInclude Include="src\ShueEngine\Events\ApplicationEvent.h" />
-    <ClInclude Include="src\ShueEngine\Events\Event.h" />
-    <ClInclude Include="src\ShueEngine\Events\KeyEvent.h" />
-    <ClInclude Include="src\ShueEngine\Events\MouseEvent.h" />
+    <ClInclude Include="src\ShueEngine\Application\Events\ApplicationEvent.h" />
+    <ClInclude Include="src\ShueEngine\Application\Events\Event.h" />
+    <ClInclude Include="src\ShueEngine\Application\Events\KeyEvent.h" />
+    <ClInclude Include="src\ShueEngine\Application\Events\MouseEvent.h" />
     <ClInclude Include="src\Renderer\Camera.h" />
-    <ClInclude Include="src\ShueEngine\Layer.h" />
-    <ClInclude Include="src\ShueEngine\LayerStack.h" />
-    <ClInclude Include="src\ShueEngine\ImGui\ImGuiLayer.h" />
+    <ClInclude Include="src\ShueEngine\Application\Layer.h" />
+    <ClInclude Include="src\ShueEngine\Application\LayerStack.h" />
+    <ClInclude Include="src\ShueEngine\Application\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Renderer\Material.h" />
     <ClInclude Include="src\Renderer\LightProperties.h" />
-    <ClInclude Include="src\ShueEngine\Layers\UILayer.h" />
+    <ClInclude Include="src\ShueEngine\Application\Layers\UILayer.h" />
+    <ClInclude Include="src\Renderer\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl" />

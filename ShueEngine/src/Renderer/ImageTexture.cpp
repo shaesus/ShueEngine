@@ -7,7 +7,8 @@
 
 namespace Shue {
 
-	ImageTexture::ImageTexture(const char* filePath) : Texture()
+	ImageTexture::ImageTexture(const char* filePath, const std::string& type) : Texture(), 
+		m_Type(type)
 	{
 		stbi_set_flip_vertically_on_load(1);
 

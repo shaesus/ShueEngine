@@ -7,6 +7,7 @@ namespace Shue {
 	class SHUE_API VertexBuffer
 	{
 	public:
+		VertexBuffer() = default;
 		VertexBuffer(unsigned int size, const void* data, unsigned int drawType);
 		~VertexBuffer();
 

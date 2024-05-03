@@ -119,8 +119,6 @@ namespace Shue {
 			, 0.1f, 100.0f);
 		glm::mat4 view;
 
-		//glm::vec3 cubePos(-0.2f, -0.2f, -0.9f);
-		
 		Shader lightingShader("res/shaders/Lighting.shader");
 		lightingShader.Bind();
 
@@ -130,12 +128,15 @@ namespace Shue {
 		//Material chromeMat(glm::vec3(0.25f, 0.25f, 0.25f), glm::vec3(0.4f, 0.4f, 0.4f), glm::vec3(0.774597f, 0.774597f, 0.774597f), 0.6f);
 		//Material myMat(glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(1.0f, 0.5f, 0.31f), glm::vec3(0.5f, 0.5f, 0.5f), 32.0f);
 
-		//ImageTexture diamondOreTex("res/textures/diamond_ore.png");
 		ImageTexture containerTex("res/textures/container.png");
 		containerTex.Bind(0);
-		lightingShader.SetUniformMaterial("u_Material", Material(0, glm::vec3(0.5f, 0.5f, 0.5f), 32.0f));
 
-		FT_Library ft;
+		ImageTexture containerSpecular("res/textures/container2_specular.png");
+		containerSpecular.Bind(1);
+
+		lightingShader.SetUniformMaterial("u_Material", Material(0, 1, 32.0f));
+
+		/*FT_Library ft;
 		if (FT_Init_FreeType(&ft))
 		{
 			std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
@@ -145,7 +146,7 @@ namespace Shue {
 		m_Renderer.AddFont(ft, "res/fonts/arial.ttf", "arial");
 		m_Renderer.AddFont(ft, "res/fonts/comic.ttf", "comic");
 
-		FT_Done_FreeType(ft);
+		FT_Done_FreeType(ft);*/
 
 		glm::mat4 projText = glm::ortho(0.0f, (float)m_Window->GetWidth(), 0.0f, (float)m_Window->GetHeight());
 
@@ -159,14 +160,12 @@ namespace Shue {
 		Shader shaderText("res/shaders/Text.shader");
 		shaderText.Bind();
 
-		//glm::vec3 lightSourcePos(0.2f, -0.2f, -1.0f);
-
 		Shader lightSourceShader("res/shaders/LightSource.shader");
 		lightSourceShader.Bind();
 
 		ImageTexture redstoneLampTex("res/textures/redstone_lamp.png");
-		redstoneLampTex.Bind(1);
-		lightSourceShader.SetUniform1i("u_Texture", 1);
+		redstoneLampTex.Bind(2);
+		lightSourceShader.SetUniform1i("u_Texture", 2);
 
 		float lightSourceVertices[] = {
 			// Back face
@@ -233,8 +232,6 @@ namespace Shue {
 		lightSourceVA.Unbind();
 		lightSourceVB.Unbind();
 
-		int framesCount = 0;
-
 		glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
 		while (m_Running)
@@ -259,6 +256,7 @@ namespace Shue {
 					LightProperties(lightSourcePos, glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f)));
 				lightingShader.SetUniformVec3("u_ViewPos", camera->Position);
 				containerTex.Bind(0);
+				containerSpecular.Bind(1);
 				m_Renderer.DrawTriangles(cubeVA, lightingShader, sizeof(cubeVertices));
 				lightingShader.Unbind();
 			}
@@ -268,7 +266,7 @@ namespace Shue {
 				model = glm::scale(model, glm::vec3(0.1f));
 				glm::mat4 mvp = proj * view * model;
 				lightSourceShader.Bind();
-				redstoneLampTex.Bind(1);
+				redstoneLampTex.Bind(2);
 				lightSourceShader.SetUniformMatrix4fv("u_MVP", mvp);
 				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(lightSourceVertices));
 				lightSourceShader.Unbind();
@@ -281,8 +279,6 @@ namespace Shue {
 
 			AppUpdateEvent appUpdateEvent;
 			OnEvent(appUpdateEvent);
-
-			framesCount++;
 		}
 
 		glfwTerminate();

@@ -9,6 +9,7 @@ namespace Shue {
 	class SHUE_API IndexBuffer
 	{
 	public:
+		IndexBuffer() = default;
 		IndexBuffer(unsigned int size, const void* data);
 		~IndexBuffer();
 

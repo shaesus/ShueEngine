@@ -2,7 +2,7 @@
 
 namespace Shue {
 
-	Material::Material(int diffuseMap, glm::vec3 specular, float shininess)
+	Material::Material(int diffuseMap, int specular, float shininess)
 	{
 		m_DiffuseMap = diffuseMap;
 		m_Specular = specular;
