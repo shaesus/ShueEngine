@@ -14,6 +14,26 @@ namespace Shue {
 			}
 			delete font;
 		}
+
+		FT_Done_FreeType(m_Ft);
+	}
+
+	void Renderer::InitGlad() const
+	{
+		if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+		{
+			std::cout << "Failed to initialize GLAD" << std::endl;
+			return;
+		}
+	}
+
+	void Renderer::InitFreeType()
+	{
+		if (FT_Init_FreeType(&m_Ft))
+		{
+			std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+			return;
+		}
 	}
 
 	void Renderer::Clear() const
@@ -73,9 +93,9 @@ namespace Shue {
 		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
 	}
 
-	void Renderer::AddFont(FT_Library ft, const std::string& fontPath, const std::string& name)
+	void Renderer::AddFont(const std::string& fontPath, const std::string& name)
 	{
-		Font* font = CreateFont(ft, fontPath);
+		Font* font = CreateFont(fontPath);
 		if (font) m_Fonts.insert(std::pair<std::string, Font*>(name, font));
 	}
 
@@ -97,14 +117,14 @@ namespace Shue {
 			float w = ch.Size.x * scale;
 			float h = ch.Size.y * scale;
 			// update VBO for each character
-			float vertices[6][4] = {
-				{ xpos,     ypos + h,   0.0f, 0.0f },
-				{ xpos,     ypos,       0.0f, 1.0f },
-				{ xpos + w, ypos,       1.0f, 1.0f },
+			float vertices[6][5] = {
+				{ xpos,     ypos + h, 0.0f, 0.0f, 0.0f },
+				{ xpos,     ypos,     0.0f, 0.0f, 1.0f },
+				{ xpos + w, ypos,     0.0f, 1.0f, 1.0f },
 
-				{ xpos,     ypos + h,   0.0f, 0.0f },
-				{ xpos + w, ypos,       1.0f, 1.0f },
-				{ xpos + w, ypos + h,   1.0f, 0.0f }
+				{ xpos,     ypos + h, 0.0f, 0.0f, 0.0f },
+				{ xpos + w, ypos,     0.0f, 1.0f, 1.0f },
+				{ xpos + w, ypos + h, 0.0f, 1.0f, 0.0f }
 			};
 			// render glyph texture over quad
 			ch.Texture->Bind();
@@ -115,6 +135,9 @@ namespace Shue {
 			// now advance cursors for next glyph (note that advance is number of 1/64 pixels)
 			x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64)
 		}
+
+		va.Unbind();
+		shader.Unbind();
 	}
 
 	void Renderer::SetFrontFace(unsigned int mode)
@@ -168,12 +191,12 @@ namespace Shue {
 		}
 	}
 
-	Renderer::Font* Renderer::CreateFont(FT_Library ft, const std::string& fontPath)
+	Renderer::Font* Renderer::CreateFont(const std::string& fontPath)
 	{
 		Font* font = new Font;
 
 		FT_Face face;
-		if (FT_New_Face(ft, fontPath.c_str(), 0, &face))
+		if (FT_New_Face(m_Ft, fontPath.c_str(), 0, &face))
 		{
 			std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
 			return nullptr;

@@ -153,6 +153,7 @@ namespace Shue {
 	void Window::Shutdown()
 	{
 		glfwDestroyWindow(m_Window);
+		glfwTerminate();
 	}
 
 	Window* Window::Create(const WindowProps& props)

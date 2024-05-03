@@ -150,6 +150,13 @@
       <Project>{8da9f82f-ca35-4230-8d7d-45e91ef5f387}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\Lighting.shader" />
+    <None Include="res\shaders\LightSource.shader" />
+    <None Include="res\shaders\Text.shader" />
+    <None Include="res\shaders\WorldSpaceText.shader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

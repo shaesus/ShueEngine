@@ -36,12 +36,15 @@ namespace Shue {
 	public:
 		~Renderer();
 
+		void InitGlad() const;
+		void InitFreeType();
+
 		void Clear() const;
 		void ClearColor(float r, float g, float b, float a) const;
 		void DrawIb(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void DrawTriangles(const VertexArray& va, const Shader& shader, unsigned int count);
 		void DrawMesh(const Mesh& mesh, Shader& shader);
-		void AddFont(FT_Library ft, const std::string& fontPath, const std::string& name);
+		void AddFont(const std::string& fontPath, const std::string& name);
 		void RenderText(const VertexArray& va, const VertexBuffer& vb, Shader& shader,
 			const std::string& text, float x, float y, float scale, const glm::vec3& color, const std::string& fontName);
 		void SetFrontFace(unsigned int mode = GL_CCW);
@@ -54,9 +57,10 @@ namespace Shue {
 		inline bool DepthTest() const { return m_DepthTest; }
 
 	private:
-		Font* CreateFont(FT_Library ft, const std::string& fontPath);
+		Font* CreateFont(const std::string& fontPath);
 
 	private:
+		FT_Library m_Ft;
 		std::map<std::string, Font*> m_Fonts;
 
 		bool m_Blending = false;

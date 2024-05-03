@@ -50,7 +50,7 @@ namespace Shue
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyTypedEvent: " << m_KeyCode;
+			ss << "KeyTypedEvent: " << (char)m_KeyCode;
 			return ss.str();
 		}
 

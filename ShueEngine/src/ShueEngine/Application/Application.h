@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "LayerStack.h"
 #include "Renderer.h"
+#include "Camera.h"
 
 #include "Events/Event.h"
 #include "Events/ApplicationEvent.h"
@@ -28,7 +29,7 @@ namespace Shue {
 		void PushOverlay(Layer* overlay);
 
 		inline Window& GetWindow() { return *m_Window; }
-		inline float DeltaTime() { return m_CurrentFrame - m_LastFrame; }
+		inline float DeltaTime() const { return m_TimeOfCurrentFrame - m_TimeOfLastFrame; }
 
 		inline static Application& Get() { return *s_Instance; }
 
@@ -49,8 +50,9 @@ namespace Shue {
 		std::unique_ptr<Window> m_Window;
 		LayerStack m_LayerStack;
 		Renderer m_Renderer;
+		Camera* m_Camera;
 
-		float m_CurrentFrame, m_LastFrame;
+		float m_TimeOfCurrentFrame, m_TimeOfLastFrame;
 
 	protected:
 		static Application* s_Instance;
