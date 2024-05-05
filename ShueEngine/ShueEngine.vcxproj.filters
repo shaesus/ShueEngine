@@ -26,10 +26,10 @@
     <ClCompile Include="src\ShueEngine\Application\Layer.cpp" />
     <ClCompile Include="src\ShueEngine\Application\LayerStack.cpp" />
     <ClCompile Include="src\ShueEngine\Application\ImGui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Renderer\Material.cpp" />
     <ClCompile Include="src\Renderer\LightProperties.cpp" />
-    <ClCompile Include="src\ShueEngine\Application\Layers\UILayer.cpp" />
     <ClCompile Include="src\Renderer\Mesh.cpp" />
+    <ClCompile Include="src\Renderer\Model.cpp" />
+    <ClCompile Include="src\ShueEngine\Application\Layers\UILayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShueEngine\Application\Application.h" />
@@ -349,8 +349,9 @@
     <ClInclude Include="src\ShueEngine\Application\ImGui\ImGuiLayer.h" />
     <ClInclude Include="src\Renderer\Material.h" />
     <ClInclude Include="src\Renderer\LightProperties.h" />
-    <ClInclude Include="src\ShueEngine\Application\Layers\UILayer.h" />
     <ClInclude Include="src\Renderer\Mesh.h" />
+    <ClInclude Include="src\Renderer\Model.h" />
+    <ClInclude Include="src\ShueEngine\Application\Layers\UILayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl" />

@@ -5,12 +5,14 @@
 
 #include "Material.h"
 #include "LightProperties.h"
+#include "Model.h"
 
 #include "Application/Layers/UILayer.h"
 
 glm::vec3 cubePos        ( -0.2f, -0.2f,  0.1f );
 glm::vec3 lightSourcePos (  0.2f, -0.2f,  0.0f );
 glm::vec3 textPos        (  0.0f, -0.1f, -0.3f );
+glm::vec3 backpackPos    (  0.0f,  0.0f, -0.3f );
 
 class Sandbox : public Shue::Application
 {
@@ -190,6 +192,17 @@ public:
 		lightSourceLayout.Push<float>(2);
 		lightSourceVA.AddBuffer(lightSourceVB, lightSourceLayout);
 
+		Shue::Model backpackModel("res/models/Backpack/backpack.obj");
+
+		Shue::ImageTexture backpackDiffuse("res/models/Backpack/diffuse.jpg");
+		backpackDiffuse.Bind(3);
+		Shue::ImageTexture backpackSpecular("res/models/Backpack/specular.jpg");
+		backpackDiffuse.Bind(4);
+
+		Shue::Shader modelShader("res/shaders/Lighting.shader");
+		modelShader.Bind();
+		modelShader.SetUniformMaterial("u_Material", Shue::Material(3, 4, 20.0f));
+		
 		lightingShader.Unbind();
 		cubeVA.Unbind();
 		cubeVB.Unbind();
@@ -202,6 +215,7 @@ public:
 		lightSourceShader.Unbind();
 		lightSourceVA.Unbind();
 		lightSourceVB.Unbind();
+		modelShader.Unbind();
 
 		glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
@@ -214,6 +228,24 @@ public:
 
 			lightSourcePos.y = sin(m_TimeOfCurrentFrame) / 3.0f - 0.2f;
 
+			//Backpack
+			{
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), backpackPos);
+				model = glm::rotate(model, (float)m_TimeOfCurrentFrame, glm::vec3(0.0f, 1.0f, 0.0f));
+				model = glm::scale(model, glm::vec3(0.1f));
+				modelShader.Bind();
+				modelShader.SetUniformMatrix4fv("u_Model", model);
+				modelShader.SetUniformMatrix4fv("u_View", view);
+				modelShader.SetUniformMatrix4fv("u_Proj", proj);
+				modelShader.SetUniformLightProperties("u_Light",
+					Shue::LightProperties(lightSourcePos, glm::vec3(0.2f), glm::vec3(0.5f), glm::vec3(1.0f)));
+				modelShader.SetUniformVec3("u_ViewPos", m_Camera->Position);
+				backpackDiffuse.Bind(3);
+				backpackSpecular.Bind(4);
+				m_Renderer.DrawModel(backpackModel, modelShader);
+			}
+
+			//Cube
 			{
 				glm::mat4 model = glm::translate(glm::mat4(1.0f), cubePos);
 				model = glm::scale(model, glm::vec3(0.25f));
@@ -227,9 +259,9 @@ public:
 				containerTex.Bind(0);
 				containerSpecular.Bind(1);
 				m_Renderer.DrawTriangles(cubeVA, lightingShader, sizeof(cubeVertices));
-				lightingShader.Unbind();
 			}
 
+			//Light Source
 			{
 				glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSourcePos);
 				model = glm::scale(model, glm::vec3(0.1f));
@@ -238,7 +270,6 @@ public:
 				redstoneLampTex.Bind(2);
 				lightSourceShader.SetUniformMatrix4fv("u_MVP", mvp);
 				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(lightSourceVertices));
-				lightSourceShader.Unbind();
 			}
 
 			////World Space Text

@@ -9,7 +9,8 @@ namespace Shue {
 	class SHUE_API Material
 	{
 	public:
-		Material(int diffuseMap, int specular, float shininess);
+		Material(int diffuseMap, int specular, float shininess)
+			: m_DiffuseMap(diffuseMap), m_Specular(specular), m_Shininess(shininess) {}
 
 		inline const int DiffuseMap() const { return m_DiffuseMap; }
 		inline const int Specular() const { return m_Specular; }

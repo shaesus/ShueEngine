@@ -12,6 +12,8 @@ namespace Shue {
 		void Bind(unsigned int slot = 0) const;
 		void Unbind() const;
 
+		inline unsigned int ID() const { return m_ID; }
+
 	protected:
 		Texture();
 

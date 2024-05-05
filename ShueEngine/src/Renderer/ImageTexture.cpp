@@ -5,14 +5,20 @@
 
 #include "Renderer.h"
 
+#include <sstream>
+
 namespace Shue {
 
-	ImageTexture::ImageTexture(const char* filePath, const std::string& type) : Texture(), 
-		m_Type(type)
+	ImageTexture::ImageTexture(const std::string& filePath, const std::string& type, const std::string& directory) : Texture(), 
+		m_Path(filePath), m_Type(type)
 	{
 		stbi_set_flip_vertically_on_load(1);
 
-		m_LocalBuffer = stbi_load(filePath, &m_Width, &m_Height, &m_BPP, 4);
+		std::stringstream ss;
+		ss << directory << filePath;
+		std::string path = ss.str();
+
+		m_LocalBuffer = stbi_load(path.c_str(), &m_Width, &m_Height, &m_BPP, 4);
 
 		if (m_LocalBuffer)
 		{
@@ -22,5 +28,4 @@ namespace Shue {
 			stbi_image_free(m_LocalBuffer);
 		}
 	}
-
 }

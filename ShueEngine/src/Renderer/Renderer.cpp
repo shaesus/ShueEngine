@@ -66,15 +66,15 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	void Renderer::DrawMesh(const Mesh& mesh, Shader& shader)
+	void Renderer::DrawMesh(const Mesh& mesh, const Shader& shader)
 	{
-		unsigned int diffuseNr = 1;
+		/*unsigned int diffuseNr = 1;
 		unsigned int specularNr = 1;
-		const auto& textures = mesh.Textures();
+		const auto& textures = mesh.Textures();*/
 		const auto& indices = mesh.Indices();
-		for (unsigned int i = 0; i < textures.size(); i++)
+		/*for (unsigned int i = 0; i < textures.size(); i++)
 		{
-			// retrieve texture number (the N in diffuse_textureN)
+			GLCall(glActiveTexture(GL_TEXTURE0 + i));
 			std::string number;
 			std::string name = textures[i].Type();
 			if (name == "texture_diffuse")
@@ -82,15 +82,23 @@ namespace Shue {
 			else if (name == "texture_specular")
 				number = std::to_string(specularNr++);
 
-			textures[i].Bind(i);
+			shader.Bind();
 			shader.SetUniform1i(("u_Material." + name + number).c_str(), i);
+			glBindTexture(GL_TEXTURE_2D, textures[i].ID());
 		}
-		GLCall(glActiveTexture(GL_TEXTURE0));
-
-		const auto& va = mesh.VA();
-
-		va.Bind();
+		GLCall(glActiveTexture(GL_TEXTURE0));*/
+		
+		GLCall(glBindVertexArray(mesh.VA()));
+		shader.Bind();
 		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
+		GLCall(glBindVertexArray(0));
+		shader.Unbind();
+	}
+
+	void Renderer::DrawModel(const Model& model, const Shader& shader)
+	{
+		for (const Mesh& mesh : model.Meshes())
+			DrawMesh(mesh, shader);
 	}
 
 	void Renderer::AddFont(const std::string& fontPath, const std::string& name)

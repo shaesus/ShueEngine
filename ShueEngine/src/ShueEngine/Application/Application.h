@@ -52,7 +52,7 @@ namespace Shue {
 		Renderer m_Renderer;
 		Camera* m_Camera;
 
-		float m_TimeOfCurrentFrame, m_TimeOfLastFrame;
+		double m_TimeOfCurrentFrame, m_TimeOfLastFrame;
 
 	protected:
 		static Application* s_Instance;

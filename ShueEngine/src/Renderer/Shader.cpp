@@ -134,7 +134,7 @@ namespace Shue {
 	void Shader::SetUniformMaterial(const std::string& name, const Material& material)
 	{
 		SetUniform1i(name + ".diffuseMap", material.DiffuseMap());
-		SetUniform1i(name + ".specular", material.Specular());
+		SetUniform1i(name + ".specularMap", material.Specular());
 		SetUniform1f(name + ".shininess", material.Shininess());
 	}
 

@@ -23,25 +23,31 @@ namespace Shue {
     public:
         Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<ImageTexture> textures);
 
-        const std::vector<Vertex>& Vertices() const { return m_vertices; }
-        const std::vector<unsigned int>& Indices() const { return m_indices; }
-        const std::vector<ImageTexture>& Textures() const { return m_textures; }
+        const std::vector<Vertex>& Vertices() const { return m_Vertices; }
+        const std::vector<unsigned int>& Indices() const { return m_Indices; }
+        const std::vector<ImageTexture>& Textures() const { return m_Textures; }
 
-        const VertexArray& VA() const { return m_VA; }
-        const VertexBuffer& VB() const { return m_VB; }
-        const IndexBuffer& IB() const { return m_IB; }
+        /*inline const VertexArray& VA() const { return m_VA; }
+        inline const VertexBuffer& VB() const { return m_VB; }
+        inline const IndexBuffer& IB() const { return m_IB; }*/
+
+        inline unsigned int VA() const { return m_VAO; }
+        inline unsigned int VB() const { return m_VBO; }
+        inline unsigned int EB() const { return m_EBO; }
 
     private:
         void SetupMesh();
 
     private:
-        std::vector<Vertex> m_vertices;
-        std::vector<unsigned int> m_indices;
-        std::vector<ImageTexture> m_textures;
+        std::vector<Vertex> m_Vertices;
+        std::vector<unsigned int> m_Indices;
+        std::vector<ImageTexture> m_Textures;
 
-        VertexArray m_VA;
+        /*VertexArray m_VA;
         VertexBuffer m_VB;
-        IndexBuffer m_IB;
+        IndexBuffer m_IB;*/
+
+        unsigned int m_VAO, m_VBO, m_EBO;
     };
 
 }

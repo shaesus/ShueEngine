@@ -11,6 +11,7 @@
 #include "CharTexture.h"
 #include "ImageTexture.h"
 #include "Mesh.h"
+#include "Model.h"
 
 #include "Assertion.h"
 
@@ -43,7 +44,8 @@ namespace Shue {
 		void ClearColor(float r, float g, float b, float a) const;
 		void DrawIb(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void DrawTriangles(const VertexArray& va, const Shader& shader, unsigned int count);
-		void DrawMesh(const Mesh& mesh, Shader& shader);
+		void DrawMesh(const Mesh& mesh, const Shader& shader);
+		void DrawModel(const Model& model, const Shader& shader);
 		void AddFont(const std::string& fontPath, const std::string& name);
 		void RenderText(const VertexArray& va, const VertexBuffer& vb, Shader& shader,
 			const std::string& text, float x, float y, float scale, const glm::vec3& color, const std::string& fontName);
