@@ -13,6 +13,8 @@
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
 
+#define DELTA_TIME Application::Get().DeltaTime()
+
 namespace Shue {
 
 	class SHUE_API Application

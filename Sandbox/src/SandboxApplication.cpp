@@ -137,60 +137,14 @@ public:
 		redstoneLampTex.Bind(2);
 		lightSourceShader.SetUniform1i("u_Texture", 2);
 
-		float lightSourceVertices[] = {
-			// Back face
-			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // Bottom-left
-			 0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right
-			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom-right         
-			 0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right
-			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom-left
-			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top-left
-			// Front face
-			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
-			 0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
-			 0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
-			-0.5f,  0.5f,  0.5f, 0.0f, 1.0f, // top-left
-			-0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
-			// Left face
-			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
-			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top-left
-			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom-left
-			-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, // bottom-left
-			-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
-			-0.5f,  0.5f,  0.5f, 1.0f, 1.0f, // top-right
-			// Right face
-			 0.5f,  0.5f,  0.5f, 0.0f, 1.0f, // top-left
-			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right         
-			 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f,  0.5f, 0.0f, 1.0f, // top-left
-			 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left     
-			 // Bottom face
-			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, // top-right
-			 0.5f, -0.5f, -0.5f, 0.0f, 1.0f, // top-left
-			 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
-			 0.5f, -0.5f,  0.5f, 0.0f, 0.0f, // bottom-left
-			-0.5f, -0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
-			-0.5f, -0.5f, -0.5f, 1.0f, 1.0f, // top-right
-			// Top face			
-			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top-left
-			 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f, -0.5f, 1.0f, 1.0f, // top-right     
-			 0.5f,  0.5f,  0.5f, 1.0f, 0.0f, // bottom-right
-			-0.5f,  0.5f, -0.5f, 0.0f, 1.0f, // top-left
-			-0.5f,  0.5f,  0.5f, 0.0f, 0.0f, // bottom-left        
-		};
-
 		Shue::VertexArray lightSourceVA;
 		lightSourceVA.Bind();
 
-		Shue::VertexBuffer lightSourceVB(sizeof(lightSourceVertices), lightSourceVertices, GL_STATIC_DRAW);
-
 		Shue::VertexBufferLayout lightSourceLayout;
 		lightSourceLayout.Push<float>(3);
+		lightSourceLayout.Push<float>(3);
 		lightSourceLayout.Push<float>(2);
-		lightSourceVA.AddBuffer(lightSourceVB, lightSourceLayout);
+		lightSourceVA.AddBuffer(cubeVB, lightSourceLayout);
 
 		Shue::Model backpackModel("res/models/Backpack/backpack.obj");
 
@@ -214,7 +168,6 @@ public:
 		vbTextWS.Unbind();
 		lightSourceShader.Unbind();
 		lightSourceVA.Unbind();
-		lightSourceVB.Unbind();
 		modelShader.Unbind();
 
 		glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
@@ -269,7 +222,7 @@ public:
 				lightSourceShader.Bind();
 				redstoneLampTex.Bind(2);
 				lightSourceShader.SetUniformMatrix4fv("u_MVP", mvp);
-				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(lightSourceVertices));
+				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(cubeVertices));
 			}
 
 			////World Space Text

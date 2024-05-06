@@ -30,6 +30,7 @@
     <ClCompile Include="src\Renderer\Mesh.cpp" />
     <ClCompile Include="src\Renderer\Model.cpp" />
     <ClCompile Include="src\ShueEngine\Application\Layers\UILayer.cpp" />
+    <ClCompile Include="src\ECS\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShueEngine\Application\Application.h" />
@@ -352,6 +353,10 @@
     <ClInclude Include="src\Renderer\Mesh.h" />
     <ClInclude Include="src\Renderer\Model.h" />
     <ClInclude Include="src\ShueEngine\Application\Layers\UILayer.h" />
+    <ClInclude Include="src\ShueEngine\Scene\Scene.h" />
+    <ClInclude Include="src\ECS\Entity.h" />
+    <ClInclude Include="src\ECS\Component.h" />
+    <ClInclude Include="src\ECS\Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl" />

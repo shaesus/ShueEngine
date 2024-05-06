@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include "Application/Application.h"
+
 namespace Shue {
 
     Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
@@ -70,12 +72,12 @@ namespace Shue {
 		UpdateCameraVectors();
     }
 
-    void Camera::OnUpdate(float deltaTime)
+    void Camera::OnUpdate()
     {
         if (!m_CanControl)
             return;
 
-		float velocity = MovementSpeed * deltaTime;
+		float velocity = MovementSpeed * DELTA_TIME;
 		Position += velocity * m_Movement;
     }
 

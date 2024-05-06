@@ -88,7 +88,7 @@ namespace Shue {
 		m_TimeOfLastFrame = m_TimeOfCurrentFrame;
 		m_TimeOfCurrentFrame = glfwGetTime();
 
-		m_Camera->OnUpdate(DeltaTime());
+		m_Camera->OnUpdate();
 
 		for (Layer* layer : m_LayerStack)
 			layer->OnUpdate();

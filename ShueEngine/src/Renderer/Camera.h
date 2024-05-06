@@ -30,7 +30,7 @@ namespace Shue {
         void ProcessReleasedMouseButton(unsigned int button);
         void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
 
-        void OnUpdate(float deltaTime);
+        void OnUpdate();
 
     public:
         glm::vec3 Position;
