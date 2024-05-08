@@ -45,4 +45,6 @@ void Pendulum::Update()
 
 	m_P = m_Mass * g * m_Length * (1 - cos(m_CurrentAngle));
 	m_K = m_Emax - m_P;
+
+	m_Transform->RotateGlobal(m_CurrentAngle, glm::vec3(0.0f, 0.0f, 1.0f));
 }

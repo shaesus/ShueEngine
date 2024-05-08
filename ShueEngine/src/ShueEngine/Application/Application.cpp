@@ -33,8 +33,7 @@ namespace Shue {
 	bool firstMouse = true;
 
 	void Application::Run()
-	{
-		
+	{	
 	}
 
 	void Application::OnEvent(Event& e)
@@ -74,14 +73,12 @@ namespace Shue {
 	bool Application::OnWindowResize(WindowResizeEvent& e)
 	{
 		GLCall(glViewport(0, 0, e.GetWidth(), e.GetHeight()));
-		std::cout << e << std::endl;
 		return true;
 	}
 
 	bool Application::OnWindowClose(WindowCloseEvent& e)
 	{
 		m_Running = false;
-		std::cout << e << std::endl;
 		return true;
 	}
 

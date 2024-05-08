@@ -151,8 +151,8 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	//TODO WorldSpace
-	void Renderer::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, Shader& shader) const
+	void Renderer::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color,
+		Shader& shader, const glm::mat4& view, const glm::mat4& proj) const
 	{
 		float vertices[] = {
 			p0.x, p0.y, p0.z,
@@ -167,6 +167,11 @@ namespace Shue {
 
 		shader.Bind();
 		shader.SetUniformVec4("u_Color", color);
+		
+		glm::mat4 model = glm::mat4(1.0f);
+		shader.SetUniformMatrix4fv("u_Model", model);
+		shader.SetUniformMatrix4fv("u_View", view);
+		shader.SetUniformMatrix4fv("u_Proj", proj);
 
 		GLCall(glDrawArrays(GL_LINES, 0, 2));
 		shader.Unbind();

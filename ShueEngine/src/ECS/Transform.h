@@ -15,7 +15,8 @@ namespace Shue {
 
 		void Update() override;
 
-		void Rotate(float angle, glm::vec3 axis);
+		void Rotate(float angle, glm::vec3 localAxis);
+		void RotateGlobal(float angle, glm::vec3 globalAxis);
 
 		inline const glm::mat4& GetModelMatrix() { return m_ModelMatrix; }
 	

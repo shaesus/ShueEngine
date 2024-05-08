@@ -13,16 +13,19 @@
 #include "imGUI/imgui.h"
 #include "imGUI/imgui_impl_opengl3.h"
 
-glm::vec4 backgroundColor(0.2f, 0.3f, 0.3f, 1.0f);
-glm::vec3 cubePos        (-0.2f, -0.2f, 0.1f);
-glm::vec3 lightSourcePos (0.0f, 1.0f, 0.0f);
-glm::vec3 lightColor     (1.0f, 1.0f, 1.0f);
-glm::vec3 spherePos      (0.0f, -0.3f, 0.0f);
+glm::vec4 backgroundColor (  0.2f,  0.3f, 0.3f, 1.0f );
+glm::vec3 cubePos         ( -0.2f, -0.2f, 0.1f );
+glm::vec3 lightSourcePos  (  0.0f,  1.0f, 0.0f );
+glm::vec3 lightColor      (  1.0f,  1.0f, 1.0f );
+glm::vec3 spherePos       (  0.0f,  0.0f, 0.0f );
 
-static float mass = 1.0f;
-static float length = 1.0f;
+static float mass = 2.0f;
+static float length = 2.0f;
 static float startAngle = 45.0f;
 static bool confirmed;
+
+static const float massScaleCoeff = 0.05f;
+static const float lengthYCoeff = -0.15f;
 
 class PendulumAnalysis : public Shue::Application
 {
@@ -58,9 +61,10 @@ public:
 		Pendulum* pendulum = new Pendulum("res/models/Sphere/Sphere.obj", pendulumShader, mass, length, startAngle);
 		CurrentScene.AddObject(pendulum);
 
-		//Shue::Transform* pendulumTransform = pendulum->GetTransform();
-		//pendulumTransform->Position = spherePos;
-		//pendulumTransform->Scale = glm::vec3(0.1f);
+		Shue::Transform* pendulumTransform = pendulum->GetTransform();
+		spherePos.y = length * lengthYCoeff;
+		pendulumTransform->Position = spherePos;
+		pendulumTransform->Scale = glm::vec3(mass * massScaleCoeff);
 
 		pendulumShader.Unbind();
 
@@ -78,15 +82,16 @@ public:
 				delete pendulum;
 				pendulum = new Pendulum(pendulumModel, pendulumShader, mass, length, startAngle);
 				CurrentScene.AddObject(pendulum);
+				pendulumTransform = pendulum->GetTransform();
+				spherePos.y = length * lengthYCoeff;
+				pendulumTransform->Position = spherePos;
+				pendulumTransform->Scale = glm::vec3(mass * massScaleCoeff);
 			}
 
 			//Sphere
 			{
-				glm::mat4 model = glm::rotate(glm::mat4(1.0f), pendulum->GetAngle(), glm::vec3(0.0f, 0.0f, 1.0f));
-				model = glm::translate(model, spherePos);
-				model = glm::scale(model, glm::vec3(0.1f));
 				pendulumShader.Bind();
-				pendulumShader.SetUniformMatrix4fv("u_Model", model);
+				pendulumShader.SetUniformMatrix4fv("u_Model", pendulumTransform->GetModelMatrix());
 				pendulumShader.SetUniformMatrix4fv("u_View", view);
 				pendulumShader.SetUniformMatrix4fv("u_Proj", proj);
 				pendulumShader.SetUniformLightProperties("u_Light",

@@ -12,11 +12,11 @@
 
 #include "Layers/SandboxUILayer.h"
 
-glm::vec4 backgroundColor (  0.2f,  0.3f,  0.3f, 1.0f);
+glm::vec4 backgroundColor (  0.2f,  0.3f,  0.3f, 1.0f );
 glm::vec3 cubePos         ( -0.2f, -0.2f,  0.1f );
 glm::vec3 lightSourcePos  (  0.2f, -0.2f,  0.0f );
 glm::vec3 textPos         (  0.0f, -0.1f, -0.3f );
-glm::vec3 lightColor      (  1.0f,  1.0f,  1.0f);
+glm::vec3 lightColor      (  1.0f,  1.0f,  1.0f );
 glm::vec3 backpackPos     (  0.0f,  0.0f, -0.3f );
 
 class Sandbox : public Shue::Application
@@ -192,7 +192,7 @@ public:
 
 			lightSourcePos.y = sin(m_TimeOfCurrentFrame) / 3.0f - 0.2f;
 
-			//m_Renderer.DrawLine(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec4(1.0f, 0.5f, 0.2f, 1.0f), lineShader);
+			m_Renderer.DrawLine(glm::vec3(0.0f), glm::vec3(0.3f), glm::vec4(1.0f, 0.5f, 0.2f, 1.0f), lineShader, view, proj);
 
 			//Backpack
 			{

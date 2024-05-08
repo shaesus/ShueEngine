@@ -52,7 +52,8 @@ namespace Shue {
 		void AddFont(const std::string& fontPath, const std::string& name);
 		void DrawText(const VertexArray& va, const VertexBuffer& vb, Shader& shader,
 			const std::string& text, float x, float y, float scale, const glm::vec3& color, const std::string& fontName);
-		void DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, Shader& shader) const;
+		void DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, //Needs refactoring
+			Shader& shader, const glm::mat4& view, const glm::mat4& proj) const;
 		void SetFrontFace(unsigned int mode = GL_CCW) const;
 		void SetBlending(bool blending, unsigned int sfactor = GL_SRC_ALPHA, unsigned int dfactor = GL_ONE_MINUS_SRC_ALPHA);
 		void SetCulling(bool culling, unsigned int mode = GL_BACK);
