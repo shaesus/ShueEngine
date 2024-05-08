@@ -6,17 +6,30 @@
 #include "Material.h"
 #include "LightProperties.h"
 
-#include "Application/Layers/UILayer.h"
+#include "Entities/Pendulum.h"
 
-glm::vec3 cubePos(-0.2f, -0.2f, 0.1f);
-glm::vec3 lightSourcePos(0.2f, -0.2f, 0.0f);
+#include "Layers/PendulumUILayer.h"
+
+#include "imGUI/imgui.h"
+#include "imGUI/imgui_impl_opengl3.h"
+
+glm::vec4 backgroundColor(0.2f, 0.3f, 0.3f, 1.0f);
+glm::vec3 cubePos        (-0.2f, -0.2f, 0.1f);
+glm::vec3 lightSourcePos (0.0f, 1.0f, 0.0f);
+glm::vec3 lightColor     (1.0f, 1.0f, 1.0f);
+glm::vec3 spherePos      (0.0f, -0.3f, 0.0f);
+
+static float mass = 1.0f;
+static float length = 1.0f;
+static float startAngle = 45.0f;
+static bool confirmed;
 
 class PendulumAnalysis : public Shue::Application
 {
 public:
 	PendulumAnalysis()
 	{
-		PushOverlay(new Shue::UILayer(cubePos, lightSourcePos));
+		PushOverlay(new PendulumUILayer(mass, length, startAngle, confirmed));
 	}
 
 	void Run() override
@@ -33,134 +46,60 @@ public:
 			, 0.1f, 100.0f);
 		glm::mat4 view;
 
-		float cubeVertices[] = {
-			// Back face
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, // Bottom-left
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f, // top-right
-			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f, // bottom-right         
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f, // top-right
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, // bottom-left
-			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f, // top-left
-			// Front face							   
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f, // top-right
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f, // top-right
-			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f, // top-left
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-			// Left face							   
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // top-right
-			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // top-left
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // bottom-left
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // bottom-left
-			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // top-right
-			// Right face							   
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // top-left
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // top-right         
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // top-left
-			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // bottom-left     
-			 // Bottom face							   
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f, // top-right
-			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f, // top-left
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, // bottom-left
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, // bottom-left
-			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f, // top-right
-			// Top face			  					   
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f, // top-left
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f, // top-right     
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f, // top-left
-			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, // bottom-left        
-		};
+		Shue::ImageTexture metalTex("res/textures/metal.jpg");
+		metalTex.Bind(3);
 
-		Shue::VertexArray cubeVA;
-		Shue::VertexBuffer cubeVB(sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
+		Shue::Shader pendulumShader("res/shaders/Lighting.shader");
+		pendulumShader.Bind();
+		pendulumShader.SetUniformMaterial("u_Material", Shue::Material(3, 3, 32.0f));
 
-		Shue::VertexBufferLayout layout;
-		layout.Push<float>(3);
-		layout.Push<float>(3);
-		layout.Push<float>(2);
-		cubeVA.AddBuffer(cubeVB, layout);
+		Shue::Model* pendulumModel = new Shue::Model("res/models/Sphere/Sphere.obj");
 
-		Shue::Shader lightingShader("res/shaders/Lighting.shader");
-		lightingShader.Bind();
+		Pendulum* pendulum = new Pendulum("res/models/Sphere/Sphere.obj", pendulumShader, mass, length, startAngle);
+		CurrentScene.AddObject(pendulum);
 
-		Shue::ImageTexture containerTex("res/textures/container.png");
-		Shue::ImageTexture containerSpecular("res/textures/container2_specular.png");
-		containerTex.Bind(0);
-		containerSpecular.Bind(1);
+		//Shue::Transform* pendulumTransform = pendulum->GetTransform();
+		//pendulumTransform->Position = spherePos;
+		//pendulumTransform->Scale = glm::vec3(0.1f);
 
-		lightingShader.SetUniformMaterial("u_Material", Shue::Material(0, 1, 32.0f));
-
-		Shue::VertexArray lightSourceVA;
-
-		Shue::VertexBufferLayout lightSourceLayout;
-		lightSourceLayout.Push<float>(3);
-		lightSourceLayout.Push<float>(3);
-		lightSourceLayout.Push<float>(2);
-		lightSourceVA.AddBuffer(cubeVB, lightSourceLayout);
-
-		Shue::Shader lightSourceShader("res/shaders/LightSource.shader");
-		lightSourceShader.Bind();
-
-		Shue::ImageTexture redstoneLampTex("res/textures/redstone_lamp.png");
-		redstoneLampTex.Bind(2);
-
-		lightSourceShader.SetUniform1i("u_Texture", 2);
-
-		lightingShader.Unbind();
-		cubeVA.Unbind();
-		cubeVB.Unbind();
-		lightSourceShader.Unbind();
-		lightSourceVA.Unbind();
-
-		glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+		pendulumShader.Unbind();
 
 		while (m_Running)
 		{
-			m_Renderer.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+			m_Renderer.ClearColor(backgroundColor);
 			m_Renderer.Clear();
 
 			view = glm::lookAt(Shue::Camera::Main->Position,
 				Shue::Camera::Main->Position + Shue::Camera::Main->Front, Shue::Camera::Main->Up);
 
-			lightSourcePos.y = sin(m_TimeOfCurrentFrame) / 3.0f - 0.2f;
-
-			//Cube
+			if (confirmed)
 			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), cubePos);
-				model = glm::scale(model, glm::vec3(0.25f));
-				lightingShader.Bind();
-				lightingShader.SetUniformMatrix4fv("u_Model", model);
-				lightingShader.SetUniformMatrix4fv("u_View", view);
-				lightingShader.SetUniformMatrix4fv("u_Proj", proj);
-				lightingShader.SetUniformLightProperties("u_Light",
-					Shue::LightProperties(lightSourcePos, glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f)));
-				lightingShader.SetUniformVec3("u_ViewPos", Shue::Camera::Main->Position);
-				containerTex.Bind(0);
-				containerSpecular.Bind(1);
-				m_Renderer.DrawTriangles(cubeVA, lightingShader, sizeof(cubeVertices));
+				CurrentScene.RemoveObject(pendulum->GetID());
+				delete pendulum;
+				pendulum = new Pendulum(pendulumModel, pendulumShader, mass, length, startAngle);
+				CurrentScene.AddObject(pendulum);
 			}
 
-			//Light Source
+			//Sphere
 			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSourcePos);
+				glm::mat4 model = glm::rotate(glm::mat4(1.0f), pendulum->GetAngle(), glm::vec3(0.0f, 0.0f, 1.0f));
+				model = glm::translate(model, spherePos);
 				model = glm::scale(model, glm::vec3(0.1f));
-				glm::mat4 mvp = proj * view * model;
-				lightSourceShader.Bind();
-				redstoneLampTex.Bind(2);
-				lightSourceShader.SetUniformMatrix4fv("u_MVP", mvp);
-				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(cubeVertices));
+				pendulumShader.Bind();
+				pendulumShader.SetUniformMatrix4fv("u_Model", model);
+				pendulumShader.SetUniformMatrix4fv("u_View", view);
+				pendulumShader.SetUniformMatrix4fv("u_Proj", proj);
+				pendulumShader.SetUniformLightProperties("u_Light",
+					Shue::LightProperties(lightSourcePos, glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f)));
+				pendulumShader.SetUniformVec3("u_ViewPos", Shue::Camera::Main->Position);
+				metalTex.Bind(3);
 			}
 
 			Shue::AppUpdateEvent appUpdateEvent;
 			OnEvent(appUpdateEvent);
 		}
+
+		delete pendulum;
 	}
 
 	~PendulumAnalysis()

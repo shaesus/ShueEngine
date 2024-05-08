@@ -1,3 +1,4 @@
+#include "Core.h"
 // dear imgui, v1.89.9
 // (headers)
 
@@ -74,7 +75,7 @@ Index of this file:
 // IMGUI_API is used for core imgui functions, IMGUI_IMPL_API is used for the default backends files (imgui_impl_xxx.h)
 // Using dear imgui via a shared library is not recommended, because we don't guarantee backward nor forward ABI compatibility (also function call overhead, as dear imgui is a call-heavy API)
 #ifndef IMGUI_API
-#define IMGUI_API
+#define IMGUI_API SHUE_API
 #endif
 #ifndef IMGUI_IMPL_API
 #define IMGUI_IMPL_API              IMGUI_API

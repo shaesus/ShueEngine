@@ -19,6 +19,7 @@ namespace Shue {
 		void OnUpdate();
 
 		void AddObject(Entity* entity);
+		void RemoveObject(unsigned int id);
 
 		inline const std::string& GetName() const { return m_Name; }
 

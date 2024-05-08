@@ -143,7 +143,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Entities\Pendulum.cpp" />
     <ClCompile Include="src\PendulumAnalysis.cpp" />
+    <ClCompile Include="src\Layers\PendulumUILayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
@@ -151,6 +153,10 @@
     <None Include="res\shaders\LightSource.shader" />
     <None Include="res\shaders\Text.shader" />
     <None Include="res\shaders\WorldSpaceText.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Entities\Pendulum.h" />
+    <ClInclude Include="src\Layers\PendulumUILayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

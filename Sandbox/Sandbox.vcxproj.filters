@@ -21,6 +21,9 @@
     <ClCompile Include="src\Entities\Backpack.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Layers\SandboxUILayer.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\Basic.shader" />
@@ -28,6 +31,7 @@
     <None Include="res\shaders\LightSource.shader" />
     <None Include="res\shaders\Text.shader" />
     <None Include="res\shaders\WorldSpaceText.shader" />
+    <None Include="res\shaders\Line.shader" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\fonts\arial.ttf" />
@@ -35,6 +39,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entities\Backpack.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Layers\SandboxUILayer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -26,4 +26,9 @@ namespace Shue {
 		m_sceneObjects.insert(std::pair(entity->GetID(), entity));
 	}
 
+	void Scene::RemoveObject(unsigned int id)
+	{
+		m_sceneObjects.erase(id);
+	}
+
 }

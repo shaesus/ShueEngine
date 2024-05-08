@@ -41,7 +41,12 @@ namespace Shue {
 
 	void Renderer::ClearColor(float r, float g, float b, float a) const
 	{
-		GLCall(glClearColor(0.2f, 0.3f, 0.3f, 1.0f));
+		GLCall(glClearColor(r, g, b, a));
+	}
+
+	void Renderer::ClearColor(const glm::vec4& rgba) const
+	{
+		GLCall(glClearColor(rgba.r, rgba.g, rgba.b, rgba.a));
 	}
 
 	void Renderer::DrawIb(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const
@@ -105,7 +110,7 @@ namespace Shue {
 		if (font) m_Fonts.insert(std::pair<std::string, Font*>(name, font));
 	}
 
-	void Renderer::RenderText(const VertexArray& va, const VertexBuffer& vb, Shader& shader, 
+	void Renderer::DrawText(const VertexArray& va, const VertexBuffer& vb, Shader& shader, 
 		const std::string& text, float x, float y, float scale, const glm::vec3& color, const std::string& fontName)
 	{
 		shader.Bind();
@@ -143,6 +148,27 @@ namespace Shue {
 		}
 
 		va.Unbind();
+		shader.Unbind();
+	}
+
+	//TODO WorldSpace
+	void Renderer::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, Shader& shader) const
+	{
+		float vertices[] = {
+			p0.x, p0.y, p0.z,
+			p1.x, p1.y, p1.z,
+		};
+
+		VertexArray va;
+		VertexBuffer vb(sizeof(vertices), vertices, GL_STATIC_DRAW);
+		VertexBufferLayout layout;
+		layout.Push<float>(3);
+		va.AddBuffer(vb, layout);
+
+		shader.Bind();
+		shader.SetUniformVec4("u_Color", color);
+
+		GLCall(glDrawArrays(GL_LINES, 0, 2));
 		shader.Unbind();
 	}
 

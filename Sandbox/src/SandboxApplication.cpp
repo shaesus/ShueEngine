@@ -10,19 +10,21 @@
 #include "Scene/Scene.h"
 #include "Entities/Backpack.h"
 
-#include "Application/Layers/UILayer.h"
+#include "Layers/SandboxUILayer.h"
 
-glm::vec3 cubePos        ( -0.2f, -0.2f,  0.1f );
-glm::vec3 lightSourcePos (  0.2f, -0.2f,  0.0f );
-glm::vec3 textPos        (  0.0f, -0.1f, -0.3f );
-glm::vec3 backpackPos    (  0.0f,  0.0f, -0.3f );
+glm::vec4 backgroundColor (  0.2f,  0.3f,  0.3f, 1.0f);
+glm::vec3 cubePos         ( -0.2f, -0.2f,  0.1f );
+glm::vec3 lightSourcePos  (  0.2f, -0.2f,  0.0f );
+glm::vec3 textPos         (  0.0f, -0.1f, -0.3f );
+glm::vec3 lightColor      (  1.0f,  1.0f,  1.0f);
+glm::vec3 backpackPos     (  0.0f,  0.0f, -0.3f );
 
 class Sandbox : public Shue::Application
 {
 public:
 	Sandbox() 
 	{
-		PushOverlay(new Shue::UILayer(cubePos, lightSourcePos));
+		PushOverlay(new SandboxUILayer(cubePos, lightSourcePos));
 	}
 
 	void Run() override
@@ -165,6 +167,8 @@ public:
 		backpackTransform->Position = backpackPos;
 		backpackTransform->Scale = glm::vec3(0.1f);
 		
+		Shue::Shader lineShader("res/shaders/Line.shader");
+
 		lightingShader.Unbind();
 		cubeVA.Unbind();
 		cubeVB.Unbind();
@@ -178,17 +182,17 @@ public:
 		lightSourceVA.Unbind();
 		modelShader.Unbind();
 
-		glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
-
 		while (m_Running)
 		{
-			m_Renderer.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+			m_Renderer.ClearColor(backgroundColor);
 			m_Renderer.Clear();
 
 			view = glm::lookAt(Shue::Camera::Main->Position, 
 				Shue::Camera::Main->Position + Shue::Camera::Main->Front, Shue::Camera::Main->Up);
 
 			lightSourcePos.y = sin(m_TimeOfCurrentFrame) / 3.0f - 0.2f;
+
+			//m_Renderer.DrawLine(glm::vec3(0.0f), glm::vec3(1.0f), glm::vec4(1.0f, 0.5f, 0.2f, 1.0f), lineShader);
 
 			//Backpack
 			{
@@ -253,7 +257,6 @@ public:
 			OnEvent(appUpdateEvent);
 		}
 
-		delete backpackTransform;
 		delete backpack;
 	}
 

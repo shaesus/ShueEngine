@@ -31,7 +31,6 @@
     <ClCompile Include="src\ECS\Entity.cpp" />
     <ClCompile Include="src\ECS\ModelRenderer.cpp" />
     <ClCompile Include="src\ECS\Transform.cpp" />
-    <ClCompile Include="src\ShueEngine\Application\Layers\UILayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShueEngine\Application\Application.h" />
@@ -358,7 +357,6 @@
     <ClInclude Include="src\ECS\Entity.h" />
     <ClInclude Include="src\ECS\ModelRenderer.h" />
     <ClInclude Include="src\ECS\Transform.h" />
-    <ClInclude Include="src\ShueEngine\Application\Layers\UILayer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl" />

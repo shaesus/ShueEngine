@@ -124,8 +124,6 @@ namespace Shue {
 
 	bool Application::OnMouseButtonPress(MouseButtonPressedEvent& e)
 	{
-		std::cout << e << '\n';
-
 		Camera::Main->ProcessPressedMouseButton(e.GetMouseButton());
 
 		return true;
@@ -133,8 +131,6 @@ namespace Shue {
 
 	bool Application::OnMouseButtonRelease(MouseButtonReleasedEvent& e)
 	{
-		std::cout << e << '\n';
-
 		Camera::Main->ProcessReleasedMouseButton(e.GetMouseButton());
 
 		return true;
@@ -142,14 +138,11 @@ namespace Shue {
 
 	bool Application::OnMouseScroll(MouseScrolledEvent& e)
 	{
-		std::cout << e << '\n';
 		return true;
 	}
 
 	bool Application::OnKeyPress(KeyPressedEvent& e)
 	{
-		std::cout << e << '\n';
-
 		Camera::Main->ProcessPressedKey(e.GetKeyCode());
 
 		return true;
@@ -157,14 +150,11 @@ namespace Shue {
 
 	bool Application::OnKeyType(KeyTypedEvent& e)
 	{
-		std::cout << e << '\n';
 		return true;
 	}
 
 	bool Application::OnKeyRelease(KeyReleasedEvent& e)
 	{
-		std::cout << e << '\n';
-
 		Camera::Main->ProcessReleasedKey(e.GetKeyCode());
 
 		return true;

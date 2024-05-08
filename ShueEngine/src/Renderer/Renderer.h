@@ -5,6 +5,8 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
+#include "glm/glm.hpp"
+
 #include "VertexArray.h"
 #include "IndexBuffer.h"
 #include "Shader.h"
@@ -42,13 +44,15 @@ namespace Shue {
 
 		void Clear() const;
 		void ClearColor(float r, float g, float b, float a) const;
+		void ClearColor(const glm::vec4& rgba) const;
 		void DrawIb(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void DrawTriangles(const VertexArray& va, const Shader& shader, unsigned int count) const;
 		void DrawMesh(const Mesh& mesh, const Shader& shader) const;
 		void DrawModel(const Model& model, const Shader& shader) const;
 		void AddFont(const std::string& fontPath, const std::string& name);
-		void RenderText(const VertexArray& va, const VertexBuffer& vb, Shader& shader,
+		void DrawText(const VertexArray& va, const VertexBuffer& vb, Shader& shader,
 			const std::string& text, float x, float y, float scale, const glm::vec3& color, const std::string& fontName);
+		void DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, Shader& shader) const;
 		void SetFrontFace(unsigned int mode = GL_CCW) const;
 		void SetBlending(bool blending, unsigned int sfactor = GL_SRC_ALPHA, unsigned int dfactor = GL_ONE_MINUS_SRC_ALPHA);
 		void SetCulling(bool culling, unsigned int mode = GL_BACK);
