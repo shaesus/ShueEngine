@@ -44,6 +44,8 @@ namespace Shue {
 			m_Stride += count * VertexBufferLayoutElement::GetSizeOfType(GL_FLOAT);
 		}
 
+		//TODO Push<Vertex>
+
 		inline const std::vector<VertexBufferLayoutElement>& GetElements() const { return m_Elements; }
 		inline unsigned int GetStride() const { return m_Stride; }
 

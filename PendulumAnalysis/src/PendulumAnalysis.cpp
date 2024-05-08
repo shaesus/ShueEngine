@@ -5,22 +5,16 @@
 
 #include "Material.h"
 #include "LightProperties.h"
-#include "Model.h"
-
-#include "Scene/Scene.h"
-#include "Entities/Backpack.h"
 
 #include "Application/Layers/UILayer.h"
 
-glm::vec3 cubePos        ( -0.2f, -0.2f,  0.1f );
-glm::vec3 lightSourcePos (  0.2f, -0.2f,  0.0f );
-glm::vec3 textPos        (  0.0f, -0.1f, -0.3f );
-glm::vec3 backpackPos    (  0.0f,  0.0f, -0.3f );
+glm::vec3 cubePos(-0.2f, -0.2f, 0.1f);
+glm::vec3 lightSourcePos(0.2f, -0.2f, 0.0f);
 
-class Sandbox : public Shue::Application
+class PendulumAnalysis : public Shue::Application
 {
 public:
-	Sandbox() 
+	PendulumAnalysis()
 	{
 		PushOverlay(new Shue::UILayer(cubePos, lightSourcePos));
 	}
@@ -93,17 +87,17 @@ public:
 		layout.Push<float>(2);
 		cubeVA.AddBuffer(cubeVB, layout);
 
+		Shue::Shader lightingShader("res/shaders/Lighting.shader");
+		lightingShader.Bind();
+
 		Shue::ImageTexture containerTex("res/textures/container.png");
 		Shue::ImageTexture containerSpecular("res/textures/container2_specular.png");
 		containerTex.Bind(0);
 		containerSpecular.Bind(1);
 
-		Shue::Shader lightingShader("res/shaders/Lighting.shader");
-		lightingShader.Bind();
 		lightingShader.SetUniformMaterial("u_Material", Shue::Material(0, 1, 32.0f));
 
 		Shue::VertexArray lightSourceVA;
-		lightSourceVA.Bind();
 
 		Shue::VertexBufferLayout lightSourceLayout;
 		lightSourceLayout.Push<float>(3);
@@ -111,72 +105,19 @@ public:
 		lightSourceLayout.Push<float>(2);
 		lightSourceVA.AddBuffer(cubeVB, lightSourceLayout);
 
+		Shue::Shader lightSourceShader("res/shaders/LightSource.shader");
+		lightSourceShader.Bind();
+
 		Shue::ImageTexture redstoneLampTex("res/textures/redstone_lamp.png");
 		redstoneLampTex.Bind(2);
 
-		Shue::Shader lightSourceShader("res/shaders/LightSource.shader");
-		lightSourceShader.Bind();
 		lightSourceShader.SetUniform1i("u_Texture", 2);
 
-		m_Renderer.InitFreeType();
-
-		m_Renderer.AddFont("res/fonts/arial.ttf", "arial");
-		m_Renderer.AddFont("res/fonts/comic.ttf", "comic");
-
-		glm::mat4 projText = glm::ortho(0.0f, (float)m_Window->GetWidth(), 0.0f, (float)m_Window->GetHeight());
-
-		Shue::VertexArray vaTextWS;
-		Shue::VertexBuffer vbTextWS(sizeof(float) * 6 * 5, NULL, GL_DYNAMIC_DRAW);
-
-		Shue::VertexBufferLayout layoutTextWS;
-		layoutTextWS.Push<float>(3);
-		layoutTextWS.Push<float>(2);
-		vaTextWS.AddBuffer(vbTextWS, layoutTextWS);
-
-		Shue::Shader shaderTextWS("res/shaders/WorldSpaceText.shader");
-		shaderTextWS.Bind();
-
-		Shue::VertexArray vaText;
-		Shue::VertexBuffer vbText(sizeof(float) * 6 * 5, NULL, GL_DYNAMIC_DRAW);
-
-		Shue::VertexBufferLayout layoutText;
-		layoutText.Push<float>(3);
-		layoutText.Push<float>(2);
-		vaText.AddBuffer(vbText, layoutText);
-
-		Shue::Shader shaderText("res/shaders/Text.shader");
-		shaderText.Bind();
-
-		Shue::Model backpackModel("res/models/Backpack/backpack.obj");
-
-		Shue::ImageTexture backpackDiffuse("res/models/Backpack/diffuse.jpg");
-		backpackDiffuse.Bind(3);
-		Shue::ImageTexture backpackSpecular("res/models/Backpack/specular.jpg");
-		backpackDiffuse.Bind(4);
-
-		Shue::Shader modelShader("res/shaders/Lighting.shader");
-		modelShader.Bind();
-		modelShader.SetUniformMaterial("u_Material", Shue::Material(3, 4, 20.0f));
-		
-		Backpack* backpack = new Backpack(&backpackModel, modelShader);
-		CurrentScene.AddObject(backpack);
-
-		Shue::Transform* backpackTransform = backpack->GetTransform();
-		backpackTransform->Position = backpackPos;
-		backpackTransform->Scale = glm::vec3(0.1f);
-		
 		lightingShader.Unbind();
 		cubeVA.Unbind();
 		cubeVB.Unbind();
-		shaderText.Unbind();
-		vaText.Unbind();
-		vbText.Unbind();
-		shaderTextWS.Unbind();
-		vaTextWS.Unbind();
-		vbTextWS.Unbind();
 		lightSourceShader.Unbind();
 		lightSourceVA.Unbind();
-		modelShader.Unbind();
 
 		glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
 
@@ -185,23 +126,10 @@ public:
 			m_Renderer.ClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			m_Renderer.Clear();
 
-			view = glm::lookAt(Shue::Camera::Main->Position, 
+			view = glm::lookAt(Shue::Camera::Main->Position,
 				Shue::Camera::Main->Position + Shue::Camera::Main->Front, Shue::Camera::Main->Up);
 
 			lightSourcePos.y = sin(m_TimeOfCurrentFrame) / 3.0f - 0.2f;
-
-			//Backpack
-			{
-				modelShader.Bind();
-				modelShader.SetUniformMatrix4fv("u_Model", backpackTransform->GetModelMatrix());
-				modelShader.SetUniformMatrix4fv("u_View", view);
-				modelShader.SetUniformMatrix4fv("u_Proj", proj);
-				modelShader.SetUniformLightProperties("u_Light",
-					Shue::LightProperties(lightSourcePos, glm::vec3(0.2f), glm::vec3(0.5f), glm::vec3(1.0f)));
-				modelShader.SetUniformVec3("u_ViewPos", Shue::Camera::Main->Position);
-				backpackDiffuse.Bind(3);
-				backpackSpecular.Bind(4);
-			}
 
 			//Cube
 			{
@@ -230,39 +158,17 @@ public:
 				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(cubeVertices));
 			}
 
-			////World Space Text
-			//{
-
-			//	glm::mat4 model = glm::translate(glm::mat4(1.0f), textPos);
-			//	glm::mat4 mvp = proj * view * model;
-			//	shaderTextWS.Bind();
-			//	shaderTextWS.SetUniformMatrix4fv("u_MVP", mvp);
-
-			//	m_Renderer.RenderText(vaTextWS, vbTextWS, shaderTextWS, "World Space", 0.0f, 0.0f, 0.002f, glm::vec3(1.0f, 0.5f, 0.3f), "comic");
-			//}
-
-			////Screen Space Text
-			//{
-			//	shaderText.Bind();
-			//	shaderText.SetUniformMatrix4fv("u_Projection", projText);
-
-			//	m_Renderer.RenderText(vaText, vbText, shaderText, "Screen Space", 1.0f, 1.0f, 0.7f, glm::vec3(1.0f, 0.5f, 0.3f), "arial");
-			//}
-
 			Shue::AppUpdateEvent appUpdateEvent;
 			OnEvent(appUpdateEvent);
 		}
-
-		delete backpackTransform;
-		delete backpack;
 	}
 
-	~Sandbox() 
+	~PendulumAnalysis()
 	{
 	}
 };
 
 Shue::Application* Shue::CreateApplication()
 {
-	return new Sandbox();
+	return new PendulumAnalysis();
 }

@@ -18,7 +18,9 @@ namespace Shue {
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(SH_BIND_EVENT_FN(Application::OnEvent));
 
-		m_Camera = new Camera(glm::vec3(0.0f, 0.0f, 1.0f));
+		CurrentScene = Scene("SampleScene");
+
+		Camera::Main = new Camera(glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 
 	Application::~Application()
@@ -88,7 +90,8 @@ namespace Shue {
 		m_TimeOfLastFrame = m_TimeOfCurrentFrame;
 		m_TimeOfCurrentFrame = glfwGetTime();
 
-		m_Camera->OnUpdate();
+		Camera::Main->OnUpdate();
+		CurrentScene.OnUpdate();
 
 		for (Layer* layer : m_LayerStack)
 			layer->OnUpdate();
@@ -114,7 +117,7 @@ namespace Shue {
 		lastX = e.GetX();
 		lastY = e.GetY();
 		
-		m_Camera->ProcessMouseMovement(xoffset, yoffset, true);
+		Camera::Main->ProcessMouseMovement(xoffset, yoffset, true);
 
 		return true;
 	}
@@ -123,7 +126,7 @@ namespace Shue {
 	{
 		std::cout << e << '\n';
 
-		m_Camera->ProcessPressedMouseButton(e.GetMouseButton());
+		Camera::Main->ProcessPressedMouseButton(e.GetMouseButton());
 
 		return true;
 	}
@@ -132,7 +135,7 @@ namespace Shue {
 	{
 		std::cout << e << '\n';
 
-		m_Camera->ProcessReleasedMouseButton(e.GetMouseButton());
+		Camera::Main->ProcessReleasedMouseButton(e.GetMouseButton());
 
 		return true;
 	}
@@ -147,7 +150,7 @@ namespace Shue {
 	{
 		std::cout << e << '\n';
 
-		m_Camera->ProcessPressedKey(e.GetKeyCode());
+		Camera::Main->ProcessPressedKey(e.GetKeyCode());
 
 		return true;
 	}
@@ -162,7 +165,7 @@ namespace Shue {
 	{
 		std::cout << e << '\n';
 
-		m_Camera->ProcessReleasedKey(e.GetKeyCode());
+		Camera::Main->ProcessReleasedKey(e.GetKeyCode());
 
 		return true;
 	}

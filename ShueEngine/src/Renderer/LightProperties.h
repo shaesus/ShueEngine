@@ -9,7 +9,8 @@ namespace Shue {
 	class SHUE_API LightProperties
 	{
 	public:
-		LightProperties(glm::vec3 pos, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular);
+		LightProperties(glm::vec3 pos, glm::vec3 ambient, glm::vec3 diffuse, glm::vec3 specular)
+			: m_Pos(pos), m_Ambient(ambient), m_Diffuse(diffuse), m_Specular(specular) {}
 
 		inline const glm::vec3& Position() const { return m_Pos; }
 		inline const glm::vec3& Ambient() const { return m_Ambient; }

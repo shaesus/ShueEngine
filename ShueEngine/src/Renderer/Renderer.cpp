@@ -9,9 +9,7 @@ namespace Shue {
 		for (auto& [str, font] : m_Fonts)
 		{
 			for (auto& [c, character] : *font)
-			{
 				delete character.Texture;
-			}
 			delete font;
 		}
 
@@ -57,7 +55,7 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	void Renderer::DrawTriangles(const VertexArray& va, const Shader& shader, unsigned int count)
+	void Renderer::DrawTriangles(const VertexArray& va, const Shader& shader, unsigned int count) const
 	{
 		va.Bind();
 		shader.Bind();
@@ -66,7 +64,7 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	void Renderer::DrawMesh(const Mesh& mesh, const Shader& shader)
+	void Renderer::DrawMesh(const Mesh& mesh, const Shader& shader) const
 	{
 		/*unsigned int diffuseNr = 1;
 		unsigned int specularNr = 1;
@@ -95,7 +93,7 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	void Renderer::DrawModel(const Model& model, const Shader& shader)
+	void Renderer::DrawModel(const Model& model, const Shader& shader) const
 	{
 		for (const Mesh& mesh : model.Meshes())
 			DrawMesh(mesh, shader);
@@ -148,7 +146,7 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	void Renderer::SetFrontFace(unsigned int mode)
+	void Renderer::SetFrontFace(unsigned int mode) const
 	{
 		GLCall(glFrontFace(mode));
 	}

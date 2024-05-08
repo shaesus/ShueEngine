@@ -21,6 +21,7 @@ namespace Shue {
 	class SHUE_API Shader
 	{
 	public:
+		Shader() : m_ID(0) {}
 		Shader(const std::string& filepath);
 		~Shader();
 

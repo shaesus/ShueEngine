@@ -9,14 +9,14 @@ namespace Shue {
 	class SHUE_API UILayer : public ImGuiLayer
 	{
 	public:
-		UILayer(glm::vec3* cube, glm::vec3* light);
+		UILayer(glm::vec3& cube, glm::vec3& light);
 		~UILayer();
 
 		void OnUpdate() override;
 
 	private:
-		glm::vec3* m_cube;
-		glm::vec3* m_light;
+		glm::vec3& m_cube;
+		glm::vec3& m_light;
 	};
 
 }

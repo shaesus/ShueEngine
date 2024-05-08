@@ -14,13 +14,19 @@ namespace Shue {
 		Transform();
 
 		void Update() override;
-		ComponentType GetType() override;
+
+		void Rotate(float angle, glm::vec3 axis);
+
+		inline const glm::mat4& GetModelMatrix() { return m_ModelMatrix; }
 	
 		COMPONENT_CLASS_TYPE(TransformComp)
 
 	public:
 		glm::vec3 Position;
 		glm::vec3 Scale;
+
+	private:
+		glm::mat4 m_ModelMatrix;
 	};
 
 }

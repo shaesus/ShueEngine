@@ -13,7 +13,10 @@
 #include "Events/MouseEvent.h"
 #include "Events/KeyEvent.h"
 
+#include "Scene/Scene.h"
+
 #define DELTA_TIME Application::Get().DeltaTime()
+#define TIME Application::Get().Time()
 
 namespace Shue {
 
@@ -32,8 +35,13 @@ namespace Shue {
 
 		inline Window& GetWindow() { return *m_Window; }
 		inline float DeltaTime() const { return m_TimeOfCurrentFrame - m_TimeOfLastFrame; }
+		inline float Time() const { return m_TimeOfCurrentFrame; }
+		inline const Renderer& GetRenderer() const { return m_Renderer; }
 
 		inline static Application& Get() { return *s_Instance; }
+
+	public:
+		Scene CurrentScene;
 
 	protected:
 		bool OnWindowResize(WindowResizeEvent& e);
@@ -52,8 +60,7 @@ namespace Shue {
 		std::unique_ptr<Window> m_Window;
 		LayerStack m_LayerStack;
 		Renderer m_Renderer;
-		Camera* m_Camera;
-
+		
 		double m_TimeOfCurrentFrame, m_TimeOfLastFrame;
 
 	protected:

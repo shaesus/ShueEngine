@@ -2,7 +2,7 @@
 
 namespace Shue {
 
-	UILayer::UILayer(glm::vec3* cube, glm::vec3* light)
+	UILayer::UILayer(glm::vec3& cube, glm::vec3& light)
 		: m_cube(cube), m_light(light), ImGuiLayer()
 	{
 	}
@@ -25,8 +25,8 @@ namespace Shue {
 		ImGui::NewFrame();
 
 		ImGui::Begin("Positions");
-		ImGui::SliderFloat3("cube", (float*)m_cube, -1.0f, 1.0f);
-		ImGui::SliderFloat3("light", (float*)m_light, -1.0f, 1.0f);
+		ImGui::SliderFloat3("cube", (float*)&m_cube, -1.0f, 1.0f);
+		ImGui::SliderFloat3("light", (float*)&m_light, -1.0f, 1.0f);
 		ImGui::End();
 
 		ImGui::Begin("Debug");

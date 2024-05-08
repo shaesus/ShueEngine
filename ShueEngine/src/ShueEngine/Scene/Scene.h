@@ -2,16 +2,29 @@
 
 #include "Core.h"
 
-#include "Entity.h"
+#include "../../ECS/Entity.h"
 
-#include <unordered_set>
+#include <unordered_map>
+#include <string>
 
 namespace Shue {
 
 	class SHUE_API Scene
 	{
+	public:
+		Scene() : m_Name("Scene") {}
+		Scene(const std::string& name);
+		~Scene();
+
+		void OnUpdate();
+
+		void AddObject(Entity* entity);
+
+		inline const std::string& GetName() const { return m_Name; }
+
 	private:
-		std::unordered_set<Entity> m_sceneObjects;
+		std::string m_Name;
+		std::unordered_map<unsigned int, Entity*> m_sceneObjects;
 	};
 
 }
