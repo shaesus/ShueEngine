@@ -151,14 +151,8 @@ public:
 
 		Shue::Model backpackModel("res/models/Backpack/backpack.obj");
 
-		Shue::ImageTexture backpackDiffuse("res/models/Backpack/diffuse.jpg");
-		backpackDiffuse.Bind(3);
-		Shue::ImageTexture backpackSpecular("res/models/Backpack/specular.jpg");
-		backpackDiffuse.Bind(4);
-
-		Shue::Shader modelShader("res/shaders/Lighting.shader");
+		Shue::Shader modelShader("res/shaders/Backpack.shader");
 		modelShader.Bind();
-		modelShader.SetUniformMaterial("u_Material", Shue::Material(3, 4, 20.0f));
 		
 		Backpack* backpack = new Backpack(&backpackModel, modelShader);
 		CurrentScene.AddObject(backpack);
@@ -201,8 +195,6 @@ public:
 				modelShader.SetUniformLightProperties("u_Light",
 					Shue::LightProperties(lightSourcePos, glm::vec3(0.2f), glm::vec3(0.5f), glm::vec3(1.0f)));
 				modelShader.SetUniformVec3("u_ViewPos", Shue::Camera::Main->Position);
-				backpackDiffuse.Bind(3);
-				backpackSpecular.Bind(4);
 			}
 
 			//Cube
@@ -227,8 +219,8 @@ public:
 				model = glm::scale(model, glm::vec3(0.1f));
 				glm::mat4 mvp = proj * view * model;
 				lightSourceShader.Bind();
-				redstoneLampTex.Bind(2);
 				lightSourceShader.SetUniformMatrix4fv("u_MVP", mvp);
+				redstoneLampTex.Bind(2);
 				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(cubeVertices));
 			}
 
@@ -254,8 +246,6 @@ public:
 			Shue::AppUpdateEvent appUpdateEvent;
 			OnEvent(appUpdateEvent);
 		}
-
-		delete backpack;
 	}
 
 	~Sandbox() 

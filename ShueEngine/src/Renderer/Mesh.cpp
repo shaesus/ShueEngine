@@ -6,18 +6,22 @@
 
 namespace Shue {
 
-	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<ImageTexture> textures)
+	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<ImageTexture*> textures)
 		: m_Vertices(vertices), m_Indices(indices), m_Textures(textures)
 	{
 		SetupMesh();
 	}
+
+    Mesh::~Mesh()
+    {
+    }
 
 	void Mesh::SetupMesh()
 	{
         /*m_VA.Bind();
 
         m_VB = VertexBuffer(m_Vertices.size() * sizeof(Vertex), &m_Vertices[0], GL_STATIC_DRAW);
-        m_IB = IndexBuffer(m_Indices.size(), &m_Indices[0]);
+        m_IB = IndexBuffer(m_Indices.size() * sizeof(unsigned int), &m_Indices[0]);
 
         VertexBufferLayout layout;
         layout.Push<float>(3);

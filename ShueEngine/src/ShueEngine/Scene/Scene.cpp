@@ -29,6 +29,7 @@ namespace Shue {
 
 	void Scene::RemoveObject(unsigned int id)
 	{
+		delete m_sceneObjects[id];
 		m_sceneObjects.erase(id);
 	}
 

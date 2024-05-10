@@ -97,7 +97,6 @@ public:
 			if (uiData.confirmed)
 			{
 				CurrentScene.RemoveObject((*pendulum)->GetID());
-				delete* pendulum;
 				*pendulum = new Pendulum(pendulumModel, pendulumShader, mass, length, startAngle);
 				CurrentScene.AddObject(*pendulum);
 				pendulumTransform = (*pendulum)->GetTransform();
@@ -151,7 +150,9 @@ public:
 			OnEvent(appUpdateEvent);
 		}
 
-		delete* pendulum;
+		delete pendulumTexture;
+		delete pendulumModel;
+
 		delete pendulum;
 
 		Shue::MySQLConnection::CloseConnection();

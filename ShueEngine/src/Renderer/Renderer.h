@@ -47,8 +47,8 @@ namespace Shue {
 		void ClearColor(const glm::vec4& rgba) const;
 		void DrawIb(const VertexArray& va, const IndexBuffer& ib, const Shader& shader) const;
 		void DrawTriangles(const VertexArray& va, const Shader& shader, unsigned int count) const;
-		void DrawMesh(const Mesh& mesh, const Shader& shader) const;
-		void DrawModel(const Model& model, const Shader& shader) const;
+		void DrawMesh(const Mesh& mesh, Shader& shader) const;
+		void DrawModel(const Model& model, Shader& shader) const;
 		void AddFont(const std::string& fontPath, const std::string& name);
 		void DrawText(const VertexArray& va, const VertexBuffer& vb, Shader& shader,
 			const std::string& text, float x, float y, float scale, const glm::vec3& color, const std::string& fontName);

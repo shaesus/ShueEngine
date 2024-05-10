@@ -32,6 +32,7 @@
     <None Include="res\shaders\Text.shader" />
     <None Include="res\shaders\WorldSpaceText.shader" />
     <None Include="res\shaders\Line.shader" />
+    <None Include="res\shaders\Backpack.shader" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\fonts\arial.ttf" />

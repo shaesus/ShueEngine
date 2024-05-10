@@ -69,17 +69,17 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	void Renderer::DrawMesh(const Mesh& mesh, const Shader& shader) const
+	void Renderer::DrawMesh(const Mesh& mesh, Shader& shader) const
 	{
-		/*unsigned int diffuseNr = 1;
+		unsigned int diffuseNr = 1;
 		unsigned int specularNr = 1;
-		const auto& textures = mesh.Textures();*/
+		const auto& textures = mesh.Textures();
 		const auto& indices = mesh.Indices();
-		/*for (unsigned int i = 0; i < textures.size(); i++)
+		for (unsigned int i = 0; i < textures.size(); i++)
 		{
 			GLCall(glActiveTexture(GL_TEXTURE0 + i));
 			std::string number;
-			std::string name = textures[i].Type();
+			std::string name = (*textures[i]).Type();
 			if (name == "texture_diffuse")
 				number = std::to_string(diffuseNr++);
 			else if (name == "texture_specular")
@@ -87,18 +87,21 @@ namespace Shue {
 
 			shader.Bind();
 			shader.SetUniform1i(("u_Material." + name + number).c_str(), i);
-			glBindTexture(GL_TEXTURE_2D, textures[i].ID());
+			GLCall(glBindTexture(GL_TEXTURE_2D, (*textures[i]).ID()));
 		}
-		GLCall(glActiveTexture(GL_TEXTURE0));*/
+		shader.SetUniform1f("u_Material.shininess", 32.0f);
+		GLCall(glActiveTexture(GL_TEXTURE0));
 		
+		//mesh.VA().Bind();
 		GLCall(glBindVertexArray(mesh.VA()));
 		shader.Bind();
 		GLCall(glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0));
+		//mesh.VA().Unbind();
 		GLCall(glBindVertexArray(0));
 		shader.Unbind();
 	}
 
-	void Renderer::DrawModel(const Model& model, const Shader& shader) const
+	void Renderer::DrawModel(const Model& model, Shader& shader) const
 	{
 		for (const Mesh& mesh : model.Meshes())
 			DrawMesh(mesh, shader);

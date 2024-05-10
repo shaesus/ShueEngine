@@ -16,5 +16,5 @@ Backpack::Backpack(const std::string& modelPath, Shue::Shader& shader)
 
 void Backpack::Update()
 {
-	m_Transform->RotateGlobal(Shue::TIME_SINCE_START, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_Transform->Rotate(Shue::TIME_SINCE_START, glm::vec3(0.0f, 1.0f, 0.0f));
 }
