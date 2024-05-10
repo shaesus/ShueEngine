@@ -15,7 +15,9 @@ namespace Shue {
 		ModelRenderer(const std::string& modelPath, Shader& shader);
 
 		void Update() override;
-		
+		void SetModel(Model* m_Model);
+		void SetModel(const std::string& modelPath);
+
 		inline Shader& GetShader() { return m_Shader; }
 
 		COMPONENT_CLASS_TYPE(ModelRendererComp)

@@ -12,6 +12,7 @@
 
 #include "imGUI/imgui.h"
 #include "imGUI/imgui_impl_opengl3.h"
+#include "imGUI/imfilebrowser.h"
 
 //TEMPORARY
 #include "GLFW/glfw3.h"

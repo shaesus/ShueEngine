@@ -151,29 +151,12 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	void Renderer::DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color,
-		Shader& shader, const glm::mat4& view, const glm::mat4& proj) const
+	void Renderer::DrawLines(const VertexArray& va, const Shader& shader, unsigned int count) const
 	{
-		float vertices[] = {
-			p0.x, p0.y, p0.z,
-			p1.x, p1.y, p1.z,
-		};
-
-		VertexArray va;
-		VertexBuffer vb(sizeof(vertices), vertices, GL_STATIC_DRAW);
-		VertexBufferLayout layout;
-		layout.Push<float>(3);
-		va.AddBuffer(vb, layout);
-
+		va.Bind();
 		shader.Bind();
-		shader.SetUniformVec4("u_Color", color);
-		
-		glm::mat4 model = glm::mat4(1.0f);
-		shader.SetUniformMatrix4fv("u_Model", model);
-		shader.SetUniformMatrix4fv("u_View", view);
-		shader.SetUniformMatrix4fv("u_Proj", proj);
-
-		GLCall(glDrawArrays(GL_LINES, 0, 2));
+		GLCall(glDrawArrays(GL_LINES, 0, count));
+		va.Unbind();
 		shader.Unbind();
 	}
 
@@ -226,6 +209,22 @@ namespace Shue {
 		{
 			GLCall(glDisable(GL_DEPTH_TEST));
 		}
+	}
+
+	VertexArray& Renderer::GetLineVA(float x1, float y1, float z1, float x2, float y2, float z2)
+	{
+		float lineVertices[] = {
+			x1, y1, z1,
+			x2, y2, z2
+		};
+		Shue::VertexArray* lineVA = new VertexArray();
+		lineVA->Bind();
+		Shue::VertexBuffer lineVB(sizeof(lineVertices), lineVertices, GL_STATIC_DRAW);
+		Shue::VertexBufferLayout lineLayout;
+		lineLayout.Push<float>(3);
+		lineVA->AddBuffer(lineVB, lineLayout);
+		lineVA->Unbind();
+		return *lineVA;
 	}
 
 	Renderer::Font* Renderer::CreateFont(const std::string& fontPath)

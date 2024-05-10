@@ -28,4 +28,5 @@ namespace Shue {
 			stbi_image_free(m_LocalBuffer);
 		}
 	}
+
 }

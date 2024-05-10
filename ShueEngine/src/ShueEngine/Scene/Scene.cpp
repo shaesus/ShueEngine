@@ -3,6 +3,7 @@
 #include <utility>
 
 namespace Shue {
+
 	Scene::Scene(const std::string& name)
 		: m_Name(name) {}
 

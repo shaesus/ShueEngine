@@ -26,7 +26,7 @@ namespace Shue {
 		template<typename T>
 		Component* GetComponent() 
 		{ 
-			auto& it = m_Components.find(T::GetStaticType());
+			auto it = m_Components.find(T::GetStaticType());
 			if (it != m_Components.end())
 				return it->second; 
 		}

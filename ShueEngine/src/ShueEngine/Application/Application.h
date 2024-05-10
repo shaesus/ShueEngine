@@ -16,7 +16,7 @@
 #include "Scene/Scene.h"
 
 #define DELTA_TIME Application::Get().DeltaTime()
-#define TIME Application::Get().Time()
+#define TIME_SINCE_START Application::Get().Time()
 
 namespace Shue {
 

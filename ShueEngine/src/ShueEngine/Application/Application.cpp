@@ -19,7 +19,6 @@ namespace Shue {
 		m_Window->SetEventCallback(SH_BIND_EVENT_FN(Application::OnEvent));
 
 		CurrentScene = Scene("SampleScene");
-
 		Camera::Main = new Camera(glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 

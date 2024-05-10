@@ -31,6 +31,7 @@
     <ClCompile Include="src\ECS\Entity.cpp" />
     <ClCompile Include="src\ECS\ModelRenderer.cpp" />
     <ClCompile Include="src\ECS\Transform.cpp" />
+    <ClCompile Include="src\DataBase\MySQL\MySQLConnection.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ShueEngine\Application\Application.h" />
@@ -357,6 +358,8 @@
     <ClInclude Include="src\ECS\Entity.h" />
     <ClInclude Include="src\ECS\ModelRenderer.h" />
     <ClInclude Include="src\ECS\Transform.h" />
+    <ClInclude Include="src\DataBase\MySQL\MySQLConnection.h" />
+    <ClInclude Include="src\vendor\imGUI\imfilebrowser.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\vendor\glm\detail\func_common.inl" />

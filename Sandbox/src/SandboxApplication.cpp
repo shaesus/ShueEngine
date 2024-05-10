@@ -192,8 +192,6 @@ public:
 
 			lightSourcePos.y = sin(m_TimeOfCurrentFrame) / 3.0f - 0.2f;
 
-			m_Renderer.DrawLine(glm::vec3(0.0f), glm::vec3(0.3f), glm::vec4(1.0f, 0.5f, 0.2f, 1.0f), lineShader, view, proj);
-
 			//Backpack
 			{
 				modelShader.Bind();

@@ -113,13 +113,13 @@
       <PreprocessorDefinitions>SH_PLATFORM_WINDOWS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>src\ECS;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;..\ShueEngine\src\vendor;..\ShueEngine\src;..\ShueEngine\src\ShueEngine;..\ShueEngine\src\Renderer;$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ShueEngine\src\DataBase;$(SolutionDir)Dependencies\MySQL\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;..\ShueEngine\src\vendor;..\ShueEngine\src;..\ShueEngine\src\ShueEngine;..\ShueEngine\src\Renderer;$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)bin\x64\Debug;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ShueEngine.lib;assimp-vc143-mt.lib;freetype.lib;opengl32.lib; glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ShueEngine.lib;assimp-vc143-mt.lib;freetype.lib;opengl32.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -131,7 +131,7 @@
       <PreprocessorDefinitions>SH_PLATFORM_WINDOWS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>src\ECS;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;..\ShueEngine\src\vendor;..\ShueEngine\src;..\ShueEngine\src\ShueEngine;..\ShueEngine\src\Renderer;$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\ShueEngine\src\DataBase;$(SolutionDir)Dependencies\MySQL\include;$(SolutionDir)Dependencies\Assimp\include;$(SolutionDir)Dependencies\FreeType\include;..\ShueEngine\src\vendor;..\ShueEngine\src;..\ShueEngine\src\ShueEngine;..\ShueEngine\src\Renderer;$(SolutionDir)Dependencies\glad\include;$(SolutionDir)Dependencies\GLFW\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -139,7 +139,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)bin\x64\Release;$(SolutionDir)Dependencies\Assimp\lib;$(SolutionDir)Dependencies\FreeType\lib;$(SolutionDir)Dependencies\GLFW\lib-vc2022;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ShueEngine.lib;assimp-vc143-mt.lib;freetype.lib;opengl32.lib; glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ShueEngine.lib;assimp-vc143-mt.lib;freetype.lib;opengl32.lib;glfw3.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -151,6 +151,7 @@
     <None Include="res\shaders\Basic.shader" />
     <None Include="res\shaders\Lighting.shader" />
     <None Include="res\shaders\LightSource.shader" />
+    <None Include="res\shaders\Line.shader" />
     <None Include="res\shaders\Text.shader" />
     <None Include="res\shaders\WorldSpaceText.shader" />
   </ItemGroup>

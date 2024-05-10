@@ -20,4 +20,14 @@ namespace Shue {
 		Application::Get().GetRenderer().DrawModel(*m_Model, m_Shader);
 	}
 
+	void ModelRenderer::SetModel(Model* model)
+	{
+		m_Model = model;
+	}
+
+	void ModelRenderer::SetModel(const std::string& modelPath)
+	{
+		m_Model = new Model(modelPath);
+	}
+
 }

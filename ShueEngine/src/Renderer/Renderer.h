@@ -52,8 +52,7 @@ namespace Shue {
 		void AddFont(const std::string& fontPath, const std::string& name);
 		void DrawText(const VertexArray& va, const VertexBuffer& vb, Shader& shader,
 			const std::string& text, float x, float y, float scale, const glm::vec3& color, const std::string& fontName);
-		void DrawLine(const glm::vec3& p0, const glm::vec3& p1, const glm::vec4& color, //Needs refactoring
-			Shader& shader, const glm::mat4& view, const glm::mat4& proj) const;
+		void DrawLines(const VertexArray& va, const Shader& shader, unsigned int count) const;
 		void SetFrontFace(unsigned int mode = GL_CCW) const;
 		void SetBlending(bool blending, unsigned int sfactor = GL_SRC_ALPHA, unsigned int dfactor = GL_ONE_MINUS_SRC_ALPHA);
 		void SetCulling(bool culling, unsigned int mode = GL_BACK);
@@ -62,6 +61,8 @@ namespace Shue {
 		inline bool Blending() const { return m_Blending; }
 		inline bool Culling() const { return m_Culling; }
 		inline bool DepthTest() const { return m_DepthTest; }
+
+		VertexArray& GetLineVA(float x1, float y1, float z1, float x2, float y2, float z2);
 
 	private:
 		Font* CreateFont(const std::string& fontPath);
