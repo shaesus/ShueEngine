@@ -2,11 +2,14 @@
 
 #include "Application/Application.h"
 
-SandboxUILayer::SandboxUILayer() : ImGuiLayer()
-{
-}
+#include "ECS/Transform.h"
+#include "ECS/ModelRenderer.h"
 
-Shue::Application& app = Shue::Application::Get();
+#include <vector>
+
+static Shue::Application& app = Shue::Application::Get();
+static int selectedIndex;
+static Shue::Entity* selectedObject;
 
 void SandboxUILayer::OnUpdate()
 {
@@ -21,11 +24,35 @@ void SandboxUILayer::OnUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui::NewFrame();
 
-	ImGui::Begin("Positions");
-	for (auto it = app.CurrentScene.begin(); it != app.CurrentScene.end(); it++)
+	ImGui::Begin("Scene Manager");
+	std::vector<const char*> sceneObjects = app.CurrentScene.GetObjectsList();
+	ImGui::ListBox("Scene Objects", &selectedIndex, sceneObjects.data(), sceneObjects.size());
+	ImGui::End();
+
+	ImGui::Begin("Component Manager");
+	selectedObject = app.CurrentScene[sceneObjects[selectedIndex]];
+	for (auto it = selectedObject->begin(); it != selectedObject->end(); it++)
 	{
-		Shue::Entity* entity = it->second;
-		ImGui::SliderFloat3(entity->GetName().c_str(), (float*)&(entity->GetTransform()->Position), -1.0f, 1.0f);
+		Shue::Component* comp = it->second;
+		switch (comp->GetType())
+		{
+		case Shue::ComponentType::TransformComp:
+		{
+			ImGui::Text("Transform");
+			Shue::Transform* transform = (Shue::Transform*)comp;
+			ImGui::SliderFloat3("Position", (float*)&(transform->Position), -1.0f, 1.0f);
+			ImGui::InputFloat3("Scale", (float*)&(transform->Scale));
+			break;
+		}
+		case Shue::ComponentType::ModelRendererComp:
+		{
+			ImGui::Text("Model Renderer");
+			Shue::ModelRenderer* modelRenderer = (Shue::ModelRenderer*)comp;
+			break;
+		}
+		default:
+			break;
+		}
 	}
 	ImGui::End();
 

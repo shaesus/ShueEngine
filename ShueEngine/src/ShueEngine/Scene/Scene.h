@@ -4,7 +4,10 @@
 
 #include "../../ECS/Entity.h"
 
+#include "Assertion.h"
+
 #include <unordered_map>
+#include <vector>
 #include <string>
 
 namespace Shue {
@@ -23,12 +26,18 @@ namespace Shue {
 
 		inline const std::string& GetName() const { return m_Name; }
 
-		std::unordered_map<unsigned int, Entity*>::const_iterator begin() const { return m_sceneObjects.cbegin(); }
-		std::unordered_map<unsigned int, Entity*>::const_iterator end() const { return m_sceneObjects.cend(); }
+		std::vector<const char*> GetObjectsList() const;
+
+		std::unordered_map<unsigned int, Entity*>::const_iterator begin() const { return m_SceneObjects.cbegin(); }
+		std::unordered_map<unsigned int, Entity*>::const_iterator end() const { return m_SceneObjects.cend(); }
+
+		Entity* operator[](unsigned int id);
+		Entity* operator[](const std::string& name);
 
 	private:
 		std::string m_Name;
-		std::unordered_map<unsigned int, Entity*> m_sceneObjects;
+		std::unordered_map<unsigned int, Entity*> m_SceneObjects;
+		std::unordered_map<std::string, unsigned int> m_ObjectsIDs;
 	};
 
 }

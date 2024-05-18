@@ -18,6 +18,7 @@ namespace Shue {
         Model(const std::string& path);
         ~Model();
 
+        inline const std::string& GetPath() const { return m_Path; }
         inline const std::vector<Mesh>& Meshes() const { return m_Meshes; }
 
     private:
@@ -27,6 +28,7 @@ namespace Shue {
         std::vector<ImageTexture> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
     private:
+        std::string m_Path;
         std::vector<Mesh> m_Meshes;
         std::vector<ImageTexture> m_LoadedTextures;
         std::string m_Directory;

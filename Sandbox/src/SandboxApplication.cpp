@@ -15,7 +15,7 @@
 #include "Layers/SandboxUILayer.h"
 
 glm::vec4 backgroundColor (  0.2f,  0.3f,  0.3f, 1.0f );
-glm::vec3 containerPos         ( -0.2f, -0.2f,  0.1f );
+glm::vec3 containerPos    ( -0.2f, -0.2f,  0.1f );
 glm::vec3 lightSourcePos  (  0.2f, -0.2f,  0.0f );
 glm::vec3 textPos         (  0.0f, -0.1f, -0.3f );
 glm::vec3 lightColor      (  1.0f,  1.0f,  1.0f );
@@ -49,6 +49,8 @@ public:
 		m_Renderer.AddFont("res/fonts/arial.ttf", "arial");
 		m_Renderer.AddFont("res/fonts/comic.ttf", "comic");
 
+		m_Renderer.DoneFreeType();
+
 		glm::mat4 projText = glm::ortho(0.0f, (float)m_Window->GetWidth(), 0.0f, (float)m_Window->GetHeight());
 
 		Shue::VertexArray vaTextWS;
@@ -74,27 +76,24 @@ public:
 		shaderText.Bind();
 #endif
 
-		Shue::Model lightSourceModel("res/models/LightSource/LightSource.obj");
 		Shue::Shader lightSourceShader("res/shaders/LightSource.shader");
-		LightSource* lightSource = new LightSource("Light Source", &lightSourceModel, lightSourceShader);
+		LightSource* lightSource = new LightSource("Light Source", "res/models/LightSource/LightSource.obj", lightSourceShader);
 		CurrentScene.AddObject(lightSource);
 
 		Shue::Transform* lightSourceTransform = lightSource->GetTransform();
 		lightSourceTransform->Position = lightSourcePos;
 		lightSourceTransform->Scale = glm::vec3(0.05f);
 
-		Shue::Model containerModel("res/models/Container/Container.obj");
 		Shue::Shader containerShader("res/shaders/Model.shader");
-		Container* container = new Container("Container", &containerModel, containerShader);
+		Container* container = new Container("Container", "res/models/Container/Container.obj", containerShader);
 		CurrentScene.AddObject(container);
 
 		Shue::Transform* containerTransform = container->GetTransform();
 		containerTransform->Position = containerPos;
 		containerTransform->Scale = glm::vec3(0.125f);
 
-		Shue::Model backpackModel("res/models/Backpack/backpack.obj");
 		Shue::Shader backpackShader("res/shaders/Model.shader");
-		Backpack* backpack = new Backpack("Backpack", &backpackModel, backpackShader);
+		Backpack* backpack = new Backpack("Backpack", "res/models/Backpack/Backpack.obj", backpackShader);
 		CurrentScene.AddObject(backpack);
 
 		Shue::Transform* backpackTransform = backpack->GetTransform();
@@ -121,7 +120,7 @@ public:
 			view = glm::lookAt(Shue::Camera::Main->Position, 
 				Shue::Camera::Main->Position + Shue::Camera::Main->Front, Shue::Camera::Main->Up);
 
-			lightSourcePos.y = sin(m_TimeOfCurrentFrame) / 3.0f - 0.2f;
+			lightSourcePos.y = sin(Shue::TIME_SINCE_START) / 3.0f - 0.2f;
 
 			//Light Source
 			{

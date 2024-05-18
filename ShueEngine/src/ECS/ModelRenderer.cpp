@@ -12,7 +12,7 @@ namespace Shue {
 	ModelRenderer::ModelRenderer(const std::string& modelPath, Shader& shader)
 		: m_Shader(shader)
 	{
-		m_Model = new Model(modelPath);
+		m_Model = std::unique_ptr<Model>(new Model(modelPath));
 	}
 
 	void ModelRenderer::Update()
@@ -22,12 +22,12 @@ namespace Shue {
 
 	void ModelRenderer::SetModel(Model* model)
 	{
-		m_Model = model;
+		m_Model = std::unique_ptr<Model>(model);
 	}
 
 	void ModelRenderer::SetModel(const std::string& modelPath)
 	{
-		m_Model = new Model(modelPath);
+		m_Model = std::unique_ptr<Model>(new Model(modelPath));
 	}
 
 }

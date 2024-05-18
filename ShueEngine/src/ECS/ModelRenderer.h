@@ -5,6 +5,7 @@
 #include "Shader.h"
 
 #include <string>
+#include <memory>
 
 namespace Shue {
 
@@ -23,8 +24,8 @@ namespace Shue {
 		COMPONENT_CLASS_TYPE(ModelRendererComp)
 
 	private:
-		Model* m_Model;
-		Shader& m_Shader;
+		std::unique_ptr<Model> m_Model;
+		Shader m_Shader;
 	};
 
 }

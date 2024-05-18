@@ -41,6 +41,7 @@ namespace Shue {
 
 		void InitGlad() const;
 		void InitFreeType();
+		void DoneFreeType();
 
 		void Clear() const;
 		void ClearColor(float r, float g, float b, float a) const;

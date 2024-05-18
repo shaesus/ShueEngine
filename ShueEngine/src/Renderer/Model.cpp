@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <vector>
-#include <sstream>
 
 namespace Shue {
 

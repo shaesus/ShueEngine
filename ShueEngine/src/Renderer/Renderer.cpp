@@ -15,8 +15,6 @@ namespace Shue {
 			}
 			delete font;
 		}
-
-		FT_Done_FreeType(m_Ft);
 	}
 
 	void Renderer::InitGlad() const
@@ -35,6 +33,11 @@ namespace Shue {
 			std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
 			return;
 		}
+	}
+
+	void Renderer::DoneFreeType()
+	{
+		FT_Done_FreeType(m_Ft);
 	}
 
 	void Renderer::Clear() const

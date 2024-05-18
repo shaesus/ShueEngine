@@ -46,6 +46,9 @@ namespace Shue {
 			std::runtime_error(false);
 		}
 
+		std::unordered_map<ComponentType, Component*>::const_iterator begin() const { return m_Components.cbegin(); }
+		std::unordered_map<ComponentType, Component*>::const_iterator end() const { return m_Components.cend(); }
+
 	protected:
 		inline static std::unordered_set<unsigned int> s_IDs;
 		inline static unsigned int s_MaxID;
