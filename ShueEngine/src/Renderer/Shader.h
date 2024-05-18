@@ -28,23 +28,23 @@ namespace Shue {
 		void Bind() const;
 		void Unbind() const;
 
-		void SetUniform3f(const std::string& name, float v0, float v1, float v2);
-		void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3);
-		void SetUniformVec3(const std::string& name, glm::vec3 vector3);
-		void SetUniformVec4(const std::string& name, glm::vec4 vector4);
-		void SetUniform1i(const std::string& name, int v);
-		void SetUniform1f(const std::string& name, float v);
-		void SetUniformMatrix4fv(const std::string& name, const glm::mat4& matrix);
-		void SetUniformMaterial(const std::string& name, const Material& material);
-		void SetUniformLightProperties(const std::string& name, const LightProperties& light);
+		void SetUniform3f(const std::string& name, float v0, float v1, float v2) const;
+		void SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) const;
+		void SetUniformVec3(const std::string& name, glm::vec3 vector3) const;
+		void SetUniformVec4(const std::string& name, glm::vec4 vector4) const;
+		void SetUniform1i(const std::string& name, int v) const;
+		void SetUniform1f(const std::string& name, float v) const;
+		void SetUniformMatrix4fv(const std::string& name, const glm::mat4& matrix) const;
+		void SetUniformMaterial(const std::string& name, const Material& material) const;
+		void SetUniformLightProperties(const std::string& name, const LightProperties& light) const;
 	private:
 		ShaderProgramSource ParseShader(const std::string& filepath);
 		unsigned int CreateShader(const std::string& vertexShaderSource, const std::string& fragmentShaderSource);
 		unsigned int CompileShader(unsigned int type, const std::string& shaderSource);
-		int GetUniformLocation(const std::string& name);
+		int GetUniformLocation(const std::string& name) const;
 	private:
 		unsigned int m_ID;
-		std::unordered_map<std::string, int> m_UniformLocationsCache;
+		mutable std::unordered_map<std::string, int> m_UniformLocationsCache;
 	};
 
 }

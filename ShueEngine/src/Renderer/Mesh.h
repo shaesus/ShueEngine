@@ -21,12 +21,11 @@ namespace Shue {
     class Mesh 
     {
     public:
-        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<ImageTexture*> textures);
-        ~Mesh();
+        Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<ImageTexture> textures);
 
         const std::vector<Vertex>& Vertices() const { return m_Vertices; }
         const std::vector<unsigned int>& Indices() const { return m_Indices; }
-        const std::vector<ImageTexture*>& Textures() const { return m_Textures; }
+        const std::vector<ImageTexture>& Textures() const { return m_Textures; }
 
         /*inline const VertexArray& VA() const { return m_VA; }
         inline const VertexBuffer& VB() const { return m_VB; }
@@ -42,7 +41,7 @@ namespace Shue {
     private:
         std::vector<Vertex> m_Vertices;
         std::vector<unsigned int> m_Indices;
-        std::vector<ImageTexture*> m_Textures; //Possible memory leak on destroying mesh
+        std::vector<ImageTexture> m_Textures; //Possible memory leak on destroying mesh
 
         /*VertexArray m_VA;
         VertexBuffer m_VB;

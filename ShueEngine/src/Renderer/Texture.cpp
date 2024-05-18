@@ -4,6 +4,8 @@
 
 #include "Renderer.h"
 
+#include <iostream>
+
 namespace Shue {
 
 	Texture::Texture()
@@ -18,7 +20,7 @@ namespace Shue {
 		GLCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE));
 	}
 
-	Texture::~Texture()
+	void Texture::Delete()
 	{
 		GLCall(glDeleteTextures(1, &m_ID));
 	}

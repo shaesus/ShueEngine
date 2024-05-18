@@ -9,11 +9,13 @@
 
 #include "Scene/Scene.h"
 #include "Entities/Backpack.h"
+#include "Entities/Container.h"
+#include "Entities/LightSource.h"
 
 #include "Layers/SandboxUILayer.h"
 
 glm::vec4 backgroundColor (  0.2f,  0.3f,  0.3f, 1.0f );
-glm::vec3 cubePos         ( -0.2f, -0.2f,  0.1f );
+glm::vec3 containerPos         ( -0.2f, -0.2f,  0.1f );
 glm::vec3 lightSourcePos  (  0.2f, -0.2f,  0.0f );
 glm::vec3 textPos         (  0.0f, -0.1f, -0.3f );
 glm::vec3 lightColor      (  1.0f,  1.0f,  1.0f );
@@ -24,7 +26,7 @@ class Sandbox : public Shue::Application
 public:
 	Sandbox() 
 	{
-		PushOverlay(new SandboxUILayer(cubePos, lightSourcePos));
+		PushOverlay(new SandboxUILayer());
 	}
 
 	void Run() override
@@ -41,85 +43,7 @@ public:
 			, 0.1f, 100.0f);
 		glm::mat4 view;
 
-		float cubeVertices[] = {
-			// Back face
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, // Bottom-left
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f, // top-right
-			 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f, // bottom-right         
-			 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f, // top-right
-			-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f, // bottom-left
-			-0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f, // top-left
-			// Front face							   
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-			 0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f, // top-right
-			 0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  1.0f, 1.0f, // top-right
-			-0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 1.0f, // top-left
-			-0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,  0.0f, 0.0f, // bottom-left
-			// Left face							   
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // top-right
-			-0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // top-left
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // bottom-left
-			-0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // bottom-left
-			-0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			-0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // top-right
-			// Right face							   
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // top-left
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, // top-right         
-			 0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f, // top-left
-			 0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f, // bottom-left     
-			 // Bottom face							   
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f, // top-right
-			 0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f, // top-left
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, // bottom-left
-			 0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f, // bottom-left
-			-0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			-0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f, // top-right
-			// Top face			  					   
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f, // top-left
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			 0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f, // top-right     
-			 0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f, // bottom-right
-			-0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f, // top-left
-			-0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f, // bottom-left        
-		};
-
-		Shue::VertexArray cubeVA;
-		Shue::VertexBuffer cubeVB(sizeof(cubeVertices), cubeVertices, GL_STATIC_DRAW);
-
-		Shue::VertexBufferLayout layout;
-		layout.Push<float>(3);
-		layout.Push<float>(3);
-		layout.Push<float>(2);
-		cubeVA.AddBuffer(cubeVB, layout);
-
-		Shue::ImageTexture containerTex("res/textures/container.png");
-		Shue::ImageTexture containerSpecular("res/textures/container2_specular.png");
-		containerTex.Bind(0);
-		containerSpecular.Bind(1);
-
-		Shue::Shader lightingShader("res/shaders/Lighting.shader");
-		lightingShader.Bind();
-		lightingShader.SetUniformMaterial("u_Material", Shue::Material(0, 1, 32.0f));
-
-		Shue::VertexArray lightSourceVA;
-		lightSourceVA.Bind();
-
-		Shue::VertexBufferLayout lightSourceLayout;
-		lightSourceLayout.Push<float>(3);
-		lightSourceLayout.Push<float>(3);
-		lightSourceLayout.Push<float>(2);
-		lightSourceVA.AddBuffer(cubeVB, lightSourceLayout);
-
-		Shue::ImageTexture redstoneLampTex("res/textures/redstone_lamp.png");
-		redstoneLampTex.Bind(2);
-
-		Shue::Shader lightSourceShader("res/shaders/LightSource.shader");
-		lightSourceShader.Bind();
-		lightSourceShader.SetUniform1i("u_Texture", 2);
-
+#ifdef RENDER_TEXT
 		m_Renderer.InitFreeType();
 
 		m_Renderer.AddFont("res/fonts/arial.ttf", "arial");
@@ -148,13 +72,29 @@ public:
 
 		Shue::Shader shaderText("res/shaders/Text.shader");
 		shaderText.Bind();
+#endif
+
+		Shue::Model lightSourceModel("res/models/LightSource/LightSource.obj");
+		Shue::Shader lightSourceShader("res/shaders/LightSource.shader");
+		LightSource* lightSource = new LightSource("Light Source", &lightSourceModel, lightSourceShader);
+		CurrentScene.AddObject(lightSource);
+
+		Shue::Transform* lightSourceTransform = lightSource->GetTransform();
+		lightSourceTransform->Position = lightSourcePos;
+		lightSourceTransform->Scale = glm::vec3(0.05f);
+
+		Shue::Model containerModel("res/models/Container/Container.obj");
+		Shue::Shader containerShader("res/shaders/Model.shader");
+		Container* container = new Container("Container", &containerModel, containerShader);
+		CurrentScene.AddObject(container);
+
+		Shue::Transform* containerTransform = container->GetTransform();
+		containerTransform->Position = containerPos;
+		containerTransform->Scale = glm::vec3(0.125f);
 
 		Shue::Model backpackModel("res/models/Backpack/backpack.obj");
-
-		Shue::Shader modelShader("res/shaders/Backpack.shader");
-		modelShader.Bind();
-		
-		Backpack* backpack = new Backpack(&backpackModel, modelShader);
+		Shue::Shader backpackShader("res/shaders/Model.shader");
+		Backpack* backpack = new Backpack("Backpack", &backpackModel, backpackShader);
 		CurrentScene.AddObject(backpack);
 
 		Shue::Transform* backpackTransform = backpack->GetTransform();
@@ -163,18 +103,15 @@ public:
 		
 		Shue::Shader lineShader("res/shaders/Line.shader");
 
-		lightingShader.Unbind();
-		cubeVA.Unbind();
-		cubeVB.Unbind();
+#ifdef RENDER_TEXT
 		shaderText.Unbind();
 		vaText.Unbind();
 		vbText.Unbind();
 		shaderTextWS.Unbind();
 		vaTextWS.Unbind();
 		vbTextWS.Unbind();
-		lightSourceShader.Unbind();
-		lightSourceVA.Unbind();
-		modelShader.Unbind();
+#endif
+		backpackShader.Unbind();
 
 		while (m_Running)
 		{
@@ -186,62 +123,56 @@ public:
 
 			lightSourcePos.y = sin(m_TimeOfCurrentFrame) / 3.0f - 0.2f;
 
-			//Backpack
-			{
-				modelShader.Bind();
-				modelShader.SetUniformMatrix4fv("u_Model", backpackTransform->GetModelMatrix());
-				modelShader.SetUniformMatrix4fv("u_View", view);
-				modelShader.SetUniformMatrix4fv("u_Proj", proj);
-				modelShader.SetUniformLightProperties("u_Light",
-					Shue::LightProperties(lightSourcePos, glm::vec3(0.2f), glm::vec3(0.5f), glm::vec3(1.0f)));
-				modelShader.SetUniformVec3("u_ViewPos", Shue::Camera::Main->Position);
-			}
-
-			//Cube
-			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), cubePos);
-				model = glm::scale(model, glm::vec3(0.25f));
-				lightingShader.Bind();
-				lightingShader.SetUniformMatrix4fv("u_Model", model);
-				lightingShader.SetUniformMatrix4fv("u_View", view);
-				lightingShader.SetUniformMatrix4fv("u_Proj", proj);
-				lightingShader.SetUniformLightProperties("u_Light",
-					Shue::LightProperties(lightSourcePos, glm::vec3(0.2f, 0.2f, 0.2f), glm::vec3(0.5f, 0.5f, 0.5f), glm::vec3(1.0f, 1.0f, 1.0f)));
-				lightingShader.SetUniformVec3("u_ViewPos", Shue::Camera::Main->Position);
-				containerTex.Bind(0);
-				containerSpecular.Bind(1);
-				m_Renderer.DrawTriangles(cubeVA, lightingShader, sizeof(cubeVertices));
-			}
-
 			//Light Source
 			{
-				glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSourcePos);
-				model = glm::scale(model, glm::vec3(0.1f));
-				glm::mat4 mvp = proj * view * model;
 				lightSourceShader.Bind();
-				lightSourceShader.SetUniformMatrix4fv("u_MVP", mvp);
-				redstoneLampTex.Bind(2);
-				m_Renderer.DrawTriangles(lightSourceVA, lightSourceShader, sizeof(cubeVertices));
+				lightSourceShader.SetUniformMatrix4fv("u_Model", lightSourceTransform->GetModelMatrix());
+				lightSourceShader.SetUniformMatrix4fv("u_View", view);
+				lightSourceShader.SetUniformMatrix4fv("u_Proj", proj);
 			}
 
-			////World Space Text
-			//{
+			//Container
+			{
+				containerShader.Bind();
+				containerShader.SetUniformMatrix4fv("u_Model", containerTransform->GetModelMatrix());
+				containerShader.SetUniformMatrix4fv("u_View", view);
+				containerShader.SetUniformMatrix4fv("u_Proj", proj);
+				containerShader.SetUniformLightProperties("u_Light",
+					Shue::LightProperties(lightSourcePos, glm::vec3(0.2f), glm::vec3(0.5f), glm::vec3(1.0f)));
+				containerShader.SetUniformVec3("u_ViewPos", Shue::Camera::Main->Position);
+			}
 
-			//	glm::mat4 model = glm::translate(glm::mat4(1.0f), textPos);
-			//	glm::mat4 mvp = proj * view * model;
-			//	shaderTextWS.Bind();
-			//	shaderTextWS.SetUniformMatrix4fv("u_MVP", mvp);
+			//Backpack
+			{
+				backpackShader.Bind();
+				backpackShader.SetUniformMatrix4fv("u_Model", backpackTransform->GetModelMatrix());
+				backpackShader.SetUniformMatrix4fv("u_View", view);
+				backpackShader.SetUniformMatrix4fv("u_Proj", proj);
+				backpackShader.SetUniformLightProperties("u_Light",
+					Shue::LightProperties(lightSourcePos, glm::vec3(0.2f), glm::vec3(0.5f), glm::vec3(1.0f)));
+				backpackShader.SetUniformVec3("u_ViewPos", Shue::Camera::Main->Position);
+			}
 
-			//	m_Renderer.RenderText(vaTextWS, vbTextWS, shaderTextWS, "World Space", 0.0f, 0.0f, 0.002f, glm::vec3(1.0f, 0.5f, 0.3f), "comic");
-			//}
+#ifdef RENDER_TEXT
+			//World Space Text
+			{
 
-			////Screen Space Text
-			//{
-			//	shaderText.Bind();
-			//	shaderText.SetUniformMatrix4fv("u_Projection", projText);
+				glm::mat4 model = glm::translate(glm::mat4(1.0f), textPos);
+				glm::mat4 mvp = proj * view * model;
+				shaderTextWS.Bind();
+				shaderTextWS.SetUniformMatrix4fv("u_MVP", mvp);
 
-			//	m_Renderer.RenderText(vaText, vbText, shaderText, "Screen Space", 1.0f, 1.0f, 0.7f, glm::vec3(1.0f, 0.5f, 0.3f), "arial");
-			//}
+				m_Renderer.RenderText(vaTextWS, vbTextWS, shaderTextWS, "World Space", 0.0f, 0.0f, 0.002f, glm::vec3(1.0f, 0.5f, 0.3f), "comic");
+			}
+
+			//Screen Space Text
+			{
+				shaderText.Bind();
+				shaderText.SetUniformMatrix4fv("u_Projection", projText);
+
+				m_Renderer.RenderText(vaText, vbText, shaderText, "Screen Space", 1.0f, 1.0f, 0.7f, glm::vec3(1.0f, 0.5f, 0.3f), "arial");
+			}
+#endif
 
 			Shue::AppUpdateEvent appUpdateEvent;
 			OnEvent(appUpdateEvent);

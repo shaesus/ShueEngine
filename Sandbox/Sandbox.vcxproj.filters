@@ -24,15 +24,20 @@
     <ClCompile Include="src\Layers\SandboxUILayer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="src\Entities\Container.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entities\LightSource.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\Basic.shader" />
     <None Include="res\shaders\Lighting.shader" />
     <None Include="res\shaders\LightSource.shader" />
     <None Include="res\shaders\Text.shader" />
     <None Include="res\shaders\WorldSpaceText.shader" />
     <None Include="res\shaders\Line.shader" />
-    <None Include="res\shaders\Backpack.shader" />
+    <None Include="res\shaders\Model.shader" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="res\fonts\arial.ttf" />
@@ -43,6 +48,12 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="src\Layers\SandboxUILayer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\Container.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Entities\LightSource.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

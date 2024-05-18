@@ -17,7 +17,7 @@
 #include <unordered_map>
 
 glm::vec4 backgroundColor (  0.2f,  0.3f, 0.3f, 1.0f );
-glm::vec3 cubePos         ( -0.2f, -0.2f, 0.1f );
+glm::vec3 containerPos         ( -0.2f, -0.2f, 0.1f );
 glm::vec3 lightSourcePos  (  0.0f,  1.0f, 0.0f );
 glm::vec3 lightColor      (  1.0f,  1.0f, 1.0f );
 glm::vec3 spherePos       (  0.0f,  0.0f, 0.0f );

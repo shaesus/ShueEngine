@@ -4,12 +4,12 @@
 
 #include "Application/Application.h"
 
-Backpack::Backpack(Shue::Model* model, Shue::Shader& shader)
+Backpack::Backpack(const std::string& name, Shue::Model* model, Shue::Shader& shader) : Shue::Entity(name)
 {
 	m_Components.emplace(Shue::ComponentType::ModelRendererComp, new Shue::ModelRenderer(model, shader));
 }
 
-Backpack::Backpack(const std::string& modelPath, Shue::Shader& shader)
+Backpack::Backpack(const std::string& name, const std::string& modelPath, Shue::Shader& shader) : Shue::Entity(name)
 {
 	m_Components.emplace(Shue::ComponentType::ModelRendererComp, new Shue::ModelRenderer(modelPath, shader));
 }

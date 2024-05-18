@@ -4,6 +4,7 @@ bin/
 bin-int/
 Dependencies/MySQL/lib-debug/
 Dependencies/MySQL/lib-release/
+PendulumAnalysis/
 
 # Files
 *.user

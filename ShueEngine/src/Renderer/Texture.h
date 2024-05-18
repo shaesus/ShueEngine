@@ -7,7 +7,7 @@ namespace Shue {
 	class SHUE_API Texture
 	{
 	public:
-		virtual ~Texture();
+		virtual void Delete();
 
 		void Bind(unsigned int slot = 0) const;
 		void Unbind() const;

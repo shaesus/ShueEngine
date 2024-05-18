@@ -23,6 +23,9 @@ namespace Shue {
 
 		inline const std::string& GetName() const { return m_Name; }
 
+		std::unordered_map<unsigned int, Entity*>::const_iterator begin() const { return m_sceneObjects.cbegin(); }
+		std::unordered_map<unsigned int, Entity*>::const_iterator end() const { return m_sceneObjects.cend(); }
+
 	private:
 		std::string m_Name;
 		std::unordered_map<unsigned int, Entity*> m_sceneObjects;

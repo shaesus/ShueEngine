@@ -4,17 +4,15 @@
 
 #include "VertexBufferLayout.h";
 
+#include <iostream>
+
 namespace Shue {
 
-	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<ImageTexture*> textures)
+	Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<ImageTexture> textures)
 		: m_Vertices(vertices), m_Indices(indices), m_Textures(textures)
 	{
 		SetupMesh();
 	}
-
-    Mesh::~Mesh()
-    {
-    }
 
 	void Mesh::SetupMesh()
 	{

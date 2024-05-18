@@ -144,6 +144,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Entities\Backpack.cpp" />
+    <ClCompile Include="src\Entities\Container.cpp" />
+    <ClCompile Include="src\Entities\LightSource.cpp" />
     <ClCompile Include="src\Layers\SandboxUILayer.cpp" />
     <ClCompile Include="src\SandboxApplication.cpp" />
   </ItemGroup>
@@ -153,8 +155,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\shaders\Backpack.shader" />
-    <None Include="res\shaders\Basic.shader" />
+    <None Include="res\shaders\Model.shader" />
     <None Include="res\shaders\Lighting.shader" />
     <None Include="res\shaders\LightSource.shader" />
     <None Include="res\shaders\Line.shader" />
@@ -167,6 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Entities\Backpack.h" />
+    <ClInclude Include="src\Entities\Container.h" />
+    <ClInclude Include="src\Entities\LightSource.h" />
     <ClInclude Include="src\Layers\SandboxUILayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

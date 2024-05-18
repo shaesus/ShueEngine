@@ -101,49 +101,49 @@ namespace Shue {
 		return shader;
 	}
 
-	void Shader::SetUniform3f(const std::string& name, float v0, float v1, float v2)
+	void Shader::SetUniform3f(const std::string& name, float v0, float v1, float v2) const
 	{
 		GLCall(glUniform3f(GetUniformLocation(name), v0, v1, v2));
 	}
 
-	void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3)
+	void Shader::SetUniform4f(const std::string& name, float v0, float v1, float v2, float v3) const
 	{
 		GLCall(glUniform4f(GetUniformLocation(name), v0, v1, v2, v3));
 	}
 
-	void Shader::SetUniformVec3(const std::string& name, glm::vec3 vector3)
+	void Shader::SetUniformVec3(const std::string& name, glm::vec3 vector3) const
 	{
 		SetUniform3f(name, vector3.x, vector3.y, vector3.z);
 	}
 
-	void Shader::SetUniformVec4(const std::string& name, glm::vec4 vector4)
+	void Shader::SetUniformVec4(const std::string& name, glm::vec4 vector4) const
 	{
 		SetUniform4f(name, vector4.x, vector4.y, vector4.z, vector4.w);
 	}
 
-	void Shader::SetUniform1i(const std::string& name, int v)
+	void Shader::SetUniform1i(const std::string& name, int v) const
 	{
 		GLCall(glUniform1i(GetUniformLocation(name), v));
 	}
 
-	void Shader::SetUniform1f(const std::string& name, float v)
+	void Shader::SetUniform1f(const std::string& name, float v) const
 	{
 		GLCall(glUniform1f(GetUniformLocation(name), v));
 	}
 
-	void Shader::SetUniformMatrix4fv(const std::string& name, const glm::mat4& matrix)
+	void Shader::SetUniformMatrix4fv(const std::string& name, const glm::mat4& matrix) const
 	{
 		GLCall(glUniformMatrix4fv(GetUniformLocation(name), 1, GL_FALSE, &matrix[0][0]));
 	}
 
-	void Shader::SetUniformMaterial(const std::string& name, const Material& material)
+	void Shader::SetUniformMaterial(const std::string& name, const Material& material) const
 	{
 		SetUniform1i(name + ".diffuseMap", material.DiffuseMap());
 		SetUniform1i(name + ".specularMap", material.SpecularMap());
 		SetUniform1f(name + ".shininess", material.Shininess());
 	}
 
-	void Shader::SetUniformLightProperties(const std::string& name, const LightProperties& light)
+	void Shader::SetUniformLightProperties(const std::string& name, const LightProperties& light) const
 	{
 		SetUniformVec3(name + ".position", light.Position());
 		SetUniformVec3(name + ".ambient", light.Ambient());
@@ -151,7 +151,7 @@ namespace Shue {
 		SetUniformVec3(name + ".specular", light.Specular());
 	}
 
-	int Shader::GetUniformLocation(const std::string& name)
+	int Shader::GetUniformLocation(const std::string& name) const
 	{
 		if (m_UniformLocationsCache.find(name) != m_UniformLocationsCache.end())
 			return m_UniformLocationsCache[name];

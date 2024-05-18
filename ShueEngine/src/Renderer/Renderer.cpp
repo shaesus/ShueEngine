@@ -9,7 +9,10 @@ namespace Shue {
 		for (auto& [str, font] : m_Fonts)
 		{
 			for (auto& [c, character] : *font)
+			{
+				character.Texture->Delete();
 				delete character.Texture;
+			}
 			delete font;
 		}
 
@@ -69,7 +72,7 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	void Renderer::DrawMesh(const Mesh& mesh, Shader& shader) const
+	void Renderer::DrawMesh(const Mesh& mesh, const Shader& shader) const
 	{
 		unsigned int diffuseNr = 1;
 		unsigned int specularNr = 1;
@@ -79,7 +82,7 @@ namespace Shue {
 		{
 			GLCall(glActiveTexture(GL_TEXTURE0 + i));
 			std::string number;
-			std::string name = (*textures[i]).Type();
+			std::string name = (textures[i]).Type();
 			if (name == "texture_diffuse")
 				number = std::to_string(diffuseNr++);
 			else if (name == "texture_specular")
@@ -87,7 +90,7 @@ namespace Shue {
 
 			shader.Bind();
 			shader.SetUniform1i(("u_Material." + name + number).c_str(), i);
-			GLCall(glBindTexture(GL_TEXTURE_2D, (*textures[i]).ID()));
+			GLCall(glBindTexture(GL_TEXTURE_2D, (textures[i]).ID()));
 		}
 		shader.SetUniform1f("u_Material.shininess", 32.0f);
 		GLCall(glActiveTexture(GL_TEXTURE0));
@@ -101,7 +104,7 @@ namespace Shue {
 		shader.Unbind();
 	}
 
-	void Renderer::DrawModel(const Model& model, Shader& shader) const
+	void Renderer::DrawModel(const Model& model, const Shader& shader) const
 	{
 		for (const Mesh& mesh : model.Meshes())
 			DrawMesh(mesh, shader);
@@ -113,7 +116,7 @@ namespace Shue {
 		if (font) m_Fonts.insert(std::pair<std::string, Font*>(name, font));
 	}
 
-	void Renderer::DrawText(const VertexArray& va, const VertexBuffer& vb, Shader& shader, 
+	void Renderer::RenderText(const VertexArray& va, const VertexBuffer& vb, Shader& shader, 
 		const std::string& text, float x, float y, float scale, const glm::vec3& color, const std::string& fontName)
 	{
 		shader.Bind();

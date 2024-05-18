@@ -15,11 +15,13 @@ namespace Shue {
 	{
 	public:
 		Entity();
+		Entity(const std::string& name);
 		virtual ~Entity();
 
 		void UpdateComponents();
 		virtual void Update() = 0;
 
+		inline const std::string& GetName() const { return m_Name; }
 		inline unsigned int GetID() const { return m_ID; }
 		inline Transform* GetTransform() { return m_Transform; }
 
@@ -49,6 +51,7 @@ namespace Shue {
 		inline static unsigned int s_MaxID;
 
 	protected:
+		std::string m_Name;
 		std::unordered_map<ComponentType, Component*> m_Components;
 		unsigned int m_ID;
 		Transform* m_Transform;

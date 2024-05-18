@@ -14,7 +14,7 @@ namespace Shue {
 	Model::~Model()
 	{
 		for (auto& tex : m_LoadedTextures)
-			delete tex;
+			tex.Delete();
 	}
 
 	void Model::LoadModel(const std::string& path)
@@ -48,7 +48,7 @@ namespace Shue {
 	{
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
-		std::vector<ImageTexture*> textures;
+		std::vector<ImageTexture> textures;
 
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
@@ -88,18 +88,18 @@ namespace Shue {
 		if (mesh->mMaterialIndex >= 0)
 		{
 			aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-			std::vector<ImageTexture*> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+			std::vector<ImageTexture> diffuseMaps = LoadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 			textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-			std::vector<ImageTexture*> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+			std::vector<ImageTexture> specularMaps = LoadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
 			textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 		}
 
 		return Mesh(vertices, indices, textures);
 	}
 
-	std::vector<ImageTexture*> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
+	std::vector<ImageTexture> Model::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
 	{
-		std::vector<ImageTexture*> textures;
+		std::vector<ImageTexture> textures;
 		for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
 		{
 			aiString str;
@@ -108,7 +108,7 @@ namespace Shue {
 			bool skip = false;
 			for (unsigned int j = 0; j < m_LoadedTextures.size(); j++)
 			{
-				if (std::strcmp((*m_LoadedTextures[j]).Path().c_str(), str.C_Str()) == 0)
+				if (std::strcmp((m_LoadedTextures[j]).Path().c_str(), str.C_Str()) == 0)
 				{
 					textures.push_back(m_LoadedTextures[j]);
 					skip = true;
@@ -118,7 +118,7 @@ namespace Shue {
 
 			if (skip == false)
 			{
-				ImageTexture* texture = new ImageTexture(str.C_Str(), typeName, m_Directory + "/");
+				ImageTexture texture(str.C_Str(), typeName, m_Directory + "/");
 				textures.push_back(texture);
 				m_LoadedTextures.push_back(texture);
 			}

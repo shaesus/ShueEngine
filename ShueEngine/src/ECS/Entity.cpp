@@ -11,8 +11,15 @@ namespace Shue {
 		m_ID = id;
 		s_IDs.insert(id);
 
+		m_Name = "Entity " + std::to_string(id);
+
 		m_Transform = new Transform();
 		m_Components.emplace(Transform::GetStaticType(), m_Transform);
+	}
+
+	Entity::Entity(const std::string& name) : Entity()
+	{
+		m_Name = name;
 	}
 
 	Entity::~Entity()

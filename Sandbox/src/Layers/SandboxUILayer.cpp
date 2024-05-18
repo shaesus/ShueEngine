@@ -1,13 +1,12 @@
 #include "SandboxUILayer.h"
 
-SandboxUILayer::SandboxUILayer(glm::vec3& cube, glm::vec3& light)
-	: m_cube(cube), m_light(light), ImGuiLayer()
+#include "Application/Application.h"
+
+SandboxUILayer::SandboxUILayer() : ImGuiLayer()
 {
 }
 
-SandboxUILayer::~SandboxUILayer()
-{
-}
+Shue::Application& app = Shue::Application::Get();
 
 void SandboxUILayer::OnUpdate()
 {
@@ -23,8 +22,11 @@ void SandboxUILayer::OnUpdate()
 	ImGui::NewFrame();
 
 	ImGui::Begin("Positions");
-	ImGui::SliderFloat3("cube", (float*)&m_cube, -1.0f, 1.0f);
-	ImGui::SliderFloat3("light", (float*)&m_light, -1.0f, 1.0f);
+	for (auto it = app.CurrentScene.begin(); it != app.CurrentScene.end(); it++)
+	{
+		Shue::Entity* entity = it->second;
+		ImGui::SliderFloat3(entity->GetName().c_str(), (float*)&(entity->GetTransform()->Position), -1.0f, 1.0f);
+	}
 	ImGui::End();
 
 	ImGui::Begin("Debug");
